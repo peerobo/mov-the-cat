@@ -1,5 +1,5 @@
-package  com.fc.movthecat
-{	
+package com.fc.movthecat
+{
 	import com.fc.air.base.BaseButton;
 	import com.fc.air.base.BaseJsonGUI;
 	import com.fc.air.base.BFConstructor;
@@ -11,6 +11,8 @@ package  com.fc.movthecat
 	import com.fc.air.base.IAP;
 	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.LayerMgr;
+	import com.fc.air.base.ScreenMgr;
+	import com.fc.air.base.SoundManager;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.res.Asset;
 	import com.fc.air.res.ResMgr;
@@ -20,32 +22,38 @@ package  com.fc.movthecat
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.ParticleAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.screen.LoadingScreen;
+	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	CONFIG::isAndroid{
+	CONFIG::isAndroid
+	{
 		import com.fc.air.base.SocialForAndroid;
 	}
-		
+	
 	/**
 	 * ...
 	 * @author ndp
 	 */
-	public class App extends Sprite 
+	public class App extends Sprite
 	{
 		public static const APP_NAME:String = "movthecat";
 		public static const URL_REMOTE:String = "http://";
 		public static var ins:App;
 		
-		public function App() 
+		public function App()
 		{
 			super();
 			
 			addEventListener(Event.ADDED_TO_STAGE, onInit);
-			this.alpha = 0.9999;		
-			ins = this;						
+			this.alpha = 0.9999;
+			ins = this;
+			
+			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, true, 0x0);
+			Starling.current.nativeOverlay.addChild(fps);
 			
 			// init app default
-			var obj:Object = { };
+			var obj:Object = {};
 			obj["iapIOS"] = Constants.IOS_PRODUCT_IDS[0];
 			obj["iapAndroid"] = Constants.ANDROID_PRODUCT_IDS[0];
 			obj["iapIDsAndroid"] = Constants.ANDROID_PRODUCT_IDS;
@@ -62,97 +70,81 @@ package  com.fc.movthecat
 			obj["fbcallback"] = Constants.FB_URL_CALLBACK;
 			obj["twitterpublic"] = Constants.TWITTER_PUBLIC_CONSUMER;
 			obj["twitterprivate"] = Constants.TWITTER_SECRET_CONSUMER;
-			Util.initApp(obj);			
+			Util.initApp(obj);
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
-			globalInput.root = this;			
+			globalInput.root = this;
 			Util.registerPool();
+			Asset.isResourceByScaleContent = false;
 			Asset.init([FontAsset.ARIAL, FontAsset.BANHMI], URL_REMOTE, BackgroundAsset.WALL_LIST, ButtonAsset.DEFAULT_BT);
-			BaseButton.DefaultFont = FontAsset.ARIAL;
+			BaseButton.DefaultFont = FontAsset.BANHMI;
 			LangUtil.loadXMLData();
 			BaseJsonGUI.loadCfg();
-			EffectMgr.DEFAULT_FONT = FontAsset.BANHMI;
+			EffectMgr.DEFAULT_FONT = FontAsset.BANHMI;			
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
-		}				
+		}
 		
-		public function onAppDeactivate():void 
+		public function onAppDeactivate():void
+		{
+			if(!Util.isDesktop)
+			{	
+				Starling.current.stop(true);
+				SoundManager.instance.muteMusic = true;   
+			}
+		}
+		
+		public function onAppActivate():void
 		{			
-/*			if (Util.isDesktop)
-				return;
-			SoundManager.instance.muteMusic = true;
-			var logic:Fasthand = Factory.getInstance(Fasthand);			
-			if (ScreenMgr.currScr is GameScreen && logic.isStartGame)
-			{
-				var gScr:GameScreen = Factory.getInstance(GameScreen);
-				gScr.onPause();
-			}*/
-		}
-		
-		public function onAppActivate():void 
-		{
-			/*if (ScreenMgr.currScr is CategoryScreen)
-			{				
+			if(!Util.isDesktop)
+			{	
+				Starling.current.start();
 				SoundManager.instance.muteMusic = false;
-			}*/
-			
+			}
 		}
 		
-		public function onAppExit():void 
+		public function onAppExit():void
 		{
-			/*var gameState:GameSave = Factory.getInstance(GameSave);
-			gameState.saveState();	*/
-			
+			var gameState:GameSave = Factory.getInstance(GameSave);
+			gameState.saveState();	
 		}
 		
-		public function reinitializeTextures():void 
+		public function reinitializeTextures():void
 		{
-			/*ScreenMgr.showScreen(LoadingScreen);
-			var resMgr:ResMgr = Factory.getInstance(ResMgr);
-			resMgr.start();	*/
+		/*ScreenMgr.showScreen(LoadingScreen);
+		   var resMgr:ResMgr = Factory.getInstance(ResMgr);
+		 resMgr.start();	*/
 		}
 		
-		private function onInit(e:Event):void 
+		private function onInit(e:Event):void
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onInit);
 			
-			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, true, 0x0);
-			//Starling.current.nativeOverlay.addChild(fps);
-			try
+			var gameState:GameSave = Factory.getInstance(GameSave);
+			gameState.loadState();
+			var highscoreDB:GameService = Factory.getInstance(GameService);
+			if (Util.isIOS)
+				highscoreDB.initGameCenter();
+			else if (Util.isAndroid)
+				highscoreDB.initGooglePlayGameService();
+			var iap:IAP = Factory.getInstance(IAP);
+			iap.initInAppPurchase();
+			CONFIG::isAndroid
 			{
-				var gameState:GameSave = Factory.getInstance(GameSave);
-				gameState.loadState();
-				var highscoreDB:GameService = Factory.getInstance(GameService);			
-				if(Util.isIOS)
-					highscoreDB.initGameCenter();
-				else if (Util.isAndroid)
-					highscoreDB.initGooglePlayGameService();
-				var iap:IAP = Factory.getInstance(IAP);
-				iap.initInAppPurchase();
-				CONFIG::isAndroid {
-					var shareAndroid:SocialForAndroid = Factory.getInstance(SocialForAndroid);
-					shareAndroid.init();
-				}
+				var shareAndroid:SocialForAndroid = Factory.getInstance(SocialForAndroid);
+				shareAndroid.init();
 			}
-			catch (err:Error)
-			{
-				FPSCounter.log(err.message);
-			}			
+			
 			LayerMgr.init(this);
 			var input:GlobalInput = Factory.getInstance(GlobalInput);
 			input.init();
 			var resMgr:ResMgr = Factory.getInstance(ResMgr);
-			resMgr.start();			
+			resMgr.start();
 			BFConstructor.init();
 			Asset.loadParticleCfg([ParticleAsset.PARTICLE_STAR_COMPLETE]);
 			SoundAsset.preload();
-			//ScreenMgr.showScreen(LoadingScreen);
-			Util.initAd();
-			
-			
-			
-			trace("--- init game: stage", Util.appWidth, "x", Util.appHeight, "-", Util.deviceWidth, "x", Util.deviceHeight);						
-			
-		}		
+			ScreenMgr.showScreen(LoadingScreen);
+			Util.initAd();		
+		}
 	}
 
 }

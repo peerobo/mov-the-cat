@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:2935a9a69641a1e151143021d74ed092$ -->
+<TextureAtlas imagePath="gui@3x.png">
+    <SubTexture name="arial" x="2" y="533" width="572" height="360" frameX="-1" frameY="-1" frameWidth="576" frameHeight="362"/>
+    <SubTexture name="banhmi" x="2" y="2" width="574" height="529" frameX="0" frameY="-1" frameWidth="576" frameHeight="531"/>
+    <SubTexture name="bg_square" x="2" y="935" width="20" height="20"/>
+    <SubTexture name="bg_square_alpha" x="2" y="895" width="38" height="38"/>
+</TextureAtlas>

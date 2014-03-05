@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:404da474fd84b78c2c4b3187e6f46e05$ -->
+<TextureAtlas imagePath="mtc.png">
+    <SubTexture name="bg_land_head_1" x="2" y="48" width="21" height="21"/>
+    <SubTexture name="bg_land_head_2" x="25" y="25" width="21" height="21"/>
+    <SubTexture name="bg_land_tail_1" x="2" y="25" width="21" height="21"/>
+    <SubTexture name="bg_land_tail_2" x="25" y="2" width="21" height="21"/>
+    <SubTexture name="bg_land_tile" x="2" y="2" width="21" height="21"/>
+    <SubTexture name="ico_char_idle000" x="42" y="94" width="17" height="21" frameX="-2" frameY="0" frameWidth="21" frameHeight="21"/>
+    <SubTexture name="ico_char_idle001" x="23" y="94" width="17" height="21" frameX="-1" frameY="0" frameWidth="21" frameHeight="21"/>
+    <SubTexture name="ico_char_idle002" x="2" y="94" width="19" height="21" frameX="0" frameY="0" frameWidth="21" frameHeight="21"/>
+    <SubTexture name="ico_char_jump000" x="2" y="71" width="19" height="21" frameX="0" frameY="0" frameWidth="21" frameHeight="21"/>
+    <SubTexture name="ico_char_jump001" x="25" y="48" width="19" height="21" frameX="0" frameY="0" frameWidth="21" frameHeight="21"/>
+    <SubTexture name="ico_char_walk000" x="42" y="71" width="17" height="21" frameX="-1" frameY="0" frameWidth="21" frameHeight="21"/>
+    <SubTexture name="ico_char_walk001" x="23" y="71" width="17" height="21" frameX="-1" frameY="0" frameWidth="21" frameHeight="21"/>
+</TextureAtlas>

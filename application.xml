@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?> 
-<application xmlns="http://ns.adobe.com/air/application/3.9">
+<application xmlns="http://ns.adobe.com/air/application/13.0">
 	
 	<id>com.fc.movthecat</id>
 	<versionNumber>0.1</versionNumber>
@@ -21,6 +21,8 @@
 			<uses-permission android:name="android.permission.INTERNET"/>
 			<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+			<uses-permission android:name="android.permission.WAKE_LOCK"/>
 			<application android:enabled="true">
 				<meta-data android:name="com.google.android.gms.games.APP_ID" android:value="\ 734115580995" />
 				<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
@@ -67,7 +69,7 @@
     <visible>true</visible>
     <fullScreen>true</fullScreen>
     <autoOrients>false</autoOrients>
-    <aspectRatio>landscape</aspectRatio>
+    <aspectRatio>portrait</aspectRatio>
     <renderMode>direct</renderMode>
     <!--<depthAndStencil>true</depthAndStencil>-->
     <!-- required for 3D -->
@@ -108,13 +110,13 @@
 	-->
 	<extensions>
 		<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
+		<extensionID>com.leadbolt.LeadboltANE</extensionID>
 		
 		<extensionID>com.pozirk.AndroidInAppPurchase</extensionID>
-		<extensionID>com.freshplanet.AirGooglePlayGamesService</extensionID>
-		<extensionID>com.leadbolt.LeadboltANE</extensionID>
+		<extensionID>com.freshplanet.AirGooglePlayGamesService</extensionID>		
 				
-		<extensionID>com.adobe.ane.gameCenter</extensionID>
+		<!--<extensionID>com.adobe.ane.gameCenter</extensionID>
 		<extensionID>com.adobe.ane.social</extensionID>
-		<extensionID>com.fc.StoreKitExt</extensionID>
+		<extensionID>com.fc.StoreKitExt</extensionID>-->
 	</extensions>
 </application>

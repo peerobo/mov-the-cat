@@ -44,7 +44,7 @@
     <option loadExterns="" />
     <option staticLinkRSL="True" />
     <option additional="" />
-    <option compilerConstants="CONFIG::isAndroid,false&#xA;CONFIG::isIOS,false" />
+    <option compilerConstants="CONFIG::isAndroid,true&#xA;CONFIG::isIOS,false" />
     <option minorVersion="" />
   </build>
   <!-- SWC Include Libraries -->

@@ -26,7 +26,6 @@ package com.fc.movthecat
 		{
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
-			//stage.addEventListener(Event.DEACTIVATE, deactivate);
 			
 			// touch or gesture?
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
@@ -42,16 +41,14 @@ package com.fc.movthecat
 		}
 		
 		private function onAppDeactivate(e:Event):void
-		{
-			starling.stop(true);
+		{			
 			App.ins.onAppDeactivate();
 		}
 		
 		private function onAppActivate(e:Event):void
 		{
 			if (App.ins)
-			{
-				starling.start();
+			{				
 				App.ins.onAppActivate();
 			}
 		}

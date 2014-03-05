@@ -5,16 +5,12 @@ package  com.fc.movthecat
 	 * @author ndp
 	 */
 	public class Constants 
-	{
-		public static const SO_SOUND:String = "sound";				
-		
+	{			
 		static public const LEAD_BOLT_BANNER_ID:String = "243217661";
 		static public const LEAD_BOLT_FULLSCREEN_ID:String = "608398120";
 		static public const AD_FULL_WAITTIME:int = 4;
 		static public const PRICE_GAME:Number = 2.99;		
 		static public const DISABLE_INPUT_EACH_TOUCH:Number = 1;
-		static public const PENALTY_TIME:int = 1;		
-		static public const SUBJECT_STR:String = "sub";
 		static public const IOS_PRODUCT_IDS:Array = ["com.fc.FastHandEnglish.FullApp"];
 		static public const ANDROID_PRODUCT_IDS:Array = ["com.fc.fasthandenglish.fullapp"];
 		static public const SHORT_LINK:String = "http://t.co/M4mfSY8zR4";
@@ -25,12 +21,8 @@ package  com.fc.movthecat
 		static public const TWITTER_URL_CALLBACK:String = "http://firecheetah.com/welcome/";
 		static public const FB_URL_CALLBACK:String = "https://apps.facebook.com/firecheetahstudio/";
 		static public const TWITTER_KEY:String = "twitterkey";
-		static public const FB_KEY:String = "fbKey";
-		static public const TIMEOUT_MATH:int = 15;
-		public function Constants() 
-		{
-			
-		}				
+		static public const FB_KEY:String = "fbKey";		
+		static public const GAME_SCALE:int = 12;
 		
 	}
 
