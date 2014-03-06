@@ -22,6 +22,7 @@ package com.fc.movthecat
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.ParticleAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.logic.LevelStage;
 	import com.fc.movthecat.screen.LoadingScreen;
 	import starling.core.Starling;
 	import starling.display.Sprite;
@@ -47,10 +48,7 @@ package com.fc.movthecat
 			
 			addEventListener(Event.ADDED_TO_STAGE, onInit);
 			this.alpha = 0.9999;
-			ins = this;
-			
-			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, true, 0x0);
-			Starling.current.nativeOverlay.addChild(fps);
+			ins = this;									
 			
 			// init app default
 			var obj:Object = {};
@@ -63,6 +61,7 @@ package com.fc.movthecat
 			obj["appname"] = APP_NAME;
 			obj["banner"] = Constants.LEAD_BOLT_BANNER_ID;
 			obj["fullscreen"] = Constants.LEAD_BOLT_FULLSCREEN_ID;
+			obj["moregames"] = Constants.LEAD_BOLT_MOREGAMES_ID;
 			obj["fbkey"] = Constants.FB_KEY;
 			obj["fbapp"] = Constants.FACEBOOK_APP_ID;
 			obj["twitterkey"] = Constants.TWITTER_KEY;
@@ -75,11 +74,11 @@ package com.fc.movthecat
 			globalInput.root = this;
 			Util.registerPool();
 			Asset.isResourceByScaleContent = false;
-			Asset.init([FontAsset.ARIAL, FontAsset.BANHMI], URL_REMOTE, BackgroundAsset.WALL_LIST, ButtonAsset.DEFAULT_BT);
-			BaseButton.DefaultFont = FontAsset.BANHMI;
+			Asset.init(FontAsset.LIST_FONTS, URL_REMOTE, BackgroundAsset.WALL_LIST, ButtonAsset.DEFAULT_BT);
+			BaseButton.DefaultFont = FontAsset.GEARHEAD;
 			LangUtil.loadXMLData();
 			BaseJsonGUI.loadCfg();
-			EffectMgr.DEFAULT_FONT = FontAsset.BANHMI;			
+			EffectMgr.DEFAULT_FONT = FontAsset.GEARHEAD;			
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
 		}
@@ -132,8 +131,7 @@ package com.fc.movthecat
 			{
 				var shareAndroid:SocialForAndroid = Factory.getInstance(SocialForAndroid);
 				shareAndroid.init();
-			}
-			
+			}						
 			LayerMgr.init(this);
 			var input:GlobalInput = Factory.getInstance(GlobalInput);
 			input.init();
@@ -143,7 +141,10 @@ package com.fc.movthecat
 			Asset.loadParticleCfg([ParticleAsset.PARTICLE_STAR_COMPLETE]);
 			SoundAsset.preload();
 			ScreenMgr.showScreen(LoadingScreen);
-			Util.initAd();		
+			Util.initAd();	
+			
+			var logicStage:LevelStage = Factory.getInstance(LevelStage);
+			logicStage.calculateScreen();
 		}
 	}
 

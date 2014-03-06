@@ -6,7 +6,8 @@ package com.fc.movthecat.asset
 	 */
 	public class IconAsset 
 	{
-
+		public static const ICO_PLANT:String = "ico_plant";
+		public static const ICO_CLOUD:String = "ico_cloud";
 	}
 
 }

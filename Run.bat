@@ -15,7 +15,7 @@ set INTERPRETER=-interpreter
 :: http://help.adobe.com/en_US/air/build/WSfffb011ac560372f-6fa6d7e0128cca93d31-8000.html
 
 set SCREEN_SIZE=NexusOne
-set SCREEN_SIZE=iPhoneRetina
+::set SCREEN_SIZE=iPhone5Retina
 ::set SCREEN_SIZE=FWVGA
 set SCREEN_SIZE=iPhone
 

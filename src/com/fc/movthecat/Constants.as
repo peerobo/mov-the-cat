@@ -7,7 +7,8 @@ package  com.fc.movthecat
 	public class Constants 
 	{			
 		static public const LEAD_BOLT_BANNER_ID:String = "243217661";
-		static public const LEAD_BOLT_FULLSCREEN_ID:String = "608398120";
+		static public const LEAD_BOLT_FULLSCREEN_ID:String = "832847409";
+		static public const LEAD_BOLT_MOREGAMES_ID:String = "634703004";
 		static public const AD_FULL_WAITTIME:int = 4;
 		static public const PRICE_GAME:Number = 2.99;		
 		static public const DISABLE_INPUT_EACH_TOUCH:Number = 1;
@@ -23,7 +24,8 @@ package  com.fc.movthecat
 		static public const TWITTER_KEY:String = "twitterkey";
 		static public const FB_KEY:String = "fbKey";		
 		static public const GAME_SCALE:int = 12;
-		
+		static public const GAME_TILE_SIZE_4X:int = 252;		
+		static public const RATE_URL:String = "http://firecheetah.com/mobile/movthecat.php";
 	}
 
 }

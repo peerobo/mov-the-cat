@@ -3,6 +3,9 @@
 		<welcome> Chào mừng các bạn\nđến với game</welcome>		
 	</vi>
 	<en>
-		<gamename>Mov\nThe\nCat</gamename>
+		<gamename>Mov The\nCat</gamename>
+		<play>Play</play>
+		<more>More Games</more>
+		<rate>Rate</rate>
 	</en>
 </localization>

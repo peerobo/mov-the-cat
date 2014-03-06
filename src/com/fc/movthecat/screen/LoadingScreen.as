@@ -1,7 +1,9 @@
 package com.fc.movthecat.screen 
 {	
+	import com.fc.air.base.BaseJsonGUI;
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.GameSave;
+	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.comp.LoopableSprite;
 	import com.fc.air.res.ResMgr;
@@ -60,13 +62,16 @@ package com.fc.movthecat.screen
 		override public function update(time:Number):void 
 		{
 			super.update(time);
-			t.advanceTime(time);
+			t.advanceTime(time);			
 			var resMgr:ResMgr = Factory.getInstance(ResMgr);			
 			if (resMgr.assetProgress == 1)
 			{
-				var p:DisplayObjectContainer = this.parent;
-				// bg of game			
-				validateGameState();				
+				if (BaseJsonGUI.ready && LangUtil.ready)
+				{
+					var p:DisplayObjectContainer = this.parent;
+					// bg of game			
+					validateGameState();				
+				}
 			}
 		}
 		
@@ -88,10 +93,9 @@ package com.fc.movthecat.screen
 				case GameSave.STATE_APP_RESTORE:
 					
 				break;
-			}
-			
-			Factory.killInstance(LoadingScreen);
+			}						
 			ScreenMgr.showScreen(MainScreen);
+			Factory.killInstance(LoadingScreen);
 		}
 		
 		override public function onRemoved(e:Event):void 

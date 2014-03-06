@@ -14,6 +14,7 @@ package com.fc.movthecat.screen
 	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.Constants;
+	import com.fc.movthecat.gui.CenterMainUI;
 	import com.fc.movthecat.MTCUtil;
 	import flash.geom.Rectangle;
 	import starling.animation.Transitions;
@@ -21,6 +22,8 @@ package com.fc.movthecat.screen
 	import starling.core.Starling;
 	import starling.display.MovieClip;
 	import starling.events.Event;
+	import starling.filters.BlurFilter;
+	import starling.filters.FragmentFilter;
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
 	import starling.textures.Texture;
@@ -33,14 +36,20 @@ package com.fc.movthecat.screen
 	public class MainScreen extends LoopableSprite 
 	{
 		private var character:MovieClip;
+		private var needPlayIntro:Boolean;
 		private var tweenChar:Tween;
+		
+		private var centerUI:CenterMainUI;
+		private var characterShadow:FragmentFilter;
 		
 		public function MainScreen() 
 		{
 			super();
-			
+			needPlayIntro = false;
+			centerUI = new CenterMainUI();
 			loadTextureAtlas();
-			SoundManager.playSound(SoundAsset.THEME_SONG, true);				
+			characterShadow = BlurFilter.createDropShadow();
+			SoundManager.playSound(SoundAsset.THEME_SONG, true);			
 		}
 		
 		private function loadTextureAtlas():void 
@@ -53,81 +62,80 @@ package com.fc.movthecat.screen
 		{
 			if (progress == 1)
 			{				
-				character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE);
+				needPlayIntro = true;
 			}
 		}
 		
 		override public function onAdded(e:Event):void 
 		{
-			super.onAdded(e);
+			super.onAdded(e);						
 		}
 		
 		override public function update(time:Number):void 
 		{
 			super.update(time);
-			if (character && !character.parent)
-			{							
+			if (needPlayIntro)
+			{						
 				playIntro();
+				needPlayIntro = false;
 			}
 		}
 		
 		private function playIntro():void 
 		{
-			var mainGameTitle:String = LangUtil.getText("gamename");
-			var txtField:BaseBitmapTextField = BFConstructor.getShortTextField(1, 1, mainGameTitle, FontAsset.BANHMI);
-			txtField.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
-			txtField.y = -txtField.height;
-			txtField.x = Util.appWidth - txtField.width >> 1;
-			addChild(txtField);
-			var desY:int = (Util.appHeight - txtField.height >> 1);
+			addChild(MTCUtil.getRandomBG());
+			
+			centerUI.buildGUI();
+			centerUI.x = Util.appWidth - centerUI.width >> 1;
+			var desY:int = Util.appHeight - centerUI.height >> 1;
+			centerUI.y = -centerUI.height;
+			addChild(centerUI);
 			Starling.juggler.tween(
-				txtField,
+				centerUI,
 				2,
 				{
 					y: desY,
 					transition: Transitions.EASE_OUT_BOUNCE
 				}
-			)
-			var rec:Rectangle = new Rectangle(txtField.x, desY, txtField.width, txtField.height);
+			)			
 			
 			randomNPCs();
 		}
 		
 		private function randomNPCs():void 
-		{
-			var rndX:int = Math.random() * (Util.appWidth - character.width - 20);
-			var rndY:int = Math.random() * (Util.appHeight - character.height - 20);			
-			
-			character.x = rndX;
-			character.y = rndY;
-			
+		{						
 			var changeAnimation:Boolean = true;
-			var rnd:int = Math.random() * 100;
+			var rnd:int = Util.getRandom(100);
 			if (changeAnimation)
 			{
-				
-				Factory.toPool(character);
-				character.removeFromParent();
+				if(character)
+				{
+					Factory.toPool(character);
+					character.removeFromParent();
+				}
 				if (rnd < 30)
 				{
 					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE);
-					FPSCounter.log("idle");
 				}
 				else if (rnd < 60)
 				{
-					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_JUMP);					
-					FPSCounter.log("jump");
+					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_JUMP);
 				}
 				else 
 				{
-					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_WALK);					
-					FPSCounter.log("walk");
+					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_WALK);
 				}				
 			}
+			var rndX:int = Math.random() * (Util.appWidth - character.width - 20);
+			var rndY:int = Math.random() * (Util.appHeight - character.height - 20);
+			character.filter = characterShadow;			
+			character.touchable = false;
+			character.x = rndX;
+			character.y = rndY;
 			addChild(character);
 			character.fps = 2;
 			character.play();
-			Starling.juggler.delayCall(randomNPCs, 5);
+			Starling.juggler.delayCall(randomNPCs, 5);						
 		}
 		
 	}

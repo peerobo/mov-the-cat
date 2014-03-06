@@ -1,9 +1,15 @@
 package com.fc.movthecat 
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.comp.TileImage;
 	import com.fc.air.res.Asset;
 	import com.fc.air.res.ResMgr;
+	import com.fc.air.Util;
+	import com.fc.movthecat.asset.BackgroundAsset;
+	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
+	import com.hurlant.crypto.prng.ARC4;
+	import com.hurlant.crypto.prng.Random;
 	import feathers.display.Scale9Image;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -36,6 +42,36 @@ package com.fc.movthecat
 			mv.scaleX = mv.scaleY = Constants.GAME_SCALE * Starling.contentScaleFactor;
 			mv.smoothing = TextureSmoothing.NONE;
 			return mv;
+		}
+		
+		public static function getRandomBG():TileImage
+		{
+			var tileImages:TileImage = Factory.getObjectFromPool(TileImage);			
+			var scale:Number = Constants.GAME_SCALE * Starling.contentScaleFactor;
+			tileImages.scale = scale;
+			var resMgr:ResMgr = Factory.getInstance(ResMgr);
+			var tex:Texture = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY);
+			tileImages.draw(tex, Util.appWidth, Util.appHeight);
+						
+			var v:Vector.<Texture> = resMgr.getTextures(MTCAsset.MTC_TEX_ATLAS, IconAsset.ICO_CLOUD);
+			var len:int = v.length;						
+			var plantNum:int = 10;
+			var img:Image = Factory.getObjectFromPool(Image);
+			var spacing:int = Util.appHeight / plantNum;			
+			for (var i:int = 0; i < plantNum; i++) 
+			{
+				var type:int = Util.getRandom(len);
+				tex = v[type];
+				img.texture = tex;				
+				img.readjustSize();
+				img.scaleX = img.scaleY = scale;
+				img.x = Util.getRandom(Util.appWidth);
+				img.y = i * spacing + Util.getRandom(spacing);
+				img.scaleX = (Util.getRandom(1) > 0.5) ? scale : -scale;
+				tileImages.addImage(img);
+			}			
+			
+			return tileImages;
 		}
 	}
 

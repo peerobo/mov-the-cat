@@ -1,5 +1,6 @@
 package com.fc.movthecat
 {
+	import com.fc.air.FPSCounter;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
@@ -16,7 +17,7 @@ package com.fc.movthecat
 	 * ...
 	 * @author ndp
 	 */
-	[SWF(frameRate="60",backgroundColor="0x0")]
+	[SWF(frameRate="40",backgroundColor="0x0")]
 	
 	public class Main extends Sprite
 	{
@@ -29,6 +30,9 @@ package com.fc.movthecat
 			
 			// touch or gesture?
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			
+			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, false, 0x0, stage.fullScreenWidth, stage.fullScreenHeight);
+			addChild(fps);
 			
 			startStarlingFramework();
 			if (Capabilities.cpuArchitecture == "ARM")

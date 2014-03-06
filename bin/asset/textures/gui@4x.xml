@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:85ea65a049cf899e5ae06efe26420ad6$ -->
+<!-- $TexturePacker:SmartUpdate:d9c5ce9588f94fd7fbcfe8987d750bbc$ -->
 <TextureAtlas imagePath="gui@4x.png">
-    <SubTexture name="arial" x="2" y="708" width="762" height="479" frameX="-1" frameY="-2" frameWidth="768" frameHeight="483"/>
-    <SubTexture name="banhmi" x="2" y="2" width="764" height="704" frameX="-1" frameY="-2" frameWidth="768" frameHeight="708"/>
-    <SubTexture name="bg_square" x="821" y="2" width="26" height="26"/>
-    <SubTexture name="bg_square_alpha" x="768" y="2" width="51" height="51"/>
+    <SubTexture name="bg_square" x="2" y="946" width="26" height="26"/>
+    <SubTexture name="bg_square_alpha" x="2" y="740" width="51" height="51"/>
+    <SubTexture name="bt_blue" x="2" y="895" width="49" height="49"/>
+    <SubTexture name="bt_green" x="2" y="844" width="49" height="49"/>
+    <SubTexture name="bt_yellow" x="2" y="793" width="49" height="49"/>
+    <SubTexture name="gearhead" x="2" y="2" width="1020" height="736" frameX="-2" frameY="-2" frameWidth="1024" frameHeight="740"/>
 </TextureAtlas>

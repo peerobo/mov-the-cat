@@ -15,9 +15,9 @@ set AND_ICONS=icons/android
 set AND_SIGNING_OPTIONS=-storetype pkcs12 -keystore "%AND_CERT_FILE%" -storepass %AND_CERT_PASS%
 
 :: iOS packaging
-set IOS_DIST_CERT_FILE=cert\dist.p12
-set IOS_DEV_CERT_FILE=cert\firecheetah.p12
-set IOS_DEV_CERT_PASS=freeforall
+set IOS_DIST_CERT_FILE=cert\movthecatDev.p12
+set IOS_DEV_CERT_FILE=cert\movthecat.p12
+set IOS_DEV_CERT_PASS=Pan45robo
 set IOS_PROVISION=cert\movthecat.mobileprovision
 set IOS_ICONS=icons/ios
 
@@ -36,7 +36,7 @@ set APP_ID=com.fc.movthecat
 
 :: Output packages
 set DIST_PATH=dist
-set DIST_NAME=Fasthand
+set DIST_NAME=movthecat
 
 :: Debugging using a custom IP
 set DEBUG_IP=
