@@ -5,6 +5,7 @@ package com.fc.movthecat
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
+	import flash.display.StageQuality;
 	import flash.display.StageScaleMode;
 	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
@@ -25,6 +26,7 @@ package com.fc.movthecat
 		
 		public function Main():void
 		{
+			stage.quality = StageQuality.LOW;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			

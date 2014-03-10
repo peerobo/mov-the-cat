@@ -110,9 +110,9 @@
 	-->
 	<extensions>
 		<!--<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
-		<extensionID>com.leadbolt.LeadboltANE</extensionID>
+		<extensionID>com.leadbolt.LeadboltANE</extensionID>-->
 		
-		<extensionID>com.pozirk.AndroidInAppPurchase</extensionID>
+		<!--<extensionID>com.pozirk.AndroidInAppPurchase</extensionID>
 		<extensionID>com.freshplanet.AirGooglePlayGamesService</extensionID>-->
 				
 		<!--<extensionID>com.adobe.ane.gameCenter</extensionID>

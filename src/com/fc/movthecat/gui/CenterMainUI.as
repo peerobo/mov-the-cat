@@ -24,6 +24,8 @@ package com.fc.movthecat.gui
 		public var playBt:BaseButton;
 		public var rateBt:BaseButton;
 		
+		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
+		
 		public function CenterMainUI() 
 		{
 			super("CenterMainUI");		
@@ -50,7 +52,7 @@ package com.fc.movthecat.gui
 		
 		private function onPlayGame():void 
 		{
-			ScreenMgr.showScreen(GameScreen);
+			dispatchEventWith(EVENT_ON_PLAYGAME);
 		}
 		
 		private function onMoreGames():void 

@@ -6,7 +6,7 @@ package com.fc.movthecat.asset
 	 */
 	public class ButtonAsset 
 	{	
-		public static const DEFAULT_BT:String = "bt_default";
+		public static const DEFAULT_BT:String = "bt_blue";
 	}
 
 }

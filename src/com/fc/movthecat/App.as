@@ -142,9 +142,6 @@ package com.fc.movthecat
 			SoundAsset.preload();
 			ScreenMgr.showScreen(LoadingScreen);
 			Util.initAd();	
-			
-			var logicStage:LevelStage = Factory.getInstance(LevelStage);
-			logicStage.calculateScreen();
 		}
 	}
 

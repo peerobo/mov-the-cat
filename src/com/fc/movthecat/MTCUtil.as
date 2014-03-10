@@ -34,34 +34,34 @@ package com.fc.movthecat
 			return disp;
 		}
 		
-		public static function getGameMVWithScale(texName:String):MovieClip
+		public static function getGameMVWithScale(texName:String, mv:MovieClip=null):MovieClip
 		{
 			var resMgr:ResMgr = Factory.getInstance(ResMgr);
 			var v:Vector.<Texture> = resMgr.getTextures(MTCAsset.MTC_TEX_ATLAS, texName);
-			var mv:MovieClip = Asset.getMovieClip(v);			
+			var mv:MovieClip = Asset.getMovieClip(v, 24, mv);
 			mv.scaleX = mv.scaleY = Constants.GAME_SCALE * Starling.contentScaleFactor;
 			mv.smoothing = TextureSmoothing.NONE;
 			return mv;
 		}
 		
-		public static function getRandomBG():TileImage
+		public static function getRandomCloudBG():TileImage
 		{
-			var tileImages:TileImage = Factory.getObjectFromPool(TileImage);			
+			var tileImages:TileImage = Factory.getObjectFromPool(TileImage);		
+			tileImages.reset();
 			var scale:Number = Constants.GAME_SCALE * Starling.contentScaleFactor;
 			tileImages.scale = scale;
-			var resMgr:ResMgr = Factory.getInstance(ResMgr);
-			var tex:Texture = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY);
-			tileImages.draw(tex, Util.appWidth, Util.appHeight);
+			var resMgr:ResMgr = Factory.getInstance(ResMgr);			
 						
 			var v:Vector.<Texture> = resMgr.getTextures(MTCAsset.MTC_TEX_ATLAS, IconAsset.ICO_CLOUD);
 			var len:int = v.length;						
 			var plantNum:int = 10;
 			var img:Image = Factory.getObjectFromPool(Image);
+			img.smoothing = TextureSmoothing.NONE;
 			var spacing:int = Util.appHeight / plantNum;			
 			for (var i:int = 0; i < plantNum; i++) 
 			{
 				var type:int = Util.getRandom(len);
-				tex = v[type];
+				var tex:Texture = v[type];				
 				img.texture = tex;				
 				img.readjustSize();
 				img.scaleX = img.scaleY = scale;

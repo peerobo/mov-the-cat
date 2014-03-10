@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:ecb06262c3343f0ef805a22163a1f593$ -->
+<!-- $TexturePacker:SmartUpdate:cc4d09c3ba3ed727c637bc42e595ea30$ -->
 <TextureAtlas imagePath="gui@2x.png">
     <SubTexture name="bg_square" x="2" y="481" width="13" height="13"/>
     <SubTexture name="bg_square_alpha" x="2" y="372" width="26" height="26"/>
