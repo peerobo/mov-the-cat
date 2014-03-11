@@ -1,14 +1,17 @@
 package com.fc.movthecat.screen
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.base.GlobalInput;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.LoopableSprite;
 	import com.fc.air.comp.TileImage;
 	import com.fc.air.Util;
+	import com.fc.movthecat.gui.GameOverUI;
 	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.logic.LevelStage;
 	import com.fc.movthecat.MTCUtil;
 	import com.fc.movthecat.screen.game.GameRender;
+	import flash.system.System;
 	import starling.animation.Transitions;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -24,6 +27,8 @@ package com.fc.movthecat.screen
 		private var nextCloudBg:DisplayObject;
 		private var character:DisplayObject;
 		private var gameRender:GameRender;
+		
+		private var gameOverUI:GameOverUI;
 		
 		public function GameScreen()
 		{
@@ -45,6 +50,53 @@ package com.fc.movthecat.screen
 			Starling.juggler.tween(character, 2, { x: Util.appWidth - character.width >> 1, y: 100, transition:Transitions.EASE_OUT, onComplete: onCharacterDone } );
 			
 			SoundManager.instance.muteMusic = true;
+		}
+		
+		public function gameOver():void 
+		{
+			if (!gameOverUI)
+			{
+				gameOverUI = new GameOverUI();
+				gameOverUI.addEventListener(MTCUtil.EVENT_ON_PLAYGAME, onPlayGame);
+			}
+			gameOverUI.buildGUI();
+			gameOverUI.x = Util.appWidth - gameOverUI.width >> 1;
+			var desY:int = Util.appHeight - gameOverUI.height >> 1;
+			gameOverUI.y = -gameOverUI.height;
+			addChild(gameOverUI);
+			Starling.juggler.tween(
+				gameOverUI,
+				2,
+				{
+					y: desY,
+					transition: Transitions.EASE_OUT_BOUNCE
+				}
+			)
+			SoundManager.instance.muteMusic = false;
+			System.pauseForGCIfCollectionImminent(0.25);
+		}
+		
+		private function onPlayGame(e:Event):void 
+		{
+			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
+			gameOverUI.flatten();			
+			globalInput.setDisableTimeout(2);
+			Starling.juggler.tween(gameOverUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
+			
+			nextCloudBg = MTCUtil.getRandomCloudBG();
+			nextCloudBg.y = Util.appHeight;
+			addChildAt(nextCloudBg,2);
+			Starling.juggler.tween(cloudBG, 2, {y: -Util.appHeight, onComplete:onCloudVanished, transition:Transitions.EASE_OUT});			
+			Starling.juggler.tween(nextCloudBg, 2, { y: 0 } );
+			Starling.juggler.tween(character, 2, { x: Util.appWidth - character.width >> 1, y: 100, transition:Transitions.EASE_OUT, onComplete: onCharacterDone } );
+			
+			SoundManager.instance.muteMusic = true;
+			gameRender.reset();
+		}
+		
+		private function onHideUI():void 
+		{
+			gameOverUI.removeFromParent();
 		}
 		
 		private function onCharacterDone():void 

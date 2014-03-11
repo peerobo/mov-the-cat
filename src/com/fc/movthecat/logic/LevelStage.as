@@ -28,7 +28,7 @@ package com.fc.movthecat.logic
 			row = sh / Constants.GAME_TILE_SIZE_4X + OUT_OF_VIEW; 
 			col = sw / Constants.GAME_TILE_SIZE_4X;
 			currentMinBlockNo = 1;
-			currentMaxBlockNo = col - 1;
+			currentMaxBlockNo = col - 2;
 			bricks = [];
 		}			
 		
@@ -37,29 +37,38 @@ package com.fc.movthecat.logic
 			var totalDeletedElem:int = rowNum * col;
 			bricks.splice(0, totalDeletedElem);
 			
-			var currentBlocks:int = currentMinBlockNo + Util.getRandom(currentMaxBlockNo - currentMinBlockNo);
-			var currentNonBlocks:int = currentMinBlockNo + Util.getRandom(col - currentBlocks - currentMinBlockNo);			
+			var currentBlocks:int;
+			var currentNonBlocks:int;
+			if(Util.getRandom(1) > 0.5)
+			{
+				currentBlocks = currentMinBlockNo + Util.getRandom(currentMaxBlockNo - currentMinBlockNo);
+				currentNonBlocks = currentMinBlockNo + Util.getRandom(col - currentBlocks - currentMinBlockNo);				
+			}
+			else
+			{
+				currentBlocks = 0;
+				currentNonBlocks = currentMinBlockNo + Util.getRandom(col - currentBlocks - currentMinBlockNo);				
+			}						
 			for (var i:int = 0; i < totalDeletedElem; i++) 
 			{
 				if(currentBlocks > 0)
 				{
-					bricks[i] = true;
+					bricks.push(true);
 					currentBlocks--;				
 				}
 				else if ( currentNonBlocks > 0)
 				{
-					bricks[i] = false;
+					bricks.push(false);
 					currentNonBlocks--;
 				}
 				else
-				{
+				{					
 					currentBlocks = currentMinBlockNo + Util.getRandom(currentMaxBlockNo - currentMinBlockNo);
-					currentNonBlocks = currentMinBlockNo + Util.getRandom(col - currentBlocks - currentMinBlockNo);					
-					
-					bricks[i] = true;
-					currentBlocks--;
+					currentNonBlocks = currentMinBlockNo + Util.getRandom(col - currentBlocks - currentMinBlockNo);
+					bricks.push(true);
+					currentBlocks--;																				
 				}
-			}
+			}				
 		}
 		
 		public function construct():void
@@ -87,7 +96,18 @@ package com.fc.movthecat.logic
 					bricks[i] = true;
 					currentBlocks--;
 				}
-			}		
+			}	
+			
+			/*var str:String = "";
+			for (var j:int = 0; j < row; j++) 
+			{
+				for (var k:int = 0; k < col; k++) 
+				{
+					str += bricks[j * col + k] ? "+":"-";
+				}
+				str += "\n";
+			}
+			FPSCounter.log("stage\n"+str);*/
 		}
 	}
 

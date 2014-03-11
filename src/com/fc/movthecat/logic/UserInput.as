@@ -29,6 +29,21 @@ package com.fc.movthecat.logic
 		{
 			var layerGame:Sprite = LayerMgr.getLayer(LayerMgr.LAYER_GAME);
 			layerGame.addEventListener(TouchEvent.TOUCH, onTouch);
+			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
+			globalInput.registerKey(Keyboard.LEFT, onKeyPress);
+			globalInput.registerKey(Keyboard.RIGHT, onKeyPress);
+		}
+		
+		private function onKeyPress():void 
+		{
+			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
+			if (globalInput.currDownKey == -1)
+				keyPress = NONE_KEY;
+			else if (globalInput.currDownKey == Keyboard.LEFT)
+				keyPress = LEFT_KEY;
+			else if (globalInput.currDownKey == Keyboard.RIGHT)
+				keyPress = RIGHT_KEY;
+			
 		}
 		
 		public function start():void 
@@ -49,7 +64,9 @@ package com.fc.movthecat.logic
 						keyPress = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
 					break;
 					case TouchPhase.ENDED:
-						keyPress = NONE_KEY;
+					    var releaseSide:int = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
+						if(releaseSide == keyPress)
+							keyPress = NONE_KEY;
 					break;
 				}
 			}

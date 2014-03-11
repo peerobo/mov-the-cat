@@ -1,10 +1,14 @@
-package com.fc.movthecat.logic 
+package com.fc.movthecat.logic
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.FPSCounter;
+	import com.fc.movthecat.screen.GameScreen;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
+	import starling.display.Image;
+	
 	/**
 	 * ...
 	 * @author ndp
@@ -19,62 +23,69 @@ package com.fc.movthecat.logic
 		private var interval:Number;
 		private var timePass:Number;
 		private var helperPoint:Point;
+		private var scroll2Stage:Boolean;
 		
-		public function GameSession() 
+		public function GameSession()
 		{
 			interval = 0.033;
+			timePass = 0;
 		}
 		
 		public function loop():void
 		{
-			if(input.keyPress != UserInput.NONE_KEY)	// move player
+			if (input.keyPress != UserInput.NONE_KEY) // move player
 			{
 				var isLeft:Boolean = input.keyPress == UserInput.LEFT_KEY;
 				var currBound:Rectangle = visibleScreen.player.tryMoving(isLeft);
 				var canMove:Boolean = true;
-				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.left, currBound.top);
-				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.right, currBound.bottom);
-				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.left, currBound.bottom);
-				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.right, currBound.top);
-				if(canMove)	// move left right
+				var str:String = "";
+				//canMove &&= visibleScreen.blockMap.checkEmpty(currBound.top, currBound.left);
+				//str += "top-left " + currBound.top + " " + currBound.left + " " + canMove;
+				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.right);				
+				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.left);				
+				//canMove &&= visibleScreen.blockMap.checkEmpty(currBound.top, currBound.right);
+				//str += "\ntop-right " + canMove;
+				if (canMove) // move left right
 				{
-					visibleScreen.player.move(isLeft);										
+					visibleScreen.player.move(isLeft);					
 				}
-				Factory.toPool(currBound);
-				// check free fall
-				var check:Boolean = true;				
-				var b:Rectangle = visibleScreen.player.getBound();
-				if(!helperPoint)
-				{
-					helperPoint = new Point(b.left, b.right);
-				}
-				else
-				{
-					helperPoint.x = b.left;
-					helperPoint.y = b.right;
-				}	
-				var destY:Number = b.bottom + gravitySpeed * visibleScreen.player.weight;
-				for (var i:int = helperPoint.x; i <= helperPoint.y; i++) 
-				{
-					check &&= visibleScreen.blockMap.checkEmpty(i, destY);
-				}
-				if (check)	// continue falling
-					visibleScreen.player.y += gravitySpeed * visibleScreen.player.weight;
-				
+				Factory.toPool(currBound);					
 			}
-			if (visibleScreen.blockMap.anchorPt != null)	// scroll whole stage
+			// check character free fall
+			var check:Boolean = true;
+			var b:Rectangle = visibleScreen.player.getBound();
+			if (!helperPoint)
 			{
-				if (visibleScreen.blockMap.anchorPt.y >= 2)
-				{
-					visibleScreen.blockMap.validate();	
-					visibleScreen.blockMap.anchorPt.y = 0;
-				}
-				visibleScreen.blockMap.anchorPt.y += scrollSpeed;
-				visibleScreen.player.y -= scrollSpeed;
-							
+				helperPoint = new Point(b.left, b.right);
 			}
-			if (visibleScreen.checkPlayerOut())
+			else
 			{
+				helperPoint.x = b.left;
+				helperPoint.y = b.right;
+			}
+			var destY:Number = b.bottom + gravitySpeed * visibleScreen.player.weight;
+			for (var i:int = helperPoint.x; i <= helperPoint.y; i++)
+			{
+				check &&= visibleScreen.blockMap.checkEmpty(destY, i);
+			}
+			if (check) // continue falling
+				visibleScreen.player.y += gravitySpeed * visibleScreen.player.weight;
+			// scroll whole stage
+			if (visibleScreen.blockMap.anchorPt != null) 
+			{
+				if (visibleScreen.blockMap.anchorPt.y >= visibleScreen.blockMap.gameWindow.y)
+				{
+					visibleScreen.blockMap.validate();
+					visibleScreen.blockMap.anchorPt.y -= visibleScreen.blockMap.gameWindow.y;
+					visibleScreen.player.y -= visibleScreen.blockMap.gameWindow.y;
+					scroll2Stage = false;					
+				}
+				visibleScreen.blockMap.anchorPt.y += scrollSpeed;				
+			}
+			Factory.toPool(b);
+			if (!scroll2Stage && visibleScreen.checkPlayerOut())
+			{
+				FPSCounter.log("player",visibleScreen.player.y, visibleScreen.player.x);
 				gameOver();
 			}
 		}
@@ -82,12 +93,12 @@ package com.fc.movthecat.logic
 		public function startNewGame():void
 		{
 			// create stage
-			if(!visibleScreen)
+			if (!visibleScreen)
 			{
 				visibleScreen = Factory.getInstance(VisibleScreen);
 				visibleScreen.blockMap.calculateScreenViaLevelStage();
 				var rec:Rectangle = Factory.getObjectFromPool(Rectangle);
-				rec.x = 0 ;
+				rec.x = 0;
 				rec.width = visibleScreen.blockMap.col;
 				rec.y = 2;
 				rec.height = visibleScreen.blockMap.row - rec.y - 3;
@@ -97,35 +108,41 @@ package com.fc.movthecat.logic
 			visibleScreen.blockMap.lvlStage.construct();
 			// init player position
 			visibleScreen.player.x = visibleScreen.blockMap.col >> 1;
-			visibleScreen.player.y = -visibleScreen.blockMap.row >> 1;
-			visibleScreen.player.speed = 0.1;
+			visibleScreen.player.y = -visibleScreen.blockMap.row;
+			visibleScreen.player.speed = 0.25;
 			visibleScreen.player.weight = 1;
-			visibleScreen.player.h = 0.5;
-			visibleScreen.player.w = 0.5;
+			visibleScreen.player.h = 1;
+			visibleScreen.player.w = 1;
 			visibleScreen.blockMap.anchorPt.x = 0;
 			visibleScreen.blockMap.anchorPt.y = visibleScreen.player.y;
 			visibleScreen.blockMap.validate();
 			// init world
 			scrollSpeed = 0.2;
-			gravitySpeed = 0.5;
+			gravitySpeed = 1;
 			// start receive user input
 			input = Factory.getInstance(UserInput);
-			input.start();			
+			input.start();
 			// add to loop
-			//Starling.juggler.add(this);
-		}			
+			timePass = 0;
+			scroll2Stage = true;
+			visibleScreen.needRender = true;
+			Starling.juggler.add(this);
+		}
 		
 		public function gameOver():void
 		{
+			visibleScreen.needRender = false;
+			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
+			gameScreen.gameOver();
 			Starling.juggler.remove(this);
 		}
 		
 		/* INTERFACE starling.animation.IAnimatable */
 		
-		public function advanceTime(time:Number):void 
+		public function advanceTime(time:Number):void
 		{
 			timePass += time;
-			if(timePass >= interval)
+			if (timePass >= interval)
 			{
 				loop();
 				timePass -= interval;

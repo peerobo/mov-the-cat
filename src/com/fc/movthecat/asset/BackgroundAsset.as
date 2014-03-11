@@ -7,6 +7,7 @@ package com.fc.movthecat.asset
 	public class BackgroundAsset {
 		
 		public static var BG_LAND:String = "bg_land";
+		public static var BG_LAND_TILE:String = "bg_land";
 		public static var BG_SKY:String = "bg_sky";
 		
 		public static var WALL_LIST:Array = [];	

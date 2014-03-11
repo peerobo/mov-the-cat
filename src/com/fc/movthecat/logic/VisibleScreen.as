@@ -11,6 +11,8 @@ package com.fc.movthecat.logic
 		public var player:Player;
 		public var blockMap:BlockMap;
 		
+		public var needRender:Boolean;
+		
 		public function VisibleScreen() 
 		{
 			player = Factory.getInstance(Player);
@@ -19,8 +21,8 @@ package com.fc.movthecat.logic
 		
 		public function checkPlayerOut():Boolean
 		{
-			var ret:Boolean = (player.y < blockMap.gameWindow.y - 1);
-			ret ||= player.y > blockMap.gameWindow.bottom;
+			var ret:Boolean = (player.y < 0);
+			ret ||= player.y > blockMap.gameWindow.bottom + 1;
 			return ret;
 		}
 		

@@ -23,6 +23,8 @@ package com.fc.movthecat
 	 */
 	public class MTCUtil 
 	{
+		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
+		
 		public static function getGameImageWithScale(texName:String):DisplayObject
 		{
 			var disp:DisplayObject = Asset.getImage(MTCAsset.MTC_TEX_ATLAS, texName);

@@ -62,7 +62,7 @@ package com.fc.movthecat.screen
 			super();
 			needPlayIntro = false;
 			centerUI = new CenterMainUI();
-			centerUI.addEventListener(CenterMainUI.EVENT_ON_PLAYGAME, onPlayGame);
+			centerUI.addEventListener(MTCUtil.EVENT_ON_PLAYGAME, onPlayGame);
 			loadTextureAtlas();
 			characterShadow = BlurFilter.createDropShadow();
 			SoundManager.playSound(SoundAsset.THEME_SONG, true);			

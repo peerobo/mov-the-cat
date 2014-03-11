@@ -2,11 +2,9 @@ package com.fc.movthecat.gui
 {
 	import com.fc.air.base.BaseButton;
 	import com.fc.air.base.BaseJsonGUI;
-	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.Util;
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.MTCUtil;
-	import com.fc.movthecat.screen.GameScreen;
 	import flash.net.navigateToURL;
 	import flash.net.URLRequest;
 	import starling.events.Event;
@@ -17,21 +15,21 @@ package com.fc.movthecat.gui
 	 * ...
 	 * @author ndp
 	 */
-	public class CenterMainUI extends BaseJsonGUI 
+	public class GameOverUI extends BaseJsonGUI 
 	{
 		private var titleShadow:BlurFilter;
 		public var lbl:TextField;
 		public var moreBt:BaseButton;
 		public var playBt:BaseButton;
-		public var rateBt:BaseButton;				
+		public var rateBt:BaseButton;
 		
-		public function CenterMainUI() 
+		public function GameOverUI() 
 		{
-			super("CenterMainUI");		
+			super("GameOverUI");
+			
 			titleShadow = BlurFilter.createDropShadow();
 			titleShadow.cache();
 		}
-		
 		
 		override public function onAdded(e:Event):void 
 		{
@@ -58,6 +56,7 @@ package com.fc.movthecat.gui
 		{
 			Util.showMoreGames();
 		}
+		
 	}
 
 }

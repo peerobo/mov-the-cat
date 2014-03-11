@@ -30,12 +30,12 @@ package com.fc.movthecat.logic
 		public function move(isLeft:Boolean):void
 		{
 			var step:Number = speed;
-			x += isLeft? -step:step;
+			x += isLeft? -step:step;			
 		}
 		
 		public function tryMoving(isLeft:Boolean):Rectangle
 		{			
-			var oldX:int = x;
+			var oldX:Number = x;
 			move(isLeft);
 			var bound:Rectangle = getBound();
 			x = oldX;
