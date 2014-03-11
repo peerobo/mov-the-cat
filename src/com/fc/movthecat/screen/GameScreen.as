@@ -73,7 +73,7 @@ package com.fc.movthecat.screen
 				}
 			)
 			SoundManager.instance.muteMusic = false;
-			System.pauseForGCIfCollectionImminent(0.25);
+			System.pauseForGCIfCollectionImminent(0);
 		}
 		
 		private function onPlayGame(e:Event):void 
@@ -101,10 +101,10 @@ package com.fc.movthecat.screen
 		
 		private function onCharacterDone():void 
 		{
-			var logic:GameSession = Factory.getInstance(GameSession);
-			logic.startNewGame();
 			gameRender = Factory.getInstance(GameRender);			
 			gameRender.setCharacter(character);
+			var logic:GameSession = Factory.getInstance(GameSession);
+			logic.startNewGame();			
 			addChild(gameRender);
 		}
 		
@@ -112,12 +112,7 @@ package com.fc.movthecat.screen
 		{			
 			cloudBG.removeFromParent();
 			Factory.toPool(cloudBG);
-			cloudBG = nextCloudBg;
-			//nextCloudBg = MTCUtil.getRandomCloudBG();
-			//nextCloudBg.y = Util.appHeight;
-			//addChildAt(nextCloudBg,2);
-			//Starling.juggler.tween(cloudBG, 5, {y: -Util.appHeight, onComplete:onCloudVanished});			
-			//Starling.juggler.tween(nextCloudBg, 5, { y: 0 } );
+			cloudBG = nextCloudBg;			
 		}
 	
 	}

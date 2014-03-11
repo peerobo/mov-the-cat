@@ -5,6 +5,7 @@ package com.fc.movthecat.logic
 	import com.fc.movthecat.screen.GameScreen;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.system.System;
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
 	import starling.display.Image;
@@ -85,19 +86,21 @@ package com.fc.movthecat.logic
 			Factory.toPool(b);
 			if (!scroll2Stage && visibleScreen.checkPlayerOut())
 			{
-				FPSCounter.log("player",visibleScreen.player.y, visibleScreen.player.x);
+				//FPSCounter.log("player",visibleScreen.player.y, visibleScreen.player.x);
 				gameOver();
 			}
+			System.pauseForGCIfCollectionImminent(1);
 		}
 		
 		public function startNewGame():void
 		{
+			var rec:Rectangle;
 			// create stage
 			if (!visibleScreen)
 			{
 				visibleScreen = Factory.getInstance(VisibleScreen);
 				visibleScreen.blockMap.calculateScreenViaLevelStage();
-				var rec:Rectangle = Factory.getObjectFromPool(Rectangle);
+				rec = Factory.getObjectFromPool(Rectangle);
 				rec.x = 0;
 				rec.width = visibleScreen.blockMap.col;
 				rec.y = 2;
@@ -108,14 +111,19 @@ package com.fc.movthecat.logic
 			visibleScreen.blockMap.lvlStage.construct();
 			// init player position
 			visibleScreen.player.x = visibleScreen.blockMap.col >> 1;
-			visibleScreen.player.y = -visibleScreen.blockMap.row;
-			visibleScreen.player.speed = 0.25;
-			visibleScreen.player.weight = 1;
-			visibleScreen.player.h = 1;
-			visibleScreen.player.w = 1;
+			visibleScreen.player.y = -visibleScreen.blockMap.row;			
+			rec = Factory.getObjectFromPool(Rectangle);
+			rec.setTo(0, 0, visibleScreen.player.wInPixel, visibleScreen.player.hInPixel);
+			var recBlock:Rectangle = visibleScreen.blockMap.pixelToBlock(rec);
+			visibleScreen.player.h = recBlock.height;
+			visibleScreen.player.w = recBlock.width;			
 			visibleScreen.blockMap.anchorPt.x = 0;
 			visibleScreen.blockMap.anchorPt.y = visibleScreen.player.y;
 			visibleScreen.blockMap.validate();
+			visibleScreen.player.weight = 1;
+			visibleScreen.player.speed = 0.25;
+			Factory.toPool(rec);
+			Factory.toPool(recBlock);
 			// init world
 			scrollSpeed = 0.2;
 			gravitySpeed = 1;

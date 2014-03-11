@@ -34,7 +34,7 @@ package com.fc.movthecat
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, false, 0x0, stage.fullScreenWidth, stage.fullScreenHeight);
-			//addChild(fps);
+			addChild(fps);
 			
 			startStarlingFramework();
 			if (Capabilities.cpuArchitecture == "ARM")

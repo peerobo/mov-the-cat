@@ -14,13 +14,16 @@ package com.fc.movthecat.logic
 	 */
 	public class Player 
 	{
+		public var isLeft:Boolean;
 		public var w:Number;
 		public var h:Number;
 		public var speed:Number;
 		public var weight:Number;
 		public var x:Number;
-		public var y:Number;
-		//public var isFreeFall:Boolean;
+		public var y:Number;		
+		public var isMoving:Boolean;
+		public var wInPixel:Number;
+		public var hInPixel:Number;
 		
 		public function Player() 
 		{
@@ -29,6 +32,7 @@ package com.fc.movthecat.logic
 		
 		public function move(isLeft:Boolean):void
 		{
+			this.isLeft = isLeft;
 			var step:Number = speed;
 			x += isLeft? -step:step;			
 		}
