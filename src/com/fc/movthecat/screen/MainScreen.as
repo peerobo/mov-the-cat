@@ -74,7 +74,7 @@ package com.fc.movthecat.screen
 			//removeChild(centerUI);
 			//LayerMgr.getLayer(LayerMgr.LAYER_TOOLTIP).addChild(centerUI);
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
-			centerUI.flatten();			
+			//centerUI.flatten();			
 			globalInput.setDisableTimeout(2);
 			Starling.juggler.tween(centerUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
 			

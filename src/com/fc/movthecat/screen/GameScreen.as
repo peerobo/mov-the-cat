@@ -15,6 +15,7 @@ package com.fc.movthecat.screen
 	import starling.animation.Transitions;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.MovieClip;
 	import starling.events.Event;
 	
 	/**
@@ -25,14 +26,14 @@ package com.fc.movthecat.screen
 	{
 		private var cloudBG:DisplayObject;
 		private var nextCloudBg:DisplayObject;
-		private var character:DisplayObject;
+		private var character:MovieClip;
 		private var gameRender:GameRender;
 		
 		private var gameOverUI:GameOverUI;
 		
 		public function GameScreen()
 		{
-		
+			
 		}
 		
 		override public function onAdded(e:Event):void
@@ -40,7 +41,7 @@ package com.fc.movthecat.screen
 			super.onAdded(e);
 			
 			cloudBG = getChildAt(1);
-			character = getChildAt(3);
+			character = getChildAt(3) as MovieClip;
 					
 			nextCloudBg = MTCUtil.getRandomCloudBG();
 			nextCloudBg.y = Util.appHeight;
@@ -79,7 +80,7 @@ package com.fc.movthecat.screen
 		private function onPlayGame(e:Event):void 
 		{
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
-			gameOverUI.flatten();			
+			//gameOverUI.flatten();			
 			globalInput.setDisableTimeout(2);
 			Starling.juggler.tween(gameOverUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
 			

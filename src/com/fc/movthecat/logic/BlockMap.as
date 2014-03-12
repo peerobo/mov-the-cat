@@ -40,7 +40,7 @@ package com.fc.movthecat.logic
 		
 		public function checkEmpty(r:int, c:int):Boolean
 		{			
-			if (c < 0 || c >=col)
+			if (c < 0 || c >= col)
 				return false;
 			var idx:int = r * col + c;
 			if (idx < 0)
@@ -51,21 +51,20 @@ package com.fc.movthecat.logic
 		public function pixelToBlock(r:Rectangle):Rectangle
 		{
 			var blockW:int = Util.appWidth / col;
-			var blockH:int = Util.appHeight / (row - lvlStage.OUT_OF_VIEW * 2);
+			var blockH:int = Util.appHeight / (row - LevelStage.OUT_OF_VIEW * 2);
 			
 			var rec:Rectangle = Factory.getObjectFromPool(Rectangle);
 			rec.x = r.x / blockW;
 			rec.y = r.y / blockH;
 			rec.width = r.width / blockW;
-			rec.height = r.height / blockH;
-			
+			rec.height = r.height / blockH;			
 			return rec;
 		}
 		
 		public function blockToPixel(r:Rectangle):Rectangle
 		{			
 			var blockW:int = Util.appWidth / col;
-			var blockH:int = Util.appHeight / (row - lvlStage.OUT_OF_VIEW * 2);
+			var blockH:int = Util.appHeight / (row - LevelStage.OUT_OF_VIEW * 2);
 			
 			var rec:Rectangle = Factory.getObjectFromPool(Rectangle);
 			rec.x = r.x * blockW;

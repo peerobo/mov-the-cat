@@ -2,6 +2,7 @@ package com.fc.movthecat.logic
 {
 	import com.fc.air.base.Factory;
 	import com.fc.air.FPSCounter;
+	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.screen.GameScreen;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -40,17 +41,13 @@ package com.fc.movthecat.logic
 				var currBound:Rectangle = visibleScreen.player.tryMoving(isLeft);
 				var canMove:Boolean = true;
 				var str:String = "";
-				//canMove &&= visibleScreen.blockMap.checkEmpty(currBound.top, currBound.left);
-				//str += "top-left " + currBound.top + " " + currBound.left + " " + canMove;
 				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.right);				
-				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.left);				
-				//canMove &&= visibleScreen.blockMap.checkEmpty(currBound.top, currBound.right);
-				//str += "\ntop-right " + canMove;
+				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.left);
 				if (canMove) // move left right
 				{
 					visibleScreen.player.move(isLeft);					
 				}
-				Factory.toPool(currBound);					
+				Factory.toPool(currBound);						
 			}
 			// check character free fall
 			var check:Boolean = true;
@@ -86,7 +83,6 @@ package com.fc.movthecat.logic
 			Factory.toPool(b);
 			if (!scroll2Stage && visibleScreen.checkPlayerOut())
 			{
-				//FPSCounter.log("player",visibleScreen.player.y, visibleScreen.player.x);
 				gameOver();
 			}
 			System.pauseForGCIfCollectionImminent(1);
@@ -103,8 +99,8 @@ package com.fc.movthecat.logic
 				rec = Factory.getObjectFromPool(Rectangle);
 				rec.x = 0;
 				rec.width = visibleScreen.blockMap.col;
-				rec.y = 2;
-				rec.height = visibleScreen.blockMap.row - rec.y - 3;
+				rec.y = 1*2;
+				rec.height = visibleScreen.blockMap.row - rec.y - (LevelStage.OUT_OF_VIEW - 1 ) * 2;
 				visibleScreen.blockMap.gameWindow = rec;
 			}
 			// construct level
@@ -115,8 +111,8 @@ package com.fc.movthecat.logic
 			rec = Factory.getObjectFromPool(Rectangle);
 			rec.setTo(0, 0, visibleScreen.player.wInPixel, visibleScreen.player.hInPixel);
 			var recBlock:Rectangle = visibleScreen.blockMap.pixelToBlock(rec);
-			visibleScreen.player.h = recBlock.height;
-			visibleScreen.player.w = recBlock.width;			
+			visibleScreen.player.h = recBlock.height;			
+			visibleScreen.player.w = recBlock.width;
 			visibleScreen.blockMap.anchorPt.x = 0;
 			visibleScreen.blockMap.anchorPt.y = visibleScreen.player.y;
 			visibleScreen.blockMap.validate();
@@ -128,7 +124,8 @@ package com.fc.movthecat.logic
 			scrollSpeed = 0.2;
 			gravitySpeed = 1;
 			// start receive user input
-			input = Factory.getInstance(UserInput);
+			if(!input)
+				input = Factory.getInstance(UserInput);
 			input.start();
 			// add to loop
 			timePass = 0;
@@ -142,6 +139,8 @@ package com.fc.movthecat.logic
 			visibleScreen.needRender = false;
 			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
 			gameScreen.gameOver();
+			input = Factory.getInstance(UserInput);
+			input.stop();
 			Starling.juggler.remove(this);
 		}
 		

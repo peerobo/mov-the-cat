@@ -1,4 +1,4 @@
-package com.fc.movthecat.logic 
+package com.fc.movthecat.logic
 {
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.GlobalInput;
@@ -13,6 +13,7 @@ package com.fc.movthecat.logic
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	
 	/**
 	 * ...
 	 * @author ndp
@@ -25,16 +26,15 @@ package com.fc.movthecat.logic
 		public static const LEFT_KEY:int = 0;
 		public static const RIGHT_KEY:int = 1;
 		
-		public function UserInput() 
+		public function UserInput()
 		{
-			var layerGame:Sprite = LayerMgr.getLayer(LayerMgr.LAYER_GAME);
-			layerGame.addEventListener(TouchEvent.TOUCH, onTouch);
+			
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			globalInput.registerKey(Keyboard.LEFT, onKeyPress);
 			globalInput.registerKey(Keyboard.RIGHT, onKeyPress);
 		}
 		
-		private function onKeyPress():void 
+		private function onKeyPress():void
 		{
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			if (globalInput.currDownKey == -1)
@@ -43,39 +43,52 @@ package com.fc.movthecat.logic
 				keyPress = LEFT_KEY;
 			else if (globalInput.currDownKey == Keyboard.RIGHT)
 				keyPress = RIGHT_KEY;
-			
+		
 		}
 		
-		public function start():void 
+		public function start():void
 		{
 			keyPress = NONE_KEY;
+			//var layerGame:Sprite = LayerMgr.getLayer(LayerMgr.LAYER_GAME);
+			Starling.current.stage.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
-		private function onTouch(e:TouchEvent):void 
+		public function stop():void
 		{
-			var touch:Touch = e.getTouch(e.currentTarget as DisplayObject);
-			if(touch)
+			keyPress = NONE_KEY;
+			//var layerGame:Sprite = LayerMgr.getLayer(LayerMgr.LAYER_GAME);
+			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, onTouch);
+		}
+		
+		private function onTouch(e:TouchEvent):void
+		{
+			var touch:Touch = e.getTouch(Starling.current.stage);
+			if (touch)
 			{
-				var touchPt:Point = new Point(touch.globalX, touch.globalY);				
-				switch(touch.phase)
+				var touchPt:Point = new Point(touch.globalX, touch.globalY);
+				switch (touch.phase)
 				{
-					case TouchPhase.BEGAN:
-					case TouchPhase.MOVED:
+					//case TouchPhase.STATIONARY:
+					case TouchPhase.BEGAN: 
+						//case TouchPhase.MOVED:
 						keyPress = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
-					break;
-					case TouchPhase.ENDED:
-					    var releaseSide:int = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
-						if(releaseSide == keyPress)
+						//FPSCounter.log("began", keyPress);
+						break;
+					case TouchPhase.ENDED: 
+						var releaseSide:int = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
+						if (releaseSide == keyPress)
 							keyPress = NONE_KEY;
-					break;
+						//FPSCounter.log("ended", keyPress);
+						break;
 				}
 			}
 			else
 			{
-				keyPress = NONE_KEY;
+				//keyPress = NONE_KEY;
 			}
+			e.stopImmediatePropagation();
 		}
-		
+	
 	}
 
 }

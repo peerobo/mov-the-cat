@@ -15,7 +15,7 @@ package com.fc.movthecat.logic
 		public var bricks:Array;		
 		public var currentMaxBlockNo:int;
 		public var currentMinBlockNo:int;
-		public const OUT_OF_VIEW:int = 3;
+		public static const OUT_OF_VIEW:int = 3;
 		
 		public function LevelStage() 
 		{					
@@ -28,7 +28,7 @@ package com.fc.movthecat.logic
 			row = sh / Constants.GAME_TILE_SIZE_4X + OUT_OF_VIEW; 
 			col = sw / Constants.GAME_TILE_SIZE_4X;
 			currentMinBlockNo = 1;
-			currentMaxBlockNo = col - 2;
+			currentMaxBlockNo = col - 1;
 			bricks = [];
 		}			
 		

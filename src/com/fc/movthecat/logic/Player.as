@@ -34,7 +34,8 @@ package com.fc.movthecat.logic
 		{
 			this.isLeft = isLeft;
 			var step:Number = speed;
-			x += isLeft? -step:step;			
+			x += isLeft? -step:step;
+			x = (x - w / 2) < 0 ? (w / 2):x;
 		}
 		
 		public function tryMoving(isLeft:Boolean):Rectangle

@@ -22,7 +22,7 @@ package com.fc.movthecat.logic
 		public function checkPlayerOut():Boolean
 		{
 			var ret:Boolean = (player.y < 0);
-			ret ||= player.y > blockMap.gameWindow.bottom + 1;
+			ret ||= player.y > blockMap.gameWindow.bottom + 2;
 			return ret;
 		}
 		

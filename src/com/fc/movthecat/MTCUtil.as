@@ -25,10 +25,10 @@ package com.fc.movthecat
 	{
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		
-		public static function getGameImageWithScale(texName:String):DisplayObject
+		public static function getGameImageWithScale(texName:String, scale:Number = -1):DisplayObject
 		{
 			var disp:DisplayObject = Asset.getImage(MTCAsset.MTC_TEX_ATLAS, texName);
-			disp.scaleX = disp.scaleY = Constants.GAME_SCALE * Starling.contentScaleFactor;
+			disp.scaleX = disp.scaleY = (scale == -1 ? Constants.GAME_SCALE: scale) * Starling.contentScaleFactor;
 			if(disp as Image)
 				(disp as Image).smoothing = TextureSmoothing.NONE;
 			if(disp as Scale9Image)
