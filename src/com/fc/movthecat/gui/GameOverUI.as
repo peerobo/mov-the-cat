@@ -2,6 +2,7 @@ package com.fc.movthecat.gui
 {
 	import com.fc.air.base.BaseButton;
 	import com.fc.air.base.BaseJsonGUI;
+	import com.fc.air.base.font.BaseBitmapTextField;
 	import com.fc.air.Util;
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.MTCUtil;
@@ -18,10 +19,12 @@ package com.fc.movthecat.gui
 	public class GameOverUI extends BaseJsonGUI 
 	{
 		private var titleShadow:BlurFilter;
+		private var glow:BlurFilter;
 		public var lbl:TextField;
-		public var moreBt:BaseButton;
+		public var charBt:BaseButton;
 		public var playBt:BaseButton;
-		public var rateBt:BaseButton;
+		public var homeBt:BaseButton;
+		public var gameOverTxt:BaseBitmapTextField;
 		
 		public function GameOverUI() 
 		{
@@ -29,6 +32,7 @@ package com.fc.movthecat.gui
 			
 			titleShadow = BlurFilter.createDropShadow();
 			titleShadow.cache();
+			glow = BlurFilter.createGlow(0x0,1,2,1);
 		}
 		
 		override public function onAdded(e:Event):void 
@@ -36,27 +40,27 @@ package com.fc.movthecat.gui
 			super.onAdded(e);
 			
 			lbl.filter = titleShadow;
+			gameOverTxt.filter = glow;
 			
-			moreBt.setCallbackFunc(onMoreGames);
+			charBt.setCallbackFunc(onChar);
 			playBt.setCallbackFunc(onPlayGame);
-			rateBt.setCallbackFunc(onRateMe);
+			homeBt.setCallbackFunc(onHome);
 		}
 		
-		private function onRateMe():void 
+		private function onHome():void 
 		{
-			navigateToURL(new URLRequest(Constants.RATE_URL));
+			
 		}
 		
+		private function onChar():void 
+		{
+			
+		}
+
 		private function onPlayGame():void 
 		{
 			dispatchEventWith(MTCUtil.EVENT_ON_PLAYGAME);
 		}
-		
-		private function onMoreGames():void 
-		{
-			Util.showMoreGames();
-		}
-		
 	}
 
 }

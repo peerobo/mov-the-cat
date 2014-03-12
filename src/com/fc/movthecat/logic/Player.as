@@ -23,7 +23,7 @@ package com.fc.movthecat.logic
 		public var y:Number;		
 		public var isMoving:Boolean;
 		public var wInPixel:Number;
-		public var hInPixel:Number;
+		public var hInPixel:Number;		
 		
 		public function Player() 
 		{

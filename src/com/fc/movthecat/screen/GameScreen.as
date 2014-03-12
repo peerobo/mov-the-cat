@@ -41,7 +41,7 @@ package com.fc.movthecat.screen
 			super.onAdded(e);
 			
 			cloudBG = getChildAt(1);
-			character = getChildAt(3) as MovieClip;
+			character = getChildAt(2) as MovieClip;
 					
 			nextCloudBg = MTCUtil.getRandomCloudBG();
 			nextCloudBg.y = Util.appHeight;

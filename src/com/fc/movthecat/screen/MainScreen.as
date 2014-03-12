@@ -55,7 +55,7 @@ package com.fc.movthecat.screen
 		private var characterShadow:FragmentFilter;
 		private var randomPlayerCall:DelayedCall;
 		private var bg:TileImage;
-		private var cloudBg:TileImage;
+		private var cloudBg:TileImage;				
 		
 		public function MainScreen() 
 		{
@@ -70,18 +70,27 @@ package com.fc.movthecat.screen
 		}
 		
 		private function onPlayGame(e:Event):void 
-		{			
-			//removeChild(centerUI);
-			//LayerMgr.getLayer(LayerMgr.LAYER_TOOLTIP).addChild(centerUI);
+		{						
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			//centerUI.flatten();			
 			globalInput.setDisableTimeout(2);
 			Starling.juggler.tween(centerUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
+			Starling.juggler.remove(randomPlayerCall)
+			var charScreen:CharacterSelectScreen = Factory.getInstance(CharacterSelectScreen);
+			charScreen.addChild(bg);			
+			charScreen.addChild(cloudBg);
+			charScreen.addChild(centerUI);			
+			ScreenMgr.showScreen(CharacterSelectScreen);
 			
-			Starling.juggler.remove(randomPlayerCall);
+			/*Starling.juggler.remove(randomPlayerCall);
 			
 			character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE, character);
-			character.fps = 2;
+			if (character.scaleX < 1)
+				character.smoothing = TextureSmoothing.TRILINEAR;
+			else
+				character.smoothing = TextureSmoothing.NONE;
+			
+			character.fps = 4;			
 			character.play();	
 			
 			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
@@ -89,7 +98,7 @@ package com.fc.movthecat.screen
 			gameScreen.addChild(cloudBg);
 			gameScreen.addChild(centerUI);
 			gameScreen.addChild(character);
-			ScreenMgr.showScreen(GameScreen);
+			ScreenMgr.showScreen(GameScreen);*/
 		}
 		
 		private function onHideUI():void 

@@ -62,30 +62,34 @@ package com.fc.movthecat.logic
 		
 		private function onTouch(e:TouchEvent):void
 		{
-			var touch:Touch = e.getTouch(Starling.current.stage);
-			if (touch)
+			var touches:Vector.<Touch> = e.getTouches(Starling.current.stage);			
+			var touch:Touch;
+			for (var i:int = 0; i < touches.length; i++) 
 			{
-				var touchPt:Point = new Point(touch.globalX, touch.globalY);
-				switch (touch.phase)
+				touch = touches[i];
+				if (touch)
 				{
-					//case TouchPhase.STATIONARY:
-					case TouchPhase.BEGAN: 
-						//case TouchPhase.MOVED:
-						keyPress = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
-						//FPSCounter.log("began", keyPress);
-						break;
-					case TouchPhase.ENDED: 
-						var releaseSide:int = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
-						if (releaseSide == keyPress)
-							keyPress = NONE_KEY;
-						//FPSCounter.log("ended", keyPress);
-						break;
+					var touchPt:Point = new Point(touch.globalX, touch.globalY);
+					switch (touch.phase)
+					{					
+						case TouchPhase.BEGAN: 					
+							keyPress = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
+							FPSCounter.log("began", keyPress);
+							break;
+						case TouchPhase.ENDED: 
+							var releaseSide:int = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
+							if (releaseSide == keyPress)
+								keyPress = NONE_KEY;
+							FPSCounter.log("ended", keyPress);
+							break;
+					}
+				}
+				else
+				{
+					//keyPress = NONE_KEY;
 				}
 			}
-			else
-			{
-				//keyPress = NONE_KEY;
-			}
+			
 			e.stopImmediatePropagation();
 		}
 	

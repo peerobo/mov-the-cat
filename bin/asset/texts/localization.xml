@@ -8,5 +8,8 @@
 		<play>Play</play>
 		<more>More Games</more>
 		<rate>Rate</rate>
+		<pick>Pick</pick>
+		<char>Characters</char>
+		<home>Home</home>
 	</en>
 </localization>

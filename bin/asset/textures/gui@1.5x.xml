@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:7c9a7ab8933a9101ae9eeb5520c5f97e$ -->
+<!-- $TexturePacker:SmartUpdate:663a36cbccd9f61cf7adb3f5f2e94b08$ -->
 <TextureAtlas imagePath="gui@1.5x.png">
-    <SubTexture name="bg_square" x="467" y="2" width="10" height="10"/>
-    <SubTexture name="bg_square_alpha" x="386" y="2" width="19" height="19"/>
-    <SubTexture name="bt_blue" x="447" y="2" width="18" height="18"/>
-    <SubTexture name="bt_green" x="427" y="2" width="18" height="18"/>
-    <SubTexture name="bt_yellow" x="407" y="2" width="18" height="18"/>
-    <SubTexture name="gearhead" x="2" y="2" width="382" height="276" frameX="-1" frameY="-1" frameWidth="384" frameHeight="278"/>
+    <SubTexture name="bg_square" x="450" y="23" width="10" height="10"/>
+    <SubTexture name="bg_square_alpha" x="450" y="2" width="19" height="19"/>
+    <SubTexture name="bt_blue" x="471" y="22" width="18" height="18"/>
+    <SubTexture name="bt_green" x="491" y="2" width="18" height="18"/>
+    <SubTexture name="bt_yellow" x="471" y="2" width="18" height="18"/>
+    <SubTexture name="gearhead" x="2" y="2" width="384" height="278"/>
+    <SubTexture name="ico_arrow" x="388" y="2" width="60" height="60"/>
 </TextureAtlas>

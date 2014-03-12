@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:df082a1c0676dcbb3a5285af5f1dce26$ -->
+<!-- $TexturePacker:SmartUpdate:e49ae7b7305da178de75626496af56f4$ -->
 <TextureAtlas imagePath="gui@1x.png">
     <SubTexture name="bg_square" x="2" y="246" width="7" height="7"/>
-    <SubTexture name="bg_square_alpha" x="2" y="189" width="13" height="13"/>
-    <SubTexture name="bt_blue" x="2" y="232" width="12" height="12"/>
-    <SubTexture name="bt_green" x="2" y="218" width="12" height="12"/>
-    <SubTexture name="bt_yellow" x="2" y="204" width="12" height="12"/>
+    <SubTexture name="bg_square_alpha" x="2" y="231" width="13" height="13"/>
+    <SubTexture name="bt_blue" x="44" y="189" width="12" height="12"/>
+    <SubTexture name="bt_green" x="31" y="231" width="12" height="12"/>
+    <SubTexture name="bt_yellow" x="17" y="231" width="12" height="12"/>
     <SubTexture name="gearhead" x="2" y="2" width="256" height="185"/>
+    <SubTexture name="ico_arrow" x="2" y="189" width="40" height="40"/>
 </TextureAtlas>

@@ -55,7 +55,7 @@ package com.fc.movthecat.screen.game
 			leftCharacter.play();
 			leftCharacter.scaleX = -leftCharacter.scaleX;
 			
-			visibleScreen.player.wInPixel = character.width;
+			visibleScreen.player.wInPixel = character.width - character.width/4;
 			visibleScreen.player.hInPixel = character.height;
 		}
 		
@@ -118,7 +118,12 @@ package com.fc.movthecat.screen.game
 				var cR:Rectangle = visibleScreen.player.getBound();
 				var cRInPixel:Rectangle = visibleScreen.blockMap.blockToPixel(cR);
 				cRInPixel.y += startY + rec.height;
-				character.x = (cRInPixel.x - character.x) / 3 + character.x;
+				
+				var centerChar:Rectangle = Factory.getObjectFromPool(Rectangle);
+				centerChar.width = character.width;				
+				centerChar.x = cRInPixel.x + (cRInPixel.width - centerChar.width >> 1) ;				
+				
+				character.x = (centerChar.x - character.x) / 3 + character.x;
 				character.y = (cRInPixel.y - character.y) / 3 + character.y;
 				leftCharacter.x = character.x + leftCharacter.width;
 				leftCharacter.y = character.y;
@@ -138,6 +143,7 @@ package com.fc.movthecat.screen.game
 				Factory.toPool(image);
 				Factory.toPool(imageR);
 				Factory.toPool(imageL);
+				Factory.toPool(centerChar);
 			}
 		}
 	

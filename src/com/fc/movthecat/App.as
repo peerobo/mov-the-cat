@@ -78,7 +78,8 @@ package com.fc.movthecat
 			BaseButton.DefaultFont = FontAsset.GEARHEAD;
 			LangUtil.loadXMLData();
 			BaseJsonGUI.loadCfg();
-			EffectMgr.DEFAULT_FONT = FontAsset.GEARHEAD;			
+			EffectMgr.DEFAULT_FONT = FontAsset.GEARHEAD;		
+			MTCUtil.loadCfgCats();
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
 		}
