@@ -73,8 +73,8 @@ package com.fc.movthecat.screen
 		{						
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			//centerUI.flatten();			
-			globalInput.setDisableTimeout(2);
-			Starling.juggler.tween(centerUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
+			globalInput.setDisableTimeout(1);
+			Starling.juggler.tween(centerUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );
 			Starling.juggler.remove(randomPlayerCall)
 			var charScreen:CharacterSelectScreen = Factory.getInstance(CharacterSelectScreen);
 			charScreen.addChild(bg);			
@@ -122,7 +122,22 @@ package com.fc.movthecat.screen
 		
 		override public function onAdded(e:Event):void 
 		{
-			super.onAdded(e);						
+			super.onAdded(e);	
+			
+			centerUI.buildGUI();
+			//centerUI.unflatten();
+			centerUI.x = Util.appWidth - centerUI.width >> 1;
+			var desY:int = Util.appHeight - centerUI.height >> 1;
+			centerUI.y = -centerUI.height;
+			addChild(centerUI);
+			Starling.juggler.tween(
+				centerUI,
+				2,
+				{
+					y: desY,
+					transition: Transitions.EASE_OUT_BOUNCE
+				}
+			)
 		}
 		
 		override public function update(time:Number):void 
@@ -144,23 +159,9 @@ package com.fc.movthecat.screen
 			tileImages.draw(tex, Util.appWidth, Util.appHeight);			
 			bg = tileImages;
 			cloudBg = MTCUtil.getRandomCloudBG();			
-			addChild(bg);
-			addChild(cloudBg);
-			
-			centerUI.buildGUI();
-			centerUI.x = Util.appWidth - centerUI.width >> 1;
-			var desY:int = Util.appHeight - centerUI.height >> 1;
-			centerUI.y = -centerUI.height;
-			addChild(centerUI);
-			Starling.juggler.tween(
-				centerUI,
-				2,
-				{
-					y: desY,
-					transition: Transitions.EASE_OUT_BOUNCE
-				}
-			)			
-			
+			addChildAt(cloudBg, 0);
+			addChildAt(bg,0);
+						
 			randomNPCs();
 		}
 		

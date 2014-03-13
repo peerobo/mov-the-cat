@@ -27,6 +27,7 @@ package com.fc.movthecat
 	{
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		public static const EVENT_ON_PICK_CHAR:String = "on_pick_char";
+		public static const EVENT_ON_HOME:String = "on_go_home";
 		static public var catCfgs:Array;
 		
 		public static function getGameImageWithScale(texName:String, scale:Number = -1):DisplayObject

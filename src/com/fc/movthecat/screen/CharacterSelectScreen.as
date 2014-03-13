@@ -4,10 +4,14 @@ package com.fc.movthecat.screen
 	import com.fc.air.base.GlobalInput;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.comp.LoopableSprite;
+	import com.fc.air.res.Asset;
 	import com.fc.air.Util;
 	import com.fc.movthecat.asset.MTCAsset;
+	import com.fc.movthecat.config.CatCfg;
 	import com.fc.movthecat.gui.CharSelectorUI;
+	import com.fc.movthecat.logic.Player;
 	import com.fc.movthecat.MTCUtil;
+	import flash.geom.Rectangle;
 	import starling.animation.Transitions;
 	import starling.core.Starling;
 	import starling.display.MovieClip;
@@ -20,7 +24,7 @@ package com.fc.movthecat.screen
 	public class CharacterSelectScreen extends LoopableSprite
 	{
 		private var charUI:CharSelectorUI;
-		private var character:MovieClip;
+		
 		public function CharacterSelectScreen() 
 		{
 			charUI = new CharSelectorUI();
@@ -32,21 +36,28 @@ package com.fc.movthecat.screen
 		{
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);		
 			globalInput.setDisableTimeout(2);
-			Starling.juggler.tween(charUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
 			
-			character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE, character);
-			if (character.scaleX < 1)
-				character.smoothing = TextureSmoothing.TRILINEAR;
-			else
-				character.smoothing = TextureSmoothing.NONE;
-			
-			character.fps = 4;			
-			character.play();	
-			
+			var char:MovieClip = Factory.getObjectFromPool(MovieClip);
+			Asset.cloneMV(charUI.char, char);
+			var rec:Rectangle = Factory.getObjectFromPool(Rectangle);
+			charUI.char.getBounds(Starling.current.stage, rec);
+			char.play();
+			char.x = rec.x;
+			char.y = rec.y;
+			Starling.juggler.add(char);
+			Factory.toPool(rec);
+			var charIdx:int = charUI.charIdx;						
+			var charCfg:CatCfg = Factory.getInstance(CatCfg);
+			MTCUtil.setCatCfg(charIdx, charCfg);
+			var character:Player = Factory.getInstance(Player);
+			character.w = charCfg.width;
+			character.weight = charCfg.weight;
+			character.speed = charCfg.speed;			
+			charUI.removeFromParent();
 			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
-			//gameScreen.addChild(bg);			
-			//gameScreen.addChild(cloudBg);
-			gameScreen.addChild(character);
+			gameScreen.addChild(getChildAt(0));			
+			gameScreen.addChild(getChildAt(0));
+			gameScreen.addChild(char);
 			ScreenMgr.showScreen(GameScreen);
 		}
 		
@@ -58,9 +69,7 @@ package com.fc.movthecat.screen
 		override public function onAdded(e:Event):void 
 		{
 			super.onAdded(e);
-			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);		
-			globalInput.setDisableTimeout(3);
-			
+	
 			charUI.buildGUI();
 			charUI.x = Util.appWidth - charUI.width >> 1;
 			var desY:int = Util.appHeight - charUI.height >> 1;
@@ -68,7 +77,7 @@ package com.fc.movthecat.screen
 			addChild(charUI);
 			Starling.juggler.tween(
 				charUI,
-				3,
+				2,
 				{
 					y: desY,
 					transition: Transitions.EASE_OUT_BOUNCE

@@ -48,6 +48,11 @@ package com.fc.movthecat.logic
 					visibleScreen.player.move(isLeft);					
 				}
 				Factory.toPool(currBound);						
+				visibleScreen.player.isMoving = true;
+			}
+			else
+			{
+				visibleScreen.player.isMoving = false;
 			}
 			// check character free fall
 			var check:Boolean = true;
@@ -112,12 +117,12 @@ package com.fc.movthecat.logic
 			rec.setTo(0, 0, visibleScreen.player.wInPixel, visibleScreen.player.hInPixel);
 			var recBlock:Rectangle = visibleScreen.blockMap.pixelToBlock(rec);
 			visibleScreen.player.h = recBlock.height;			
-			visibleScreen.player.w = recBlock.width;
+			//visibleScreen.player.w = recBlock.width;
 			visibleScreen.blockMap.anchorPt.x = 0;
 			visibleScreen.blockMap.anchorPt.y = visibleScreen.player.y;
 			visibleScreen.blockMap.validate();
-			visibleScreen.player.weight = 1;
-			visibleScreen.player.speed = 0.25;
+			//visibleScreen.player.weight = 1;
+			//visibleScreen.player.speed = 0.25;
 			Factory.toPool(rec);
 			Factory.toPool(recBlock);
 			// init world

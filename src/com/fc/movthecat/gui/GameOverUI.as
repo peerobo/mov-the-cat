@@ -49,12 +49,12 @@ package com.fc.movthecat.gui
 		
 		private function onHome():void 
 		{
-			
+			dispatchEventWith(MTCUtil.EVENT_ON_HOME);
 		}
 		
 		private function onChar():void 
 		{
-			
+			dispatchEventWith(MTCUtil.EVENT_ON_PICK_CHAR);
 		}
 
 		private function onPlayGame():void 

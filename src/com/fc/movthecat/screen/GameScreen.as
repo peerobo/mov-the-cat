@@ -2,6 +2,7 @@ package com.fc.movthecat.screen
 {
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.GlobalInput;
+	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.LoopableSprite;
 	import com.fc.air.comp.TileImage;
@@ -59,6 +60,8 @@ package com.fc.movthecat.screen
 			{
 				gameOverUI = new GameOverUI();
 				gameOverUI.addEventListener(MTCUtil.EVENT_ON_PLAYGAME, onPlayGame);
+				gameOverUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPickChar);
+				gameOverUI.addEventListener(MTCUtil.EVENT_ON_HOME, onGoHome);
 			}
 			gameOverUI.buildGUI();
 			gameOverUI.x = Util.appWidth - gameOverUI.width >> 1;
@@ -75,6 +78,32 @@ package com.fc.movthecat.screen
 			)
 			SoundManager.instance.muteMusic = false;
 			System.pauseForGCIfCollectionImminent(0);
+		}
+		
+		private function onGoHome(e:Event):void 
+		{
+			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
+			//centerUI.flatten();			
+			globalInput.setDisableTimeout(1);
+			Starling.juggler.tween(gameOverUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );			
+			var manScr:MainScreen = Factory.getInstance(MainScreen);
+			manScr.addChild(getChildAt(0));			
+			manScr.addChild(getChildAt(0));
+			manScr.addChild(gameOverUI);			
+			ScreenMgr.showScreen(MainScreen);
+		}
+		
+		private function onPickChar(e:Event):void 
+		{
+			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
+			//centerUI.flatten();			
+			globalInput.setDisableTimeout(1);
+			Starling.juggler.tween(gameOverUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );			
+			var charScreen:CharacterSelectScreen = Factory.getInstance(CharacterSelectScreen);
+			charScreen.addChild(getChildAt(0));			
+			charScreen.addChild(getChildAt(0));
+			charScreen.addChild(gameOverUI);			
+			ScreenMgr.showScreen(CharacterSelectScreen);
 		}
 		
 		private function onPlayGame(e:Event):void 

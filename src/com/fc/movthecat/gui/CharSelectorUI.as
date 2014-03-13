@@ -5,6 +5,7 @@ package com.fc.movthecat.gui
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.font.BaseBitmapTextField;
 	import com.fc.air.base.LangUtil;
+	import com.fc.air.FPSCounter;
 	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.config.CatCfg;
 	import com.fc.movthecat.MTCUtil;
@@ -25,7 +26,7 @@ package com.fc.movthecat.gui
 		public var recChar:Rectangle;
 		
 		public var charIdx:int;
-		private var char:MovieClip;
+		public var char:MovieClip;
 			
 		public function CharSelectorUI() 
 		{
@@ -54,7 +55,7 @@ package com.fc.movthecat.gui
 		private function updateChar():void 
 		{
 			var catCfg:CatCfg = Factory.getInstance(CatCfg);
-			MTCUtil.setCatCfg(charIdx, catCfg);
+			MTCUtil.setCatCfg(charIdx, catCfg);			
 			char = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + charIdx + "_", char, catCfg.scale);
 			char.x = recChar.x + (recChar.width - char.width >> 1);
 			char.y = recChar.y + (recChar.height - char.height >> 1);
@@ -66,7 +67,13 @@ package com.fc.movthecat.gui
 		
 		private function onCharSelect():void 
 		{
-			dispatchEventWith(MTCUtil.EVENT_ON_PICK_CHAR);
+			dispatchEventWith(MTCUtil.EVENT_ON_PICK_CHAR);					
+		}
+		
+		override public function onRemoved(e:Event):void 
+		{
+			char = null;
+			super.onRemoved(e);					
 		}
 		
 	}

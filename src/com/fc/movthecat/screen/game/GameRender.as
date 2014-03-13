@@ -17,6 +17,7 @@ package com.fc.movthecat.screen.game
 	import starling.display.MovieClip;
 	import starling.display.Quad;
 	import starling.display.QuadBatch;
+	import starling.events.Event;
 	
 	/**
 	 * ...
@@ -28,17 +29,15 @@ package com.fc.movthecat.screen.game
 		private var visibleScreen:VisibleScreen;
 		private var quadBatch:QuadBatch;
 		private var leftCharacter:MovieClip;
+		private var previousState:Boolean;
 		
 		public function GameRender()
 		{
 			super();
 			visibleScreen = Factory.getInstance(VisibleScreen);
-			quadBatch = new QuadBatch();
-			addChild(quadBatch);
-			leftCharacter = Factory.getObjectFromPool(MovieClip);
-			leftCharacter.visible = false;
-			addChild(leftCharacter);
-			touchable = false;
+			quadBatch = new QuadBatch();			
+			
+			touchable = false;			
 		}
 		
 		public function reset():void
@@ -46,24 +45,55 @@ package com.fc.movthecat.screen.game
 			quadBatch.reset();
 		}
 		
+		override public function onRemoved(e:Event):void 
+		{
+			character = null;
+			leftCharacter = null;
+			quadBatch.removeFromParent();
+			super.onRemoved(e);
+			
+		}
+		
+		override public function onAdded(e:Event):void 
+		{
+			addChildAt(quadBatch,0);
+			super.onAdded(e);
+		}
+		
 		public function setCharacter(disp:MovieClip):void
 		{
+			leftCharacter = Factory.getObjectFromPool(MovieClip);
+			leftCharacter.visible = false;
+			addChild(leftCharacter);
 			character = disp;
 			addChild(character);
 			
 			Asset.cloneMV(disp, leftCharacter);
-			leftCharacter.play();
+			leftCharacter.play();			
 			leftCharacter.scaleX = -leftCharacter.scaleX;
 			
-			visibleScreen.player.wInPixel = character.width - character.width/4;
+			visibleScreen.player.wInPixel = character.width;
 			visibleScreen.player.hInPixel = character.height;
 		}
 		
 		override public function update(time:Number):void
 		{
 			super.update(time);
-			if (visibleScreen.needRender)
+			if (previousState != visibleScreen.needRender)
 			{
+				previousState = visibleScreen.needRender;
+				if (previousState)
+				{
+					Starling.juggler.add(leftCharacter);
+				}
+				else
+				{
+					Starling.juggler.remove(leftCharacter);
+					leftCharacter = null;
+				}
+			}			
+			if (visibleScreen.needRender)
+			{				
 				var anchorPt:Point = visibleScreen.blockMap.anchorPt;
 				// draw brick
 				var r:Rectangle = Factory.getObjectFromPool(Rectangle);
@@ -117,7 +147,7 @@ package com.fc.movthecat.screen.game
 				// draw character				
 				var cR:Rectangle = visibleScreen.player.getBound();
 				var cRInPixel:Rectangle = visibleScreen.blockMap.blockToPixel(cR);
-				cRInPixel.y += startY + rec.height;
+				cRInPixel.y += startY + rec.height - 30;
 				
 				var centerChar:Rectangle = Factory.getObjectFromPool(Rectangle);
 				centerChar.width = character.width;				
@@ -139,11 +169,11 @@ package com.fc.movthecat.screen.game
 				}
 				Factory.toPool(rec);
 				Factory.toPool(cR);
-				Factory.toPool(cRInPixel);
-				Factory.toPool(image);
+				Factory.toPool(cRInPixel);				
+				Factory.toPool(centerChar);
 				Factory.toPool(imageR);
 				Factory.toPool(imageL);
-				Factory.toPool(centerChar);
+				Factory.toPool(image);
 			}
 		}
 	
