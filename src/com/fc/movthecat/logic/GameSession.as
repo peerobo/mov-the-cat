@@ -66,13 +66,24 @@ package com.fc.movthecat.logic
 				helperPoint.x = b.left;
 				helperPoint.y = b.right;
 			}
-			var destY:Number = b.bottom + gravitySpeed * visibleScreen.player.weight;
+			//var dy:Number = visibleScreen.player.fallspeed + gravitySpeed * visibleScreen.player.weight;
+			var dy:Number = gravitySpeed * visibleScreen.player.weight;
+			var destY:Number = b.bottom + dy;
 			for (var i:int = helperPoint.x; i <= helperPoint.y; i++)
 			{
 				check &&= visibleScreen.blockMap.checkEmpty(destY, i);
 			}
 			if (check) // continue falling
+			{	
+				//visibleScreen.player.y += dy;				
+				//visibleScreen.player.fallspeed += gravitySpeed * visibleScreen.player.weight;
 				visibleScreen.player.y += gravitySpeed * visibleScreen.player.weight;
+			}
+			else
+			{
+				//visibleScreen.player.y += dy - 0.1;
+				//visibleScreen.player.fallspeed = 0;
+			}
 			// scroll whole stage
 			if (visibleScreen.blockMap.anchorPt != null) 
 			{

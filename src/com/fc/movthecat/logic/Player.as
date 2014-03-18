@@ -23,7 +23,8 @@ package com.fc.movthecat.logic
 		public var y:Number;		
 		public var isMoving:Boolean;
 		public var wInPixel:Number;
-		public var hInPixel:Number;		
+		public var hInPixel:Number;	
+		public var fallspeed:Number;
 		
 		public function Player() 
 		{
@@ -35,7 +36,7 @@ package com.fc.movthecat.logic
 			this.isLeft = isLeft;
 			var step:Number = speed;
 			x += isLeft? -step:step;
-			x = (x - w / 2) < 0 ? (w / 2):x;
+			x = (x - w / 2) < 0 ? (w / 2):x;			
 		}
 		
 		public function tryMoving(isLeft:Boolean):Rectangle

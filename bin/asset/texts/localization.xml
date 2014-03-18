@@ -11,5 +11,27 @@
 		<pick>Pick</pick>
 		<char>Characters</char>
 		<home>Home</home>
+		<cat0>Paw</cat0>
+		<cat1>Dirt</cat1>
+		<cat2>Hip</cat2>
+		<cat3>Shadow</cat3>
+		<cat4>Beck</cat4>
+		<cat5>John</cat5>
+		<cat6>Hunger</cat6>
+		<cat7>Snow</cat7>
+		<cat8>Dancy</cat8>
+		<cat9>Zeck</cat9>
+		<cat10>Bolt</cat10>
+		<cat11>Rolly</cat11>
+		<cat12>Pilot</cat12>
+		<cat13>Hulk</cat13>
+		<cat14>Kitty</cat14>
+		<cat15>Leo</cat15>
+		<cat16>Nyan</cat16>
+		<cat17>Zombie</cat17>
+		<cat18>Ninja</cat18>
+		<cat19>Prince</cat19>
+		<cat20>Princess</cat20>
+		<cat21>Goldy</cat21>
 	</en>
 </localization>

@@ -91,27 +91,21 @@
 	}, {
 		"width" : 1,
 		"speed" : 0.25,
-		"scale" : 6,
+		"scale" : 3,
 		"weight" : 1,
 		"fps" : 3
 	}, {
 		"width" : 1,
 		"speed" : 0.25,
-		"scale" : 6,
+		"scale" : 5,
 		"weight" : 1,
-		"fps" : 3
+		"fps" : 12
 	}, {
 		"width" : 1,
 		"speed" : 0.25,
-		"scale" : 6,
+		"scale" : 5,
 		"weight" : 1,
-		"fps" : 3
-	}, {
-		"width" : 1,
-		"speed" : 0.25,
-		"scale" : 6,
-		"weight" : 1,
-		"fps" : 3
+		"fps" : 14
 	}, {
 		"width" : 1,
 		"speed" : 0.25,
