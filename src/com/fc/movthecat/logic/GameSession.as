@@ -41,8 +41,8 @@ package com.fc.movthecat.logic
 				var currBound:Rectangle = visibleScreen.player.tryMoving(isLeft);
 				var canMove:Boolean = true;
 				var str:String = "";
-				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.right);				
-				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.left);
+				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.right, visibleScreen.player.y);				
+				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.left, visibleScreen.player.y);
 				if (canMove) // move left right
 				{
 					visibleScreen.player.move(isLeft);					
@@ -71,18 +71,20 @@ package com.fc.movthecat.logic
 			var destY:Number = b.bottom + dy;
 			for (var i:int = helperPoint.x; i <= helperPoint.y; i++)
 			{
-				check &&= visibleScreen.blockMap.checkEmpty(destY, i);
+				check &&= visibleScreen.blockMap.checkEmpty(destY, i, visibleScreen.player.y);
 			}
 			if (check) // continue falling
-			{	
-				//visibleScreen.player.y += dy;				
+			{									
+				//visibleScreen.player.y = visibleScreen.blockMap.fall(dy, visibleScreen.player.y, visibleScreen.player.x);
 				//visibleScreen.player.fallspeed += gravitySpeed * visibleScreen.player.weight;
+				//trace("fall ", visibleScreen.player.y);
 				visibleScreen.player.y += gravitySpeed * visibleScreen.player.weight;
 			}
 			else
 			{
-				//visibleScreen.player.y += dy - 0.1;
-				//visibleScreen.player.fallspeed = 0;
+				//visibleScreen.player.y = visibleScreen.blockMap.fall(dy, visibleScreen.player.y, visibleScreen.player.x);
+				//trace("stop ", visibleScreen.player.y);				
+				visibleScreen.player.fallspeed = 0;
 			}
 			// scroll whole stage
 			if (visibleScreen.blockMap.anchorPt != null) 
@@ -127,7 +129,8 @@ package com.fc.movthecat.logic
 			rec = Factory.getObjectFromPool(Rectangle);
 			rec.setTo(0, 0, visibleScreen.player.wInPixel, visibleScreen.player.hInPixel);
 			var recBlock:Rectangle = visibleScreen.blockMap.pixelToBlock(rec);
-			visibleScreen.player.h = recBlock.height;			
+			visibleScreen.player.h = recBlock.height;	
+			visibleScreen.player.fallspeed = 0;
 			//visibleScreen.player.w = recBlock.width;
 			visibleScreen.blockMap.anchorPt.x = 0;
 			visibleScreen.blockMap.anchorPt.y = visibleScreen.player.y;
@@ -139,6 +142,7 @@ package com.fc.movthecat.logic
 			// init world
 			scrollSpeed = 0.2;
 			gravitySpeed = 1;
+			//gravitySpeed = 0.2;
 			// start receive user input
 			if(!input)
 				input = Factory.getInstance(UserInput);

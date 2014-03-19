@@ -38,14 +38,43 @@ package com.fc.movthecat.logic
 			}
 		}
 		
-		public function checkEmpty(r:int, c:int):Boolean
+		public function checkEmpty(r:int, c:int,oldY:Number = NaN):Boolean
 		{			
 			if (c < 0 || c >= col)
 				return false;
 			var idx:int = r * col + c;
-			if (idx < 0)
-				return true;
+			if (idx < 0 || idx > blocks.length)
+				return true;			
 			return !blocks[idx];
+			
+			//var ret:Boolean = true;
+			//var startR:int = int(oldY);
+			//for (var i:int = startR; i <= r; i++) 
+			//{
+				//var idx:int = i * col + c;
+				//ret &&= (idx < 0)|| (idx > blocks.length) || !blocks[idx];
+			//}
+			//return ret;
+		}
+		
+		public function fall(deltaY:Number, oldY:Number, oldX:Number):Number
+		{
+			var startR:int = int(oldY);
+			var endR:int = int(deltaY + oldY);
+			var prevY:Number = -1;
+			for (var i:int = startR; i <= endR; i++) 
+			{
+				var idx:int = i * col + int(oldX);
+				var ret:Boolean = (idx < 0)|| (idx > blocks.length) || !blocks[idx];
+				if (!ret)
+				{
+					oldY = i-0.2;
+					return oldY;
+				}
+				
+			}		
+			oldY += deltaY;
+			return oldY;
 		}
 		
 		public function pixelToBlock(r:Rectangle):Rectangle

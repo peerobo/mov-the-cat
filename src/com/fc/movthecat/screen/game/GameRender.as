@@ -82,14 +82,15 @@ package com.fc.movthecat.screen.game
 			if (previousState != visibleScreen.needRender)
 			{
 				previousState = visibleScreen.needRender;
-				if (previousState)
+				if (visibleScreen.needRender)
 				{
 					Starling.juggler.add(leftCharacter);
 				}
 				else
 				{
-					Starling.juggler.remove(leftCharacter);
-					leftCharacter = null;
+					Starling.juggler.remove(leftCharacter);					
+					leftCharacter = null;	
+					character = null;
 				}
 			}			
 			if (visibleScreen.needRender)

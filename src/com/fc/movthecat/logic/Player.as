@@ -20,6 +20,7 @@ package com.fc.movthecat.logic
 		public var speed:Number;
 		public var weight:Number;
 		public var x:Number;
+		public var prevX:Number;
 		public var y:Number;		
 		public var isMoving:Boolean;
 		public var wInPixel:Number;
@@ -36,6 +37,7 @@ package com.fc.movthecat.logic
 			this.isLeft = isLeft;
 			var step:Number = speed;
 			x += isLeft? -step:step;
+			prevX = x;
 			x = (x - w / 2) < 0 ? (w / 2):x;			
 		}
 		
