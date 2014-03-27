@@ -20,8 +20,11 @@ package com.fc.movthecat.screen
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.config.CatCfg;
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.gui.CenterMainUI;
+	import com.fc.movthecat.gui.CharSelectorUI;
+	import com.fc.movthecat.logic.Player;
 	import com.fc.movthecat.MTCUtil;
 	import flash.geom.Rectangle;
 	import flash.system.System;
@@ -51,36 +54,37 @@ package com.fc.movthecat.screen
 		private var needPlayIntro:Boolean;
 		private var tweenChar:Tween;
 		
-		private var centerUI:CenterMainUI;
-		private var characterShadow:FragmentFilter;
+		//private var centerUI:CenterMainUI;
+		//private var characterShadow:FragmentFilter;
 		private var randomPlayerCall:DelayedCall;
 		private var bg:TileImage;
-		private var cloudBg:TileImage;				
+		private var cloudBg:TileImage;	
+		private var charUI:CharSelectorUI;
 		
 		public function MainScreen() 
 		{
 			super();
-			needPlayIntro = false;
-			centerUI = new CenterMainUI();
-			centerUI.addEventListener(MTCUtil.EVENT_ON_PLAYGAME, onPlayGame);
-			loadTextureAtlas();
-			characterShadow = BlurFilter.createDropShadow();
+			needPlayIntro = true;
+			//centerUI = new CenterMainUI();
+			//centerUI.addEventListener(MTCUtil.EVENT_ON_PLAYGAME, onPlayGame);
+			//characterShadow = BlurFilter.createDropShadow();
 			SoundManager.playSound(SoundAsset.THEME_SONG, true);			
-			
+			charUI = new CharSelectorUI();
+			charUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPlayGame);			
 		}
 		
-		private function onPlayGame(e:Event):void 
-		{						
-			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
+		//private function onPlayGame(e:Event):void 
+		//{						
+			/*var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			//centerUI.flatten();			
 			globalInput.setDisableTimeout(1);
-			Starling.juggler.tween(centerUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );
-			Starling.juggler.remove(randomPlayerCall)
+			//Starling.juggler.tween(centerUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );
+			//Starling.juggler.remove(randomPlayerCall);
 			var charScreen:CharacterSelectScreen = Factory.getInstance(CharacterSelectScreen);
 			charScreen.addChild(bg);			
 			charScreen.addChild(cloudBg);
-			charScreen.addChild(centerUI);			
-			ScreenMgr.showScreen(CharacterSelectScreen);
+			//charScreen.addChild(centerUI);			
+			ScreenMgr.showScreen(CharacterSelectScreen);*/
 			
 			/*Starling.juggler.remove(randomPlayerCall);
 			
@@ -99,107 +103,131 @@ package com.fc.movthecat.screen
 			gameScreen.addChild(centerUI);
 			gameScreen.addChild(character);
 			ScreenMgr.showScreen(GameScreen);*/
-		}
+		//}
 		
 		private function onHideUI():void 
 		{
-			centerUI.removeFromParent();			
+			//centerUI.removeFromParent();			
+			charUI.removeFromParent();
 		}
-		
-		private function loadTextureAtlas():void 
-		{
-			var resMgr:ResMgr = Factory.getInstance(ResMgr);
-			resMgr.loadTextureAtlas(MTCAsset.MTC_TEX_ATLAS, loadTAProgress);
-		}
-		
-		private function loadTAProgress(progress:Number):void 
-		{
-			if (progress == 1)
-			{				
-				needPlayIntro = true;
-			}
-		}
-		
+
 		override public function onAdded(e:Event):void 
 		{
-			super.onAdded(e);	
-			
-			centerUI.buildGUI();
+			super.onAdded(e);						
+			playIntro();
+			//centerUI.buildGUI();
 			//centerUI.unflatten();
-			centerUI.x = Util.appWidth - centerUI.width >> 1;
-			var desY:int = Util.appHeight - centerUI.height >> 1;
-			centerUI.y = -centerUI.height;
-			addChild(centerUI);
+			//centerUI.x = Util.appWidth - centerUI.width >> 1;
+			//var desY:int = Util.appHeight - centerUI.height >> 1;
+			//centerUI.y = -centerUI.height;
+			//addChild(centerUI);
+			//Starling.juggler.tween(
+				//centerUI,
+				//2,
+				//{
+					//y: desY,
+					//transition: Transitions.EASE_OUT_BOUNCE
+				//}
+			//)
+		}
+		
+		private function playIntro():void 
+		{
+			if (needPlayIntro)
+			{
+				var resMgr:ResMgr = Factory.getInstance(ResMgr);
+				var tex:Texture = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY);
+				var tileImages:TileImage = Factory.getObjectFromPool(TileImage);
+				tileImages.scale = Constants.GAME_SCALE * Starling.contentScaleFactor;
+				tileImages.draw(tex, Util.appWidth, Util.appHeight);			
+				bg = tileImages;
+				cloudBg = MTCUtil.getRandomCloudBG();			
+				addChildAt(cloudBg, 0);
+				addChildAt(bg, 0);
+				needPlayIntro = false;
+			}			
+			charUI.buildGUI();
+			charUI.x = Util.appWidth - charUI.width >> 1;
+			var desY:int = Util.appHeight - charUI.height >> 1;
+			charUI.y = Util.appHeight;
+			addChild(charUI);
 			Starling.juggler.tween(
-				centerUI,
+				charUI,
 				2,
 				{
 					y: desY,
 					transition: Transitions.EASE_OUT_BOUNCE
 				}
 			)
+			
+			//randomNPCs();
+			
 		}
 		
-		override public function update(time:Number):void 
+		private function onPlayGame(e:Event):void 
 		{
-			super.update(time);
-			if (needPlayIntro)
-			{						
-				playIntro();
-				needPlayIntro = false;
-			}			
+			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);		
+			globalInput.setDisableTimeout(2);
+			
+			var char:MovieClip = Factory.getObjectFromPool(MovieClip);
+			Asset.cloneMV(charUI.char, char);
+			var rec:Rectangle = Factory.getObjectFromPool(Rectangle);
+			charUI.char.getBounds(Starling.current.stage, rec);
+			char.play();
+			char.x = rec.x;
+			char.y = rec.y;
+			Starling.juggler.add(char);
+			Factory.toPool(rec);
+			var charIdx:int = charUI.charIdx;						
+			var charCfg:CatCfg = Factory.getInstance(CatCfg);
+			MTCUtil.setCatCfg(charIdx, charCfg);
+			var character:Player = Factory.getInstance(Player);
+			character.w = charCfg.width;
+			character.weight = charCfg.weight;
+			character.speed = charCfg.speed;			
+			charUI.removeFromParent();
+			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
+			gameScreen.addChild(getChildAt(0));			
+			gameScreen.addChild(getChildAt(0));
+			gameScreen.addChild(char);
+			ScreenMgr.showScreen(GameScreen);
 		}
 		
-		private function playIntro():void 
-		{
-			var resMgr:ResMgr = Factory.getInstance(ResMgr);
-			var tex:Texture = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY);
-			var tileImages:TileImage = Factory.getObjectFromPool(TileImage);
-			tileImages.scale = Constants.GAME_SCALE * Starling.contentScaleFactor;
-			tileImages.draw(tex, Util.appWidth, Util.appHeight);			
-			bg = tileImages;
-			cloudBg = MTCUtil.getRandomCloudBG();			
-			addChildAt(cloudBg, 0);
-			addChildAt(bg,0);
-						
-			randomNPCs();
-		}
-		
-		private function randomNPCs():void 
-		{						
-			var changeAnimation:Boolean = true;
-			var rnd:int = Util.getRandom(100);
-			if (changeAnimation)
-			{
-				if(character)
-				{
-					Factory.toPool(character);
-					character.removeFromParent();
-				}
-				if (rnd < 30)
-				{
-					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE);
-				}
-				else if (rnd < 60)
-				{
-					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_JUMP);
-				}
-				else 
-				{
-					character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_WALK);
-				}				
-			}
-			var rndX:int = Math.random() * (Util.appWidth - character.width - 20);
-			var rndY:int = Math.random() * (Util.appHeight - character.height - 20);
-			character.filter = characterShadow;			
-			character.touchable = false;
-			character.x = rndX;
-			character.y = rndY;
-			addChild(character);
-			character.fps = 2;
-			character.play();
-			randomPlayerCall = Starling.juggler.delayCall(randomNPCs, 5);
-		}		
+		//private function randomNPCs():void 
+		//{						
+			//var changeAnimation:Boolean = true;
+			//var rnd:int = Util.getRandom(100);
+			//if (changeAnimation)
+			//{
+				//if(character)
+				//{
+					//Factory.toPool(character);
+					//character.removeFromParent();
+				//}
+				//if (rnd < 30)
+				//{
+					//character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE);
+				//}
+				//else if (rnd < 60)
+				//{
+					//character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_JUMP);
+				//}
+				//else 
+				//{
+					//character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_WALK);
+				//}				
+			//}
+			//var rndX:int = Math.random() * (Util.appWidth - character.width - 20);
+			//var rndY:int = Math.random() * (Util.appHeight - character.height - 20);
+			//character.filter = characterShadow;			
+			//character.touchable = false;
+			//character.x = rndX;
+			//character.y = rndY;
+			//addChild(character);
+			//character.fps = 2;
+			//character.play();
+			//randomPlayerCall = Starling.juggler.delayCall(randomNPCs, 5);
+		//}		
 		
 	}
 

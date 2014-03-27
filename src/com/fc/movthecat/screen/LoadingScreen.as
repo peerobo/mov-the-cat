@@ -8,6 +8,7 @@ package com.fc.movthecat.screen
 	import com.fc.air.comp.LoopableSprite;
 	import com.fc.air.res.ResMgr;
 	import com.fc.air.Util;
+	import com.fc.movthecat.asset.MTCAsset;
 	import flash.utils.ByteArray;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -31,6 +32,7 @@ package com.fc.movthecat.screen
 		private var quad:Quad;
 		private var img:Image;
 		private var txt:TextField;
+		private var loadBaseAssetDone:Boolean;
 		
 		public function LoadingScreen() 
 		{
@@ -57,21 +59,37 @@ package com.fc.movthecat.screen
 			t.reverse = true;
 			t.fadeTo(0.3);
 			interval = 0.033;
+			
+			loadBaseAssetDone = false;
 		}				
 		
 		override public function update(time:Number):void 
 		{
 			super.update(time);
-			t.advanceTime(time);			
-			var resMgr:ResMgr = Factory.getInstance(ResMgr);			
-			if (resMgr.assetProgress == 1)
+			t.advanceTime(time);
+			if (!loadBaseAssetDone)
 			{
-				if (BaseJsonGUI.ready && LangUtil.ready)
+				var resMgr:ResMgr = Factory.getInstance(ResMgr);			
+				if (resMgr.assetProgress == 1)
 				{
-					var p:DisplayObjectContainer = this.parent;
-					// bg of game			
-					validateGameState();				
+					if (BaseJsonGUI.ready && LangUtil.ready)
+					{							
+						
+						//Starling.juggler.delayCall(resMgr.loadTextureAtlas,2,MTCAsset.MTC_TEX_ATLAS,loadTAProgress)
+						loadBaseAssetDone = true;
+						// load all cats
+						resMgr.loadTextureAtlas(MTCAsset.MTC_TEX_ATLAS, loadTAProgress);
+					}
 				}
+			}
+			
+		}
+		
+		private function loadTAProgress(progress:int):void 
+		{
+			if (progress == 1)
+			{
+				validateGameState();
 			}
 		}
 		

@@ -84,10 +84,18 @@ package com.fc.movthecat.screen.game
 				previousState = visibleScreen.needRender;
 				if (visibleScreen.needRender)
 				{
+					leftCharacter.visible = false;
 					Starling.juggler.add(leftCharacter);
 				}
 				else
 				{
+					leftCharacter.removeFromParent();
+					Factory.toPool(leftCharacter);
+					leftCharacter = null;
+					character.visible = false;
+					//character.removeFromParent();
+					//Factory.toPool(character);
+					//character = null;
 					Starling.juggler.remove(leftCharacter);					
 					leftCharacter = null;	
 					character = null;

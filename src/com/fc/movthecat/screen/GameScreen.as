@@ -99,17 +99,16 @@ package com.fc.movthecat.screen
 			//centerUI.flatten();			
 			globalInput.setDisableTimeout(1);
 			Starling.juggler.tween(gameOverUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );			
-			var charScreen:CharacterSelectScreen = Factory.getInstance(CharacterSelectScreen);
+			var charScreen:MainScreen = Factory.getInstance(MainScreen);
 			charScreen.addChild(getChildAt(0));			
 			charScreen.addChild(getChildAt(0));
 			charScreen.addChild(gameOverUI);			
-			ScreenMgr.showScreen(CharacterSelectScreen);
+			ScreenMgr.showScreen(MainScreen);
 		}
 		
 		private function onPlayGame(e:Event):void 
 		{
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
-			//gameOverUI.flatten();			
 			globalInput.setDisableTimeout(2);
 			Starling.juggler.tween(gameOverUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
 			
@@ -134,7 +133,8 @@ package com.fc.movthecat.screen
 			gameRender = Factory.getInstance(GameRender);			
 			gameRender.setCharacter(character);
 			var logic:GameSession = Factory.getInstance(GameSession);
-			logic.startNewGame();			
+			logic.startNewGame();	
+			gameRender.reset();
 			addChild(gameRender);
 		}
 		
