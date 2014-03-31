@@ -10,9 +10,9 @@ for /d %%a in (*) do (
 )
 cd "%DIST%"
 for %%b in (*.png) do (
-png2atf.exe -4 -q 0 -i "%%~nb.png" -o "%%~nb.atf"
-::PVRTexToolCLI.exe -m -dither -f r8g8b8a8 -i %%b
-::pvr2atf.exe -4 -q 0 -r "%%~nb.pvr" -o "%%~nb.atf"
+::png2atf.exe -4 -q 0 -i "%%~nb.png" -o "%%~nb.atf"
+PVRTexToolCLI.exe -m -dither -f r8g8b8a8 -i %%b
+pvr2atf.exe -4 -q 2 -r "%%~nb.pvr" -o "%%~nb.atf"
 )
 del /f /q *.png
 del /f /q *.pvr

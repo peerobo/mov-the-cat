@@ -21,7 +21,8 @@ package com.fc.movthecat.logic
 		public var input:UserInput;
 		public var scrollSpeed:Number;
 		public var gravitySpeed:Number;
-		
+		public var foodType:int;
+		public var foodNum:int;
 		private var interval:Number;
 		private var timePass:Number;
 		private var helperPoint:Point;
@@ -45,7 +46,9 @@ package com.fc.movthecat.logic
 				canMove &&= visibleScreen.blockMap.checkEmpty(currBound.bottom, currBound.left, visibleScreen.player.y);
 				if (canMove) // move left right
 				{
-					visibleScreen.player.move(isLeft);					
+					visibleScreen.player.move(isLeft);	
+					//if (visibleScreen.blockMap.ateFood(visibleScreen.player.getBound()))
+						//foodNum++;
 				}
 				Factory.toPool(currBound);						
 				visibleScreen.player.isMoving = true;
@@ -79,6 +82,8 @@ package com.fc.movthecat.logic
 				//visibleScreen.player.fallspeed += gravitySpeed * visibleScreen.player.weight;
 				//trace("fall ", visibleScreen.player.y);
 				visibleScreen.player.y += gravitySpeed * visibleScreen.player.weight;
+				//if (visibleScreen.blockMap.ateFood(visibleScreen.player.getBound()))
+					//foodNum++;
 			}
 			else
 			{
@@ -142,6 +147,7 @@ package com.fc.movthecat.logic
 			// init world
 			scrollSpeed = 0.2;
 			gravitySpeed = 1;
+			foodNum = 0;
 			//gravitySpeed = 0.2;
 			// start receive user input
 			if(!input)

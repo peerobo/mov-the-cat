@@ -2,7 +2,7 @@
 <application xmlns="http://ns.adobe.com/air/application/13.0">
 	
 	<id>com.fc.movthecat</id>
-	<versionNumber>0.1</versionNumber>
+	<versionNumber>1.0.0</versionNumber>
 	<supportedProfiles>mobileDevice</supportedProfiles>
 	<filename>movthecat</filename>
 	
@@ -35,6 +35,9 @@
 						<category android:name="android.intent.category.LAUNCHER"/>
 					</intent-filter>
 				</activity>
+				<activity android:name="com.fc.FCMainActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+				<activity android:name="com.vungle.sdk.VungleAdvert" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+				<service android:name="com.vungle.sdk.VungleIntentService"/>
 			</application>-->
 		</manifest>]]>
 	</manifestAdditions>
@@ -109,14 +112,13 @@
 	http://developer.android.com/guide/topics/manifest/manifest-intro.html
 	-->
 	<extensions>
-		<!--<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
-		<extensionID>com.leadbolt.LeadboltANE</extensionID>-->
-		
-		<!--<extensionID>com.pozirk.AndroidInAppPurchase</extensionID>
+		<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
+		<extensionID>com.leadbolt.LeadboltANE</extensionID>
+		<!--<extensionID>com.fc.AndroidUtility</extensionID>
+		<extensionID>com.pozirk.AndroidInAppPurchase</extensionID>
 		<extensionID>com.freshplanet.AirGooglePlayGamesService</extensionID>-->
-				
-		<!--<extensionID>com.adobe.ane.gameCenter</extensionID>
+		<extensionID>com.adobe.ane.gameCenter</extensionID>
 		<extensionID>com.adobe.ane.social</extensionID>
-		<extensionID>com.fc.StoreKitExt</extensionID>-->
+		<extensionID>com.fc.StoreKitExt</extensionID>
 	</extensions>
 </application>

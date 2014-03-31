@@ -1,6 +1,7 @@
 package com.fc.movthecat
 {
 	import com.fc.air.FPSCounter;
+	import com.fc.air.Util;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
@@ -19,7 +20,6 @@ package com.fc.movthecat
 	 * @author ndp
 	 */
 	[SWF(frameRate="40",backgroundColor="0x0")]
-	
 	public class Main extends Sprite
 	{
 		private var starling:Starling;
@@ -35,15 +35,24 @@ package com.fc.movthecat
 			
 			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, false, 0x0, stage.fullScreenWidth, stage.fullScreenHeight);
 			//addChild(fps);
-			
-			startStarlingFramework();
+						
 			if (Capabilities.cpuArchitecture == "ARM")
 			{
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
-			}
-			NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);
+			}			
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onAppActivate);
-			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
+			CONFIG::isIOS
+			{
+				startStarlingFramework();
+				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);						
+				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
+			}
+			if (Util.isDesktop)
+			{
+				startStarlingFramework();
+				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);						
+				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
+			}			
 		}
 		
 		private function onAppDeactivate(e:Event):void
@@ -53,9 +62,58 @@ package com.fc.movthecat
 		
 		private function onAppActivate(e:Event):void
 		{
-			if (App.ins)
-			{				
-				App.ins.onAppActivate();
+			CONFIG::isIOS{
+				if (App.ins)
+				{				
+					App.ins.onAppActivate();
+				}
+			}
+			CONFIG::isAndroid {
+				Util.initAndroidUtility(onAndroidInit);
+			}
+		}
+		
+		CONFIG::isAndroid{		
+			private function onAndroidInit():void 
+			{
+				
+				if (Util.androidVersionInt >= Util.KITKAT)
+				{
+					Starling.handleLostContext = true;
+					stage.addEventListener(Event.RESIZE, onStageResize);
+					//startStarlingFramework();
+					Util.setAndroidFullscreen(true);
+				}
+				else 
+				{
+					Starling.handleLostContext = false;
+					startStarlingFramework();
+				}
+				Util.initAndroidAppStateHandle(onAndroidPause, onAndroidStop, onAndroidResume);		
+			}
+			
+			private function onAndroidPause():void
+			{
+				if (App.ins)
+					App.ins.onAppDeactivate();
+			}
+			
+			private function onAndroidStop():void
+			{
+				if (App.ins)
+					App.ins.onAppExit();
+			}
+			
+			private function onAndroidResume():void
+			{
+				if (App.ins)
+					App.ins.onAppActivate();
+			}
+			
+			
+			private function onStageResize(e:Event):void 
+			{
+				startStarlingFramework();
 			}
 		}
 		
@@ -69,48 +127,61 @@ package com.fc.movthecat
 		
 		private function startStarlingFramework():void
 		{
-			var sw:int = stage.fullScreenWidth;
-			var sh:int = stage.fullScreenHeight;
-			
-			var maxSize:int = sw < sh ? sh : sw;
-			var minSize:int = sw < sh ? sw : sh;
-			var w:int;
-			var h:int;
-			var needExtended:Boolean = false;
-			if (minSize <= 320)
-			{
-				w = sw / 0.25;
-				h = sh / 0.25;
+			if (!starling)
+			{				
+				var sw:int = stage.stageWidth;
+				var sh:int = stage.stageHeight;
+				if (Util.isDesktop)
+				{
+					sw = stage.fullScreenWidth;
+					sh = stage.fullScreenHeight;
+				}
+				
+				CONFIG::isIOS {
+					sw = stage.fullScreenWidth;
+					sh = stage.fullScreenHeight;
+				}
+				
+				var maxSize:int = sw < sh ? sh : sw;
+				var minSize:int = sw < sh ? sw : sh;
+				var w:int;
+				var h:int;
+				var needExtended:Boolean = false;
+				if (minSize <= 320)
+				{
+					w = sw / 0.25;
+					h = sh / 0.25;
+				}
+				else if (minSize <= 480)
+				{
+					w = sw / 0.375;
+					h = sh / 0.375;
+				}
+				else if (minSize <= 800)
+				{
+					w = sw / 0.5;
+					h = sh / 0.5;
+				}
+				else if (minSize <= 1080)
+				{
+					w = sw / 0.75;
+					h = sh / 0.75;
+				}
+				else
+				{
+					w = sw;
+					h = sh;
+					needExtended = true;
+				}
+				
+				if (needExtended)
+					starling = new Starling(App, stage, new Rectangle(0, 0, sw, sh), null, "auto", Context3DProfile.BASELINE_EXTENDED);
+				else
+					starling = new Starling(App, stage, new Rectangle(0, 0, sw, sh));
+				starling.stage.stageWidth = w;
+				starling.stage.stageHeight = h;
+				starling.start();
 			}
-			else if (minSize <= 480)
-			{
-				w = sw / 0.375;
-				h = sh / 0.375;
-			}
-			else if (minSize <= 800)
-			{
-				w = sw / 0.5;
-				h = sh / 0.5;
-			}
-			else if (minSize <= 1080)
-			{
-				w = sw / 0.75;
-				h = sh / 0.75;
-			}
-			else
-			{
-				w = sw;
-				h = sh;
-				needExtended = true;
-			}
-			
-			if (needExtended)
-				starling = new Starling(App, stage, new Rectangle(0, 0, sw, sh), null, "auto", Context3DProfile.BASELINE_EXTENDED);
-			else
-				starling = new Starling(App, stage, new Rectangle(0, 0, sw, sh));
-			starling.stage.stageWidth = w;
-			starling.stage.stageHeight = h;
-			starling.start();			
 		}
 	
 	}

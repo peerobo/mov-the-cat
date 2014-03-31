@@ -88,7 +88,8 @@ package com.fc.movthecat
 		{
 			if(!Util.isDesktop)
 			{	
-				Starling.current.stop(true);
+				if(Starling.current.isStarted)
+					Starling.current.stop(true);
 				SoundManager.instance.muteMusic = true;   
 			}
 		}
@@ -97,7 +98,8 @@ package com.fc.movthecat
 		{			
 			if(!Util.isDesktop)
 			{	
-				Starling.current.start();
+				if(!Starling.current.isStarted)
+					Starling.current.start();
 				SoundManager.instance.muteMusic = false;
 			}
 		}
@@ -106,6 +108,8 @@ package com.fc.movthecat
 		{
 			var gameState:GameSave = Factory.getInstance(GameSave);
 			gameState.saveState();	
+			var gameService:GameService = Factory.getInstance(GameService);
+			gameService.saveHighscore();
 		}
 		
 		public function reinitializeTextures():void
@@ -120,12 +124,7 @@ package com.fc.movthecat
 			removeEventListener(Event.ADDED_TO_STAGE, onInit);
 			
 			var gameState:GameSave = Factory.getInstance(GameSave);
-			gameState.loadState();
-			var highscoreDB:GameService = Factory.getInstance(GameService);
-			if (Util.isIOS)
-				highscoreDB.initGameCenter();
-			else if (Util.isAndroid)
-				highscoreDB.initGooglePlayGameService();
+			gameState.loadState();			
 			var iap:IAP = Factory.getInstance(IAP);
 			iap.initInAppPurchase();
 			CONFIG::isAndroid

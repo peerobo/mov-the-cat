@@ -5,11 +5,12 @@
 	<en>
 		<gamename>Mov The\nCat</gamename>
 		<gameover>Game Over</gameover>
+		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
 		<more>More Games</more>
 		<rate>Rate</rate>
 		<pick>Pick</pick>
-		<char>Characters</char>
+		<char>Cats</char>
 		<home>Home</home>
 		<cat0>Paw</cat0>
 		<cat1>Dirt</cat1>

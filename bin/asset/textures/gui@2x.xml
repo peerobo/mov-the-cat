@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:4204f7530aec6e27849bd46f6d56bc8e$ -->
+<!-- $TexturePacker:SmartUpdate:2d10c41d5b26de7e01a4f9ed12024086$ -->
 <TextureAtlas imagePath="gui@2x.png">
-    <SubTexture name="bg_square" x="56" y="481" width="13" height="13"/>
-    <SubTexture name="bg_square_alpha" x="2" y="454" width="26" height="26"/>
-    <SubTexture name="bt_blue" x="30" y="454" width="25" height="25"/>
-    <SubTexture name="bt_green" x="29" y="482" width="25" height="25"/>
-    <SubTexture name="bt_yellow" x="2" y="482" width="25" height="25"/>
+    <SubTexture name="bg_box" x="437" y="481" width="19" height="18"/>
+    <SubTexture name="bg_square" x="438" y="454" width="13" height="13"/>
+    <SubTexture name="bg_square_alpha" x="383" y="454" width="26" height="26"/>
+    <SubTexture name="bt_blue" x="411" y="454" width="25" height="25"/>
+    <SubTexture name="bt_facebook" x="256" y="372" width="125" height="125"/>
+    <SubTexture name="bt_green" x="410" y="482" width="25" height="25"/>
+    <SubTexture name="bt_leaderboard" x="129" y="372" width="125" height="125"/>
+    <SubTexture name="bt_twitter" x="2" y="372" width="125" height="125"/>
+    <SubTexture name="bt_yellow" x="383" y="482" width="25" height="25"/>
     <SubTexture name="gearhead" x="2" y="2" width="510" height="368" frameX="-1" frameY="-1" frameWidth="512" frameHeight="370"/>
-    <SubTexture name="ico_arrow" x="2" y="372" width="80" height="80"/>
+    <SubTexture name="ico_arrow" x="383" y="372" width="80" height="80"/>
 </TextureAtlas>

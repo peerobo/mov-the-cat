@@ -12,6 +12,7 @@ package com.fc.movthecat.logic
 	 */
 	public class BlockMap
 	{
+		private var foods:Array;
 		public var row:int;
 		public var col:int;
 		public var gameWindow:Rectangle;
@@ -19,11 +20,16 @@ package com.fc.movthecat.logic
 		public var lvlStage:LevelStage;
 		public var anchorPt:Point;
 		
+		public static var B_EMPTY:int = 0;
+		public static var B_BRICK:int = 1;
+		public static var B_FOOD:int = 2;
+		
 		public function BlockMap()
 		{
 			anchorPt = new Point();
 			lvlStage = Factory.getInstance(LevelStage);
 			blocks = [];
+			foods = [];
 		}
 		
 		public function calculateScreenViaLevelStage():void
@@ -34,7 +40,7 @@ package com.fc.movthecat.logic
 			var total:int = row * col;
 			for (var i:int = 0; i < total; i++)
 			{
-				blocks[i] = false;
+				blocks[i] = B_EMPTY;
 			}
 		}
 		
@@ -45,7 +51,7 @@ package com.fc.movthecat.logic
 			var idx:int = r * col + c;
 			if (idx < 0 || idx > blocks.length)
 				return true;			
-			return !blocks[idx];
+			return !(blocks[idx] == B_BRICK);
 			
 			//var ret:Boolean = true;
 			//var startR:int = int(oldY);
@@ -65,7 +71,7 @@ package com.fc.movthecat.logic
 			for (var i:int = startR; i <= endR; i++) 
 			{
 				var idx:int = i * col + int(oldX);
-				var ret:Boolean = (idx < 0)|| (idx > blocks.length) || !blocks[idx];
+				var ret:Boolean = (idx < 0)|| (idx > blocks.length) || !(blocks[idx]==B_EMPTY);
 				if (!ret)
 				{
 					oldY = i-0.2;
@@ -104,33 +110,74 @@ package com.fc.movthecat.logic
 		
 		}
 		
-		public function validate():void
+		public function validate(withoutDel:Boolean = false):void
 		{			
-			lvlStage.deleteBricks(1);		
+			if(!withoutDel)
+			{
+				lvlStage.deleteBricks(1);	
+				if(foods.length >=1)
+					foods.splice(0, 1);
+				
+				var currLen:int = foods.length;
+				for (var k:int = currLen; k < lvlStage.row; k++) 
+				{
+					foods.push(Util.getRandom(col));
+				}
+			}
 			var total:int = row * col;
 			var r:int = 0;
 			var c:int = 0;
 			var stageR:int;
-			var stageC:int;
+			var stageC:int;									
 			for (var i:int = 0; i < total; i++)
 			{				
 				if (r % 2 == 1)
 				{
 					stageR = r - 1 >> 1;
 					stageC = c >> 1;
-					blocks[i] = lvlStage.bricks[stageR * lvlStage.col + stageC];
+					blocks[i] = lvlStage.bricks[stageR * lvlStage.col + stageC] ? B_BRICK : B_EMPTY;
 				}
 				else
 				{
-					blocks[i] = false;
+					blocks[i] = B_EMPTY;
+					
+					if (c == int(foods[r/2]))
+					{	
+						blocks[i] = B_FOOD;														
+					}
 				}
 				c++;
 				if (c == col)
 				{
 					r++;
-					c = 0;
+					c = 0;					
 				}
 			}
+		}
+		
+		public function ateFood(blockIdx:int):Boolean 
+		{
+			var retBool:Boolean = false;
+			var r:int = blockIdx / col;
+			foods[r / 2] = -1;
+			//var recFood:Rectangle = Factory.getObjectFromPool(Rectangle);
+			//recFood.setTo(0, 0, 1, 1);
+			//var len:int = foods.length;
+			//for (var i:int = 0; i < len; i++) 
+			//{			
+				//recFood.x = foods[i];
+				//recFood.y = i;
+				//retBool = recFood.intersects(rec);
+				//if (retBool)
+				//{
+					//foods[i] = -1;
+					//validate(true);
+					//break;
+				//}
+			//}
+			//Factory.toPool(rec);
+			//Factory.toPool(recFood);
+			return retBool;
 		}
 	
 	}

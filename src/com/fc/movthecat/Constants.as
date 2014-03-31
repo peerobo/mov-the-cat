@@ -26,6 +26,7 @@ package  com.fc.movthecat
 		static public const GAME_SCALE:int = 10;
 		static public const GAME_TILE_SIZE_4X:int = 252;		
 		static public const RATE_URL:String = "http://firecheetah.com/mobile/movthecat.php";
+		static public const CONTENT_VER:String = "?v1";
 	}
 
 }

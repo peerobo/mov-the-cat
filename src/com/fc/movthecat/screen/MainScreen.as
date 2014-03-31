@@ -4,6 +4,7 @@ package com.fc.movthecat.screen
 	import com.fc.air.base.BFConstructor;
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.font.BaseBitmapTextField;
+	import com.fc.air.base.GameService;
 	import com.fc.air.base.GlobalInput;
 	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.LayerMgr;
@@ -24,6 +25,7 @@ package com.fc.movthecat.screen
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.gui.CenterMainUI;
 	import com.fc.movthecat.gui.CharSelectorUI;
+	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.logic.Player;
 	import com.fc.movthecat.MTCUtil;
 	import flash.geom.Rectangle;
@@ -70,7 +72,12 @@ package com.fc.movthecat.screen
 			//characterShadow = BlurFilter.createDropShadow();
 			SoundManager.playSound(SoundAsset.THEME_SONG, true);			
 			charUI = new CharSelectorUI();
-			charUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPlayGame);			
+			charUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPlayGame);	
+			var highscoreDB:GameService = Factory.getInstance(GameService);			
+			if (Util.isIOS)
+				highscoreDB.initGameCenter();
+			else if (Util.isAndroid)
+				highscoreDB.initGooglePlayGameService();
 		}
 		
 		//private function onPlayGame(e:Event):void 
@@ -181,6 +188,8 @@ package com.fc.movthecat.screen
 			var charIdx:int = charUI.charIdx;						
 			var charCfg:CatCfg = Factory.getInstance(CatCfg);
 			MTCUtil.setCatCfg(charIdx, charCfg);
+			var gameSession:GameSession = Factory.getInstance(GameSession);
+			gameSession.foodType = charIdx;
 			var character:Player = Factory.getInstance(Player);
 			character.w = charCfg.width;
 			character.weight = charCfg.weight;

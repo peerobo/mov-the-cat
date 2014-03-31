@@ -62,7 +62,7 @@ package com.fc.movthecat.screen
 				gameOverUI.addEventListener(MTCUtil.EVENT_ON_PLAYGAME, onPlayGame);
 				gameOverUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPickChar);
 				gameOverUI.addEventListener(MTCUtil.EVENT_ON_HOME, onGoHome);
-			}
+			}			
 			gameOverUI.buildGUI();
 			gameOverUI.x = Util.appWidth - gameOverUI.width >> 1;
 			var desY:int = Util.appHeight - gameOverUI.height >> 1;
@@ -73,11 +73,24 @@ package com.fc.movthecat.screen
 				2,
 				{
 					y: desY,
-					transition: Transitions.EASE_OUT_BOUNCE
+					transition: Transitions.EASE_OUT_BOUNCE,
+					onComplete: transitionDone					
 				}
 			)
+			//Starling.juggler.delayCall(flattenGOUI, 0.1);
 			SoundManager.instance.muteMusic = false;
 			System.pauseForGCIfCollectionImminent(0);
+		}
+		
+		private function flattenGOUI():void 
+		{
+			//gameOverUI.flatten();						
+		}
+		
+		private function transitionDone():void 
+		{
+			//gameOverUI.unflatten();
+			gameOverUI.showScore();			
 		}
 		
 		private function onGoHome(e:Event):void 
