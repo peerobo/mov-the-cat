@@ -11,6 +11,8 @@ package com.fc.movthecat.config
 		public var scale:Number;
 		public var weight:Number;
 		public var fps:int;
+		public var reqIdxs:Array;
+		public var numIdxs:Array;
 		public function CatCfg() 
 		{
 			

@@ -39,6 +39,7 @@ package com.fc.movthecat.screen
 	import starling.display.MovieClip;
 	import starling.events.Event;
 	import starling.filters.BlurFilter;
+	import starling.filters.ColorMatrixFilter;
 	import starling.filters.FragmentFilter;
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
@@ -148,7 +149,24 @@ package com.fc.movthecat.screen
 				tileImages.scale = Constants.GAME_SCALE * Starling.contentScaleFactor;
 				tileImages.draw(tex, Util.appWidth, Util.appHeight);			
 				bg = tileImages;
-				cloudBg = MTCUtil.getRandomCloudBG();			
+				var date:Date = new Date();
+				var h:Number = date.getHours();
+				var c:ColorMatrixFilter;
+				if (h > 18)
+				{
+					c = new ColorMatrixFilter();
+					c.adjustBrightness( -0.5);
+					c.adjustSaturation( -1);
+					c.cache();
+					bg.filter = c;
+				}
+				else if (h > 12)
+				{
+					c = Util.getFilter(Util.DISABLE_FILTER) as ColorMatrixFilter;
+					c.cache();
+					bg.filter = c;
+				}
+				cloudBg = MTCUtil.getRandomCloudBG();					
 				addChildAt(cloudBg, 0);
 				addChildAt(bg, 0);
 				needPlayIntro = false;
@@ -195,7 +213,7 @@ package com.fc.movthecat.screen
 			character.weight = charCfg.weight;
 			character.speed = charCfg.speed;			
 			charUI.removeFromParent();
-			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
+			var gameScreen:GameScreen = Factory.getInstance(GameScreen);			
 			gameScreen.addChild(getChildAt(0));			
 			gameScreen.addChild(getChildAt(0));
 			gameScreen.addChild(char);

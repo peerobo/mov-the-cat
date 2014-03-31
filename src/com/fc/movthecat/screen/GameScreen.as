@@ -2,16 +2,20 @@ package com.fc.movthecat.screen
 {
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.GlobalInput;
+	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.LoopableSprite;
 	import com.fc.air.comp.TileImage;
 	import com.fc.air.Util;
+	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.gui.GameOverUI;
+	import com.fc.movthecat.gui.QuoteUI;
 	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.logic.LevelStage;
 	import com.fc.movthecat.MTCUtil;
 	import com.fc.movthecat.screen.game.GameRender;
+	import flash.media.SoundChannel;
 	import flash.system.System;
 	import starling.animation.Transitions;
 	import starling.core.Starling;
@@ -25,6 +29,8 @@ package com.fc.movthecat.screen
 	 */
 	public class GameScreen extends LoopableSprite
 	{
+		public var charIdx:int;		
+		private var sndCh:SoundChannel;
 		private var cloudBG:DisplayObject;
 		private var nextCloudBg:DisplayObject;
 		private var character:MovieClip;
@@ -34,7 +40,7 @@ package com.fc.movthecat.screen
 		
 		public function GameScreen()
 		{
-			
+			charIdx = -1;
 		}
 		
 		override public function onAdded(e:Event):void
@@ -51,11 +57,28 @@ package com.fc.movthecat.screen
 			Starling.juggler.tween(nextCloudBg, 2, { y: 0 } );
 			Starling.juggler.tween(character, 2, { x: Util.appWidth - character.width >> 1, y: 100, transition:Transitions.EASE_OUT, onComplete: onCharacterDone } );
 			
-			SoundManager.instance.muteMusic = true;
+			SoundManager.instance.muteMusic = true;	
+			var gSession:GameSession = Factory.getInstance(GameSession);
+			if (charIdx != gSession.foodType)
+			{
+				charIdx = gSession.foodType;
+				var url:String = SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE;
+				SoundManager.instance.queueSound(url,url);
+				SoundManager.instance.loadAll(playSpecificTheme);
+				
+			}
+		}
+		
+		private function playSpecificTheme(progress:Number):void 
+		{
+			if(progress ==1)
+				sndCh = SoundManager.instance.playSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE, false, int.MAX_VALUE);
 		}
 		
 		public function gameOver():void 
 		{
+			var quoteUI:QuoteUI = Factory.getInstance(QuoteUI);
+			PopupMgr.addPopUp(quoteUI);
 			if (!gameOverUI)
 			{
 				gameOverUI = new GameOverUI();
@@ -64,9 +87,22 @@ package com.fc.movthecat.screen
 				gameOverUI.addEventListener(MTCUtil.EVENT_ON_HOME, onGoHome);
 			}			
 			gameOverUI.buildGUI();
-			gameOverUI.x = Util.appWidth - gameOverUI.width >> 1;
-			var desY:int = Util.appHeight - gameOverUI.height >> 1;
+			gameOverUI.x = Util.appWidth - gameOverUI.width >> 1;			
 			gameOverUI.y = -gameOverUI.height;
+			
+			Starling.juggler.delayCall(showScore, 3);
+			
+			
+			//Starling.juggler.delayCall(flattenGOUI, 0.1);
+			//SoundManager.instance.muteMusic = false;
+			System.pauseForGCIfCollectionImminent(0);
+		}
+		
+		private function showScore():void 
+		{
+			var quoteUI:QuoteUI = Factory.getInstance(QuoteUI);
+			PopupMgr.removePopup(quoteUI);
+			var desY:int = Util.appHeight - gameOverUI.height >> 1;
 			addChild(gameOverUI);
 			Starling.juggler.tween(
 				gameOverUI,
@@ -77,9 +113,6 @@ package com.fc.movthecat.screen
 					onComplete: transitionDone					
 				}
 			)
-			//Starling.juggler.delayCall(flattenGOUI, 0.1);
-			SoundManager.instance.muteMusic = false;
-			System.pauseForGCIfCollectionImminent(0);
 		}
 		
 		private function flattenGOUI():void 
@@ -132,7 +165,7 @@ package com.fc.movthecat.screen
 			Starling.juggler.tween(nextCloudBg, 2, { y: 0 } );
 			Starling.juggler.tween(character, 2, { x: Util.appWidth - character.width >> 1, y: 100, transition:Transitions.EASE_OUT, onComplete: onCharacterDone } );
 			
-			SoundManager.instance.muteMusic = true;
+			//SoundManager.instance.muteMusic = true;
 			gameRender.reset();
 		}
 		
@@ -149,6 +182,15 @@ package com.fc.movthecat.screen
 			logic.startNewGame();	
 			gameRender.reset();
 			addChild(gameRender);
+		}
+		
+		override public function onRemoved(e:Event):void 
+		{
+			super.onRemoved(e);
+			sndCh.stop();
+			sndCh = null;
+			SoundManager.instance.removeSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE);
+			SoundManager.instance.muteMusic = false;	
 		}
 		
 		private function onCloudVanished():void 

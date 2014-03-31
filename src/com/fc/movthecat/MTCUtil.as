@@ -1,6 +1,7 @@
 package com.fc.movthecat 
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.TileImage;
 	import com.fc.air.res.Asset;
 	import com.fc.air.res.ResMgr;
@@ -8,7 +9,9 @@ package com.fc.movthecat
 	import com.fc.movthecat.asset.BackgroundAsset;
 	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
+	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.config.CatCfg;
+	import com.fc.movthecat.logic.ItemsDB;
 	import com.hurlant.crypto.prng.ARC4;
 	import com.hurlant.crypto.prng.Random;
 	import feathers.display.Scale9Image;
@@ -28,6 +31,7 @@ package com.fc.movthecat
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		public static const EVENT_ON_PICK_CHAR:String = "on_pick_char";
 		public static const EVENT_ON_HOME:String = "on_go_home";
+		public static const HIGHSCORE:String = "catMain";
 		static public var catCfgs:Array;
 		
 		public static function getGameImageWithScale(texName:String, scale:Number = -1):DisplayObject
@@ -93,6 +97,13 @@ package com.fc.movthecat
 		static private function onDownloaded(loadedData:String):void 
 		{
 			catCfgs = JSON.parse(loadedData) as Array;
+			
+			var len:int = catCfgs.length;
+			for (var i:int = 0; i < len; i++) 
+			{
+				SoundManager.getSound(SoundAsset.CAT_DIE + i + SoundAsset.FILE_TYPE);
+			}
+			
 		}
 		
 		public static function setCatCfg(idx:int, configObj2Set:CatCfg):void
@@ -102,7 +113,9 @@ package com.fc.movthecat
 			configObj2Set.weight = catCfgs[idx].weight;
 			configObj2Set.width = catCfgs[idx].width;
 			configObj2Set.fps = catCfgs[idx].fps;
-		}
+			configObj2Set.numIdxs = catCfgs[idx].numIdxs;
+			configObj2Set.reqIdxs = catCfgs[idx].reqIdxs;
+		}		
 	}
 
 }

@@ -22,8 +22,10 @@ package com.fc.movthecat
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.ParticleAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.logic.LevelStage;
 	import com.fc.movthecat.screen.LoadingScreen;
+	import flash.desktop.NativeApplication;
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -80,6 +82,8 @@ package com.fc.movthecat
 			BaseJsonGUI.loadCfg();
 			EffectMgr.DEFAULT_FONT = FontAsset.GEARHEAD;		
 			MTCUtil.loadCfgCats();
+			var items:ItemsDB = Factory.getInstance(ItemsDB);
+			items.load();
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
 		}
@@ -91,6 +95,13 @@ package com.fc.movthecat
 				if(Starling.current.isStarted)
 					Starling.current.stop(true);
 				SoundManager.instance.muteMusic = true;   
+				var gameService:GameService = Factory.getInstance(GameService);
+				gameService.saveHighscore();
+				var items:ItemsDB = Factory.getInstance(ItemsDB);
+				items.save();
+				CONFIG::isIOS {
+					NativeApplication.nativeApplication.exit();
+				}
 			}
 		}
 		
@@ -105,11 +116,7 @@ package com.fc.movthecat
 		}
 		
 		public function onAppExit():void
-		{
-			var gameState:GameSave = Factory.getInstance(GameSave);
-			gameState.saveState();	
-			var gameService:GameService = Factory.getInstance(GameService);
-			gameService.saveHighscore();
+		{			
 		}
 		
 		public function reinitializeTextures():void

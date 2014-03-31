@@ -1,7 +1,9 @@
 package com.fc.movthecat.logic
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.base.SoundManager;
 	import com.fc.air.FPSCounter;
+	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.screen.GameScreen;
 	import flash.geom.Point;
@@ -163,11 +165,14 @@ package com.fc.movthecat.logic
 		public function gameOver():void
 		{
 			visibleScreen.needRender = false;
+			var items:ItemsDB = Factory.getInstance(ItemsDB);
+			items.addItem(foodType, foodNum);
 			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
 			gameScreen.gameOver();
 			input = Factory.getInstance(UserInput);
 			input.stop();
 			Starling.juggler.remove(this);
+			SoundManager.playSound(SoundAsset.CAT_DIE + foodType + SoundAsset.FILE_TYPE);
 		}
 		
 		/* INTERFACE starling.animation.IAnimatable */
