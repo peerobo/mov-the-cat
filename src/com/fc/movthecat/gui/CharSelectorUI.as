@@ -36,6 +36,8 @@ package com.fc.movthecat.gui
 		public var recChar:Rectangle;		
 		public var charIdx:int;
 		public var char:MovieClip;
+		public var buyBt:BaseButton;
+		public var tryBt:BaseButton;
 		
 		private var reqs:Array;
 			
@@ -88,11 +90,12 @@ package com.fc.movthecat.gui
 			var posX:int = pickCharBt.x;
 			var h:int = pickCharBt.y - posY;
 			len = catCfg.reqIdxs.length;
-			const HIMG:int = 140;
+			const HIMG:int = 80;
 			var img:DisplayObject;
-			var text:TextField;
+			var text:BaseBitmapTextField;
 			var itemsDB:ItemsDB = Factory.getInstance(ItemsDB);			
 			posY += (h - len * HIMG >> 1);
+			var str:String;
 			if(!itemsDB.checkUnlock(charIdx))
 			{
 				for (var i:int = 0; i < len; i++) 
@@ -101,13 +104,18 @@ package com.fc.movthecat.gui
 					img.height = HIMG;
 					img.scaleX = img.scaleY;
 					addChild(img);
-					img.x = posX - 100;
-					img.y = posY + HIMG * i;					
+					img.x = posX - 80;
+					img.y = posY + (HIMG + 10) * i;					
 					reqs.push(img);
-					text = BFConstructor.getShortTextField(1, HIMG, " x " + catCfg.numIdxs[i], FontAsset.GEARHEAD);
-					text.autoSize = TextFieldAutoSize.HORIZONTAL;
+					var req:int = catCfg.numIdxs[i];
+					str = " x " + req;
+					text = BFConstructor.getShortTextField(1, 1, str, FontAsset.GEARHEAD,0xFFFF80);
+					text.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
+					var avail:int = itemsDB.getItem(catCfg.reqIdxs[i]);
+					text.add( " ("+avail+")", avail > req ? 0x00FF80 : 0xFF0000)
 					text.x = img.x + img.width;
-					text.y = img.y;
+					text.y = img.y + 12;
+					text.scaleX = text.scaleY = 0.6;
 					addChild(text);
 					reqs.push(text);
 				}

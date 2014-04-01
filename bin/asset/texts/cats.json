@@ -20,8 +20,8 @@
 		"scale" : 6,
 		"weight" : 1,
 		"fps" : 2,
-		"reqIdxs": [1],
-		"numIdxs": [1000]
+		"reqIdxs": [1,0],
+		"numIdxs": [1000,200]
 	}, {
 		"width" : 1,
 		"speed" : "0.25",

@@ -13,6 +13,7 @@ package com.fc.movthecat
 	import com.fc.air.base.LayerMgr;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.base.SoundManager;
+	import com.fc.air.comp.IAchievementBanner;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.res.Asset;
 	import com.fc.air.res.ResMgr;
@@ -22,6 +23,7 @@ package com.fc.movthecat
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.ParticleAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.comp.AchievementBanner;
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.logic.LevelStage;
 	import com.fc.movthecat.screen.LoadingScreen;
@@ -65,6 +67,9 @@ package com.fc.movthecat
 			obj["banner"] = Constants.LEAD_BOLT_BANNER_ID;
 			obj["fullscreen"] = Constants.LEAD_BOLT_FULLSCREEN_ID;
 			obj["moregames"] = Constants.LEAD_BOLT_MOREGAMES_ID;
+			CONFIG::isIOS{
+				obj["moregames"] = Constants.LEAD_BOLT_MOREGAMES_ID_IOS;
+			}
 			obj["fbkey"] = Constants.FB_KEY;
 			obj["fbapp"] = Constants.FACEBOOK_APP_ID;
 			obj["twitterkey"] = Constants.TWITTER_KEY;
@@ -88,6 +93,7 @@ package com.fc.movthecat
 			var gameService:GameService = Factory.getInstance(GameService);
 			gameService.registerType(MTCUtil.HIGHSCORE);
 			gameService.loadHighscore();
+			var achievementBanner:IAchievementBanner = Factory.getInstance(AchievementBanner);
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
 		}

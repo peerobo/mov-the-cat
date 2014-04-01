@@ -6,9 +6,10 @@ package  com.fc.movthecat
 	 */
 	public class Constants 
 	{			
-		static public const LEAD_BOLT_BANNER_ID:String = "243217661";
+		static public const LEAD_BOLT_BANNER_ID:String = "264774006";
 		static public const LEAD_BOLT_FULLSCREEN_ID:String = "832847409";
-		static public const LEAD_BOLT_MOREGAMES_ID:String = "634703004";
+		static public const LEAD_BOLT_MOREGAMES_ID_IOS:String = "818870723";
+		static public const LEAD_BOLT_MOREGAMES_ID:String = "749864954";
 		static public const AD_FULL_WAITTIME:int = 4;
 		static public const PRICE_GAME:Number = 2.99;		
 		static public const DISABLE_INPUT_EACH_TOUCH:Number = 1;
@@ -29,6 +30,8 @@ package  com.fc.movthecat
 		static public const CONTENT_VER:String = "?v1";
 		static public const QUOTE_NUM:int = 52;
 		static public const MAX_TUT:int = 20;
+		static public const VIDEO_AD_IOS:String = "com.fc.movthecat";
+		static public const VIDEO_AD_ANDROID:String = "com.fc.movdacat";
 	}
 
 }

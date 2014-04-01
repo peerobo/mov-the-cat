@@ -7,6 +7,7 @@
 		<gameover>Game Over</gameover>
 		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
+		<needInternet>Please enable\nInternet!</needInternet>
 		<new>new</new>
 		<more>More Games</more>
 		<moveLeft>Move\nLeft</moveLeft>
@@ -18,9 +19,9 @@
 		<cat0>Paw</cat0>
 		<cat1>Dirt</cat1>
 		<cat2>Hip</cat2>
-		<cat3>Shadow</cat3>
-		<cat4>Beck</cat4>
-		<cat5>John</cat5>
+		<cat3>Shadow</cat3>		
+		<cat4>John</cat4>
+		<cat5>Beck</cat5>
 		<cat6>Hunger</cat6>
 		<cat7>Snow</cat7>
 		<cat8>Dancy</cat8>
@@ -37,6 +38,14 @@
 		<cat19>Prince</cat19>
 		<cat20>Princess</cat20>
 		<cat21>Goldy</cat21>
+		<achi1>Make a new friend</achi1>
+		<achi2>Nice combo</achi2>
+		<achi3>Brother hood</achi3>
+		<achi4>Holy combo</achi4>
+		<achi5>Eating spree</achi5>
+		<achi6>Family matters</achi6>
+		<achi7>Oh my god</achi7>
+		<try>Try</try>
 		<quote1>"Don't cry because it's over, smile because it happened."\n- Dr. Seuss -</quote1>
 		<quote2>"You only live once, but if you do it right, once is enough."\n- Mae West -</quote2>
 		<quote3>"In three words I can sum up everything I've learned about life: it goes on."\n- Robert Frost -</quote3>

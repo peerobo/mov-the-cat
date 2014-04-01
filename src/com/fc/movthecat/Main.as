@@ -4,6 +4,7 @@ package com.fc.movthecat
 	import com.fc.air.base.GameService;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.Util;
+	import com.fc.movthecat.screen.MainScreen;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
 	import flash.display.Sprite;
@@ -37,12 +38,12 @@ package com.fc.movthecat
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, false, 0x0, stage.fullScreenWidth, stage.fullScreenHeight);
-			addChild(fps);
+			//addChild(fps);
 			var highscoreDB:GameService = Factory.getInstance(GameService);			
 			if (Util.isIOS)
 				highscoreDB.initGameCenter();	
 			else if (Util.isAndroid)
-				highscoreDB.initGooglePlayGameService();
+				highscoreDB.initGooglePlayGameService();			
 			if (Capabilities.cpuArchitecture == "ARM")
 			{
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
@@ -50,6 +51,7 @@ package com.fc.movthecat
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onAppActivate);
 			CONFIG::isIOS
 			{				
+				Util.initVideoAd(Constants.VIDEO_AD_IOS, false, MainScreen.videoAdHandler);
 				startStarlingFramework();
 				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);						
 				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
@@ -76,6 +78,7 @@ package com.fc.movthecat
 				}
 			}
 			CONFIG::isAndroid {
+				Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, MainScreen.videoAdHandler);
 				setTimeout(Util.initAndroidUtility, 4000, onAndroidInit);
 				NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE, onAppActivate);
 				//Util.initAndroidUtility(onAndroidInit);

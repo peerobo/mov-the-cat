@@ -199,6 +199,10 @@ package com.fc.movthecat.screen
 			ScreenMgr.showScreen(GameScreen);
 		}			
 		
+		public static function videoAdHandler():void
+		{
+			
+		}
 	}
 
 }
