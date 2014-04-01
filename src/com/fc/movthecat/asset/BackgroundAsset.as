@@ -11,9 +11,8 @@ package com.fc.movthecat.asset
 		public static var BG_SKY:String = "bg_sky";
 		public static var BG_BRICK:String = "bg_brick";
 		public static var BG_LAND_LEFT:String = "bg_land_head_1";
-		public static var BG_LAND_RIGHT:String = "bg_land_tail_1";
-		public static var BG_LAND_LEFT1:String = "bg_land_head_2";
-		public static var BG_LAND_RIGHT1:String = "bg_land_tail_2";
+		public static var BG_LAND_RIGHT:String = "bg_land_tail_1";		
+		public static var BG_BOX:String = "bg_box";
 		public static var WALL_LIST:Array = [];	
 	}
 

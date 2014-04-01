@@ -2,13 +2,18 @@ package com.fc.movthecat.screen
 {
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.GlobalInput;
+	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.base.SoundManager;
+	import com.fc.air.comp.BGText;
 	import com.fc.air.comp.LoopableSprite;
 	import com.fc.air.comp.TileImage;
 	import com.fc.air.Util;
+	import com.fc.movthecat.asset.BackgroundAsset;
+	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.gui.GameOverUI;
 	import com.fc.movthecat.gui.QuoteUI;
 	import com.fc.movthecat.logic.GameSession;
@@ -64,9 +69,8 @@ package com.fc.movthecat.screen
 				charIdx = gSession.foodType;
 				var url:String = SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE;
 				SoundManager.instance.queueSound(url,url);
-				SoundManager.instance.loadAll(playSpecificTheme);
-				
-			}
+				SoundManager.instance.loadAll(playSpecificTheme);				
+			}									
 		}
 		
 		private function playSpecificTheme(progress:Number):void 
@@ -153,7 +157,7 @@ package com.fc.movthecat.screen
 		}
 		
 		private function onPlayGame(e:Event):void 
-		{
+		{					
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			globalInput.setDisableTimeout(2);
 			Starling.juggler.tween(gameOverUI, 2, { y: -Util.appHeight, onComplete: onHideUI } );
@@ -166,7 +170,47 @@ package com.fc.movthecat.screen
 			Starling.juggler.tween(character, 2, { x: Util.appWidth - character.width >> 1, y: 100, transition:Transitions.EASE_OUT, onComplete: onCharacterDone } );
 			
 			//SoundManager.instance.muteMusic = true;
-			gameRender.reset();
+			gameRender.reset();	
+			addButtons();
+		}
+		
+		private function addButtons():void
+		{
+			var ob:Object = Util.getLocalData("tut").data;
+			if (!ob.hasOwnProperty("count"))
+			{
+				ob["count"] = 0;
+			}
+			if (ob["count"] < Constants.MAX_TUT)
+			{
+				var bts:Array = [];
+				var bt:BGText = new BGText();
+				bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveLeft"), BackgroundAsset.BG_BOX);
+				bt.alpha = 0.3;	
+				bt.touchable = false;
+				addChild(bt);
+				bt.y = Util.appHeight - bt.height;
+				bt.x = 0;				
+				bts.push(bt);
+				bt = new BGText();
+				bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveRight"), BackgroundAsset.BG_BOX);
+				bt.alpha = 0.3;
+				bt.touchable = false;
+				addChild(bt);				
+				Util.g_centerScreen(bt);				
+				bt.x = Util.appWidth - bt.width;								
+				bt.y = Util.appHeight - bt.height;
+				bts.push(bt);
+				Starling.juggler.delayCall(removeBts,5,bts);
+			}
+		}
+		
+		private function removeBts(btArr:Array):void 
+		{
+			for (var i:int = 0; i < btArr.length; i++) 
+			{
+				btArr[i].removeFromParent();
+			}
 		}
 		
 		private function onHideUI():void 
@@ -181,7 +225,8 @@ package com.fc.movthecat.screen
 			var logic:GameSession = Factory.getInstance(GameSession);
 			logic.startNewGame();	
 			gameRender.reset();
-			addChild(gameRender);
+			addChildAt(gameRender, 2);
+			addButtons();
 		}
 		
 		override public function onRemoved(e:Event):void 

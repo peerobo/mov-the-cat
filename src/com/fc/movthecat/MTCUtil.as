@@ -52,7 +52,7 @@ package com.fc.movthecat
 			var mv:MovieClip = Asset.getMovieClip(v, 24, mv);
 			mv.scaleX = mv.scaleY = (scale == -1 ? Constants.GAME_SCALE: scale) * Starling.contentScaleFactor;
 			if (mv.scaleX < 1)
-				mv.smoothing = TextureSmoothing.TRILINEAR;
+				mv.smoothing = TextureSmoothing.BILINEAR;
 			else
 				mv.smoothing = TextureSmoothing.NONE;
 			return mv;

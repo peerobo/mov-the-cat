@@ -73,12 +73,7 @@ package com.fc.movthecat.screen
 			//characterShadow = BlurFilter.createDropShadow();
 			SoundManager.playSound(SoundAsset.THEME_SONG, true);			
 			charUI = new CharSelectorUI();
-			charUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPlayGame);	
-			var highscoreDB:GameService = Factory.getInstance(GameService);			
-			if (Util.isIOS)
-				highscoreDB.initGameCenter();
-			else if (Util.isAndroid)
-				highscoreDB.initGooglePlayGameService();
+			charUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPlayGame);					
 		}
 		
 		//private function onPlayGame(e:Event):void 
@@ -122,21 +117,7 @@ package com.fc.movthecat.screen
 		override public function onAdded(e:Event):void 
 		{
 			super.onAdded(e);						
-			playIntro();
-			//centerUI.buildGUI();
-			//centerUI.unflatten();
-			//centerUI.x = Util.appWidth - centerUI.width >> 1;
-			//var desY:int = Util.appHeight - centerUI.height >> 1;
-			//centerUI.y = -centerUI.height;
-			//addChild(centerUI);
-			//Starling.juggler.tween(
-				//centerUI,
-				//2,
-				//{
-					//y: desY,
-					//transition: Transitions.EASE_OUT_BOUNCE
-				//}
-			//)
+			playIntro();		
 		}
 		
 		private function playIntro():void 
@@ -152,7 +133,7 @@ package com.fc.movthecat.screen
 				var date:Date = new Date();
 				var h:Number = date.getHours();
 				var c:ColorMatrixFilter;
-				if (h > 18)
+				if (h > 18 || h < 4)
 				{
 					c = new ColorMatrixFilter();
 					c.adjustBrightness( -0.5);
@@ -183,9 +164,7 @@ package com.fc.movthecat.screen
 					y: desY,
 					transition: Transitions.EASE_OUT_BOUNCE
 				}
-			)
-			
-			//randomNPCs();
+			)			
 			
 		}
 		
@@ -218,43 +197,7 @@ package com.fc.movthecat.screen
 			gameScreen.addChild(getChildAt(0));
 			gameScreen.addChild(char);
 			ScreenMgr.showScreen(GameScreen);
-		}
-		
-		//private function randomNPCs():void 
-		//{						
-			//var changeAnimation:Boolean = true;
-			//var rnd:int = Util.getRandom(100);
-			//if (changeAnimation)
-			//{
-				//if(character)
-				//{
-					//Factory.toPool(character);
-					//character.removeFromParent();
-				//}
-				//if (rnd < 30)
-				//{
-					//character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE);
-				//}
-				//else if (rnd < 60)
-				//{
-					//character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_JUMP);
-				//}
-				//else 
-				//{
-					//character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_WALK);
-				//}				
-			//}
-			//var rndX:int = Math.random() * (Util.appWidth - character.width - 20);
-			//var rndY:int = Math.random() * (Util.appHeight - character.height - 20);
-			//character.filter = characterShadow;			
-			//character.touchable = false;
-			//character.x = rndX;
-			//character.y = rndY;
-			//addChild(character);
-			//character.fps = 2;
-			//character.play();
-			//randomPlayerCall = Starling.juggler.delayCall(randomNPCs, 5);
-		//}		
+		}			
 		
 	}
 

@@ -1,6 +1,7 @@
 package com.fc.movthecat.screen.game
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.LoopableSprite;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.res.Asset;
@@ -8,6 +9,7 @@ package com.fc.movthecat.screen.game
 	import com.fc.movthecat.asset.BackgroundAsset;
 	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
+	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.logic.BlockMap;
 	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.logic.VisibleScreen;
@@ -229,6 +231,7 @@ package com.fc.movthecat.screen.game
 							visibleScreen.blockMap.blocks[i] = -1;
 							visibleScreen.blockMap.ateFood(i);
 							gameSession.foodNum++;
+							SoundManager.playSound(SoundAsset.CAT_ATE);
 						}
 						else
 						{

@@ -102,7 +102,7 @@ package com.fc.movthecat.gui
 					img.scaleX = img.scaleY;
 					addChild(img);
 					img.x = posX - 100;
-					img.y = posY + HIMG * i;
+					img.y = posY + HIMG * i;					
 					reqs.push(img);
 					text = BFConstructor.getShortTextField(1, HIMG, " x " + catCfg.numIdxs[i], FontAsset.GEARHEAD);
 					text.autoSize = TextFieldAutoSize.HORIZONTAL;
@@ -122,6 +122,7 @@ package com.fc.movthecat.gui
 		
 		override public function onRemoved(e:Event):void 
 		{
+			reqs.splice(0, reqs.length);
 			char = null;
 			super.onRemoved(e);					
 		}

@@ -25,6 +25,7 @@ package com.fc.movthecat
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.logic.LevelStage;
 	import com.fc.movthecat.screen.LoadingScreen;
+	import com.fc.movthecat.screen.MainScreen;
 	import flash.desktop.NativeApplication;
 	import starling.core.Starling;
 	import starling.display.Sprite;
@@ -84,6 +85,9 @@ package com.fc.movthecat
 			MTCUtil.loadCfgCats();
 			var items:ItemsDB = Factory.getInstance(ItemsDB);
 			items.load();
+			var gameService:GameService = Factory.getInstance(GameService);
+			gameService.registerType(MTCUtil.HIGHSCORE);
+			gameService.loadHighscore();
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
 		}
@@ -95,6 +99,7 @@ package com.fc.movthecat
 				if(Starling.current.isStarted)
 					Starling.current.stop(true);
 				SoundManager.instance.muteMusic = true;   
+				SoundManager.instance.mute = true;   
 				var gameService:GameService = Factory.getInstance(GameService);
 				gameService.saveHighscore();
 				var items:ItemsDB = Factory.getInstance(ItemsDB);
@@ -111,12 +116,15 @@ package com.fc.movthecat
 			{	
 				if(!Starling.current.isStarted)
 					Starling.current.start();
-				SoundManager.instance.muteMusic = false;
+				if(ScreenMgr.currScr is MainScreen)
+					SoundManager.instance.muteMusic = false;
+				SoundManager.instance.mute = false;   
 			}
 		}
 		
 		public function onAppExit():void
-		{			
+		{
+			
 		}
 		
 		public function reinitializeTextures():void

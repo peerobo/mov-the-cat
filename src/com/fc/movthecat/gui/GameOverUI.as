@@ -44,6 +44,7 @@ package com.fc.movthecat.gui
 		public var twitterBt:BaseButton;
 		public var facebookBt:BaseButton;
 		public var leaderboardBt:BaseButton;
+		public var newScoreBt:BaseButton;
 		public var best:int;
 		
 		public function GameOverUI() 
@@ -60,7 +61,7 @@ package com.fc.movthecat.gui
 		override public function onAdded(e:Event):void 
 		{
 			super.onAdded(e);
-			
+			newScoreBt.visible = false;
 			lbl.filter = titleShadow;
 			gameOverTxt.filter = glow;			
 			gameOverTxt.text = LangUtil.getText("score");
@@ -128,7 +129,12 @@ package com.fc.movthecat.gui
 			_score = value / 10;			
 			itemTxt.text = "x " + value.toString();
 			gameOverTxt.text = LangUtil.getText("score");			
-			best = best < _score ? _score : best;
+			if (best < _score)
+			{
+				best = _score;
+				newScoreBt.visible = true;
+			}
+			
 			Util.g_replaceAndColorUp(gameOverTxt, ["@score", "@best"], [_score.toString(), best.toString()], [0xFF8040, 0xFFFF80]);
 		}
 		

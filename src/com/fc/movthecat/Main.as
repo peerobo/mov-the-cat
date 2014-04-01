@@ -1,5 +1,7 @@
 package com.fc.movthecat
 {
+	import com.fc.air.base.Factory;
+	import com.fc.air.base.GameService;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.Util;
 	import flash.desktop.NativeApplication;
@@ -14,12 +16,13 @@ package com.fc.movthecat
 	import flash.system.Capabilities;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
+	import flash.utils.setTimeout;
 	import starling.core.Starling;
 	/**
 	 * ...
 	 * @author ndp
 	 */
-	[SWF(frameRate="40",backgroundColor="0x0")]
+	[SWF(frameRate = "40", backgroundColor = "0x0")]
 	public class Main extends Sprite
 	{
 		private var starling:Starling;
@@ -34,15 +37,19 @@ package com.fc.movthecat
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, false, 0x0, stage.fullScreenWidth, stage.fullScreenHeight);
-			//addChild(fps);
-						
+			addChild(fps);
+			var highscoreDB:GameService = Factory.getInstance(GameService);			
+			if (Util.isIOS)
+				highscoreDB.initGameCenter();	
+			else if (Util.isAndroid)
+				highscoreDB.initGooglePlayGameService();
 			if (Capabilities.cpuArchitecture == "ARM")
 			{
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 			}			
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onAppActivate);
 			CONFIG::isIOS
-			{
+			{				
 				startStarlingFramework();
 				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);						
 				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
@@ -69,7 +76,9 @@ package com.fc.movthecat
 				}
 			}
 			CONFIG::isAndroid {
-				Util.initAndroidUtility(onAndroidInit);
+				setTimeout(Util.initAndroidUtility, 4000, onAndroidInit);
+				NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE, onAppActivate);
+				//Util.initAndroidUtility(onAndroidInit);
 			}
 		}
 		
@@ -82,6 +91,7 @@ package com.fc.movthecat
 					Starling.handleLostContext = true;
 					stage.addEventListener(Event.RESIZE, onStageResize);
 					//startStarlingFramework();
+					FPSCounter.log("fullscreen");
 					Util.setAndroidFullscreen(true);
 				}
 				else 
@@ -101,7 +111,10 @@ package com.fc.movthecat
 			private function onAndroidStop():void
 			{
 				if (App.ins)
+				{
+					App.ins.onAppDeactivate();
 					App.ins.onAppExit();
+				}
 			}
 			
 			private function onAndroidResume():void
@@ -129,6 +142,7 @@ package com.fc.movthecat
 		{
 			if (!starling)
 			{				
+				FPSCounter.log("start starling");
 				var sw:int = stage.stageWidth;
 				var sh:int = stage.stageHeight;
 				if (Util.isDesktop)

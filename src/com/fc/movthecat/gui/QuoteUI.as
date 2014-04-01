@@ -26,8 +26,8 @@ package com.fc.movthecat.gui
 		{
 			super.onAdded(e);
 			
-			quoteTxt.text = LangUtil.getText("quote" + int(Util.getRandom(Constants.QUOTE_NUM))); 			
-			this.scaleX = this.scaleY = 0.7;
+			quoteTxt.text = LangUtil.getText("quote" + (1 + int(Util.getRandom(Constants.QUOTE_NUM)))); 			
+			this.scaleX = this.scaleY = 0.6;
 		}
 	}
 

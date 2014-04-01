@@ -7,7 +7,10 @@
 		<gameover>Game Over</gameover>
 		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
+		<new>new</new>
 		<more>More Games</more>
+		<moveLeft>Move\nLeft</moveLeft>
+		<moveRight>Move\nRight</moveRight>
 		<rate>Rate</rate>
 		<pick>Pick</pick>
 		<char>Cats</char>
