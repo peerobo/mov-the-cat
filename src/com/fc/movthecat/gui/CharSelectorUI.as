@@ -3,11 +3,14 @@ package com.fc.movthecat.gui
 	import com.fc.air.base.BaseButton;
 	import com.fc.air.base.BaseJsonGUI;
 	import com.fc.air.base.BFConstructor;
+	import com.fc.air.base.EffectMgr;
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.font.BaseBitmapTextField;
 	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.FPSCounter;
+	import com.fc.air.res.ResMgr;
+	import com.fc.air.Util;
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
@@ -19,6 +22,7 @@ package com.fc.movthecat.gui
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.MovieClip;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
@@ -38,7 +42,8 @@ package com.fc.movthecat.gui
 		public var char:MovieClip;
 		public var buyBt:BaseButton;
 		public var tryBt:BaseButton;
-		
+		public var playSpr:Sprite;
+		public var buySpr:Sprite;
 		private var reqs:Array;
 			
 		public function CharSelectorUI() 
@@ -54,8 +59,35 @@ package com.fc.movthecat.gui
 			
 			pickCharBt.setCallbackFunc(onCharSelect);			
 			nextBt.setCallbackFunc(onUpdate,[1]);
-			backBt.setCallbackFunc(onUpdate,[-1]);			
+			backBt.setCallbackFunc(onUpdate, [ -1]);			
+			tryBt.setCallbackFunc(onTry);
+			buyBt.setCallbackFunc(onBuy);
 			updateChar();
+		}
+		
+		private function onBuy():void 
+		{
+			var itemDB:ItemsDB = Factory.getInstance(ItemsDB);
+			if (itemDB.unlock(charIdx))
+			{
+				updateChar();
+			}
+		}
+		
+		private function onTry():void 
+		{
+			var resMgr:ResMgr = Factory.getInstance(ResMgr);
+			if (!resMgr.isInternetAvailable)
+			{
+				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF9866, 2);
+				return;
+			}
+			if (!Util.isVideoAdAvailable())
+			{
+				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("videonot"), 0xFF9866, 2);
+				return;
+			}
+			Util.showVideoAd();
 		}
 		
 		private function onUpdate(inc:int):void 
@@ -96,7 +128,7 @@ package com.fc.movthecat.gui
 			var itemsDB:ItemsDB = Factory.getInstance(ItemsDB);			
 			posY += (h - len * HIMG >> 1);
 			var str:String;
-			if(!itemsDB.checkUnlock(charIdx))
+			if(len > 0 && !itemsDB.checkUnlock(charIdx))
 			{
 				for (var i:int = 0; i < len; i++) 
 				{
@@ -119,6 +151,13 @@ package com.fc.movthecat.gui
 					addChild(text);
 					reqs.push(text);
 				}
+				buySpr.visible = true;
+				playSpr.visible = false;
+			}
+			else
+			{
+				buySpr.visible = false;
+				playSpr.visible = true;
 			}
 		}
 		
@@ -133,6 +172,13 @@ package com.fc.movthecat.gui
 			reqs.splice(0, reqs.length);
 			char = null;
 			super.onRemoved(e);					
+		}
+		
+		static public function videoAdHandler():void 
+		{
+			var self:CharSelectorUI = Factory.getInstance(CharSelectorUI);
+			self.playSpr.visible = true;
+			self.buySpr.visible = false;
 		}
 		
 	}

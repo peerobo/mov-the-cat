@@ -72,7 +72,7 @@ package com.fc.movthecat.screen
 			//centerUI.addEventListener(MTCUtil.EVENT_ON_PLAYGAME, onPlayGame);
 			//characterShadow = BlurFilter.createDropShadow();
 			SoundManager.playSound(SoundAsset.THEME_SONG, true);			
-			charUI = new CharSelectorUI();
+			charUI = Factory.getInstance(CharSelectorUI);
 			charUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPlayGame);					
 		}
 		
@@ -198,11 +198,6 @@ package com.fc.movthecat.screen
 			gameScreen.addChild(char);
 			ScreenMgr.showScreen(GameScreen);
 		}			
-		
-		public static function videoAdHandler():void
-		{
-			
-		}
 	}
 
 }

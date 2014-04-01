@@ -4,6 +4,7 @@ package com.fc.movthecat
 	import com.fc.air.base.GameService;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.Util;
+	import com.fc.movthecat.gui.CharSelectorUI;
 	import com.fc.movthecat.screen.MainScreen;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
@@ -51,7 +52,7 @@ package com.fc.movthecat
 			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onAppActivate);
 			CONFIG::isIOS
 			{				
-				Util.initVideoAd(Constants.VIDEO_AD_IOS, false, MainScreen.videoAdHandler);
+				Util.initVideoAd(Constants.VIDEO_AD_IOS, false, CharSelectorUI.videoAdHandler);
 				startStarlingFramework();
 				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);						
 				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
@@ -78,7 +79,7 @@ package com.fc.movthecat
 				}
 			}
 			CONFIG::isAndroid {
-				Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, MainScreen.videoAdHandler);
+				Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, CharSelectorUI.videoAdHandler);
 				setTimeout(Util.initAndroidUtility, 4000, onAndroidInit);
 				NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE, onAppActivate);
 				//Util.initAndroidUtility(onAndroidInit);

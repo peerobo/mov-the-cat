@@ -21,11 +21,28 @@ package com.fc.movthecat.logic
 			return obj.hasOwnProperty("cat" + idx);
 		}
 				
-		public function unlock(idx:int):void
+		public function unlock(idx:int):Boolean
 		{
 			var cfg:CatCfg = Factory.getInstance(CatCfg);
 			MTCUtil.setCatCfg(idx, cfg);
-			
+			var canBuy:Boolean = true; 
+			for (var i:int = 0; i < cfg.reqIdxs.length; i++) 
+			{
+				canBuy &&= getItem(cfg.reqIdxs[i]) >= cfg.numIdxs[i];
+			}
+			if (canBuy)
+			{
+				for (i = 0; i < cfg.reqIdxs.length; i++) 
+				{
+					addItem(cfg.reqIdxs[i], -cfg.numIdxs[i]);
+				}
+				obj["cat" + idx] = true;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		
 		public function getItem(idx:int):int

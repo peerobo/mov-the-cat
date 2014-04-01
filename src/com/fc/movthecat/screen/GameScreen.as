@@ -95,8 +95,7 @@ package com.fc.movthecat.screen
 			gameOverUI.y = -gameOverUI.height;
 			
 			Starling.juggler.delayCall(showScore, 3);
-			
-			
+						
 			//Starling.juggler.delayCall(flattenGOUI, 0.1);
 			//SoundManager.instance.muteMusic = false;
 			System.pauseForGCIfCollectionImminent(0);
@@ -227,6 +226,9 @@ package com.fc.movthecat.screen
 			gameRender.reset();
 			addChildAt(gameRender, 2);
 			addButtons();
+			CONFIG::isAndroid{
+				Util.showBannerAd();
+			}
 		}
 		
 		override public function onRemoved(e:Event):void 
