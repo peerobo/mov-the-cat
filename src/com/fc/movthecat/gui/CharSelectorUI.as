@@ -82,12 +82,22 @@ package com.fc.movthecat.gui
 				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF9866, 2);
 				return;
 			}
-			if (!Util.isVideoAdAvailable())
-			{
-				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("videonot"), 0xFF9866, 2);
-				return;
+			CONFIG::isIOS{ 						
+				if(Util.isVideoAdAvailable())
+				{
+					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("videonot"), 0xFF9866, 2);
+					return;
+				}
+				Util.showVideoAd();			
 			}
-			Util.showVideoAd();
+			CONFIG::isAndroid{ 						
+				if(Util.isVideoAdAvailable())
+				{
+					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("videonot"), 0xFF9866, 2);
+					return;
+				}
+				Util.showVideoAd();			
+			}
 		}
 		
 		private function onUpdate(inc:int):void 
@@ -176,6 +186,7 @@ package com.fc.movthecat.gui
 		
 		static public function videoAdHandler():void 
 		{
+			FPSCounter.log("video success");
 			var self:CharSelectorUI = Factory.getInstance(CharSelectorUI);
 			self.playSpr.visible = true;
 			self.buySpr.visible = false;

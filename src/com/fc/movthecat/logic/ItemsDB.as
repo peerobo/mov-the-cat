@@ -1,8 +1,10 @@
 package com.fc.movthecat.logic 
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.base.GameService;
 	import com.fc.air.Util;
 	import com.fc.movthecat.config.CatCfg;
+	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.MTCUtil;
 	/**
 	 * ...
@@ -37,13 +39,23 @@ package com.fc.movthecat.logic
 					addItem(cfg.reqIdxs[i], -cfg.numIdxs[i]);
 				}
 				obj["cat" + idx] = true;
-				return true;
+				if (!obj.hasOwnProperty("catunlock"))
+					obj["catunlock"] = 0;
+				obj["catunlock"]++;
+				var gameService:GameService = Factory.getInstance(GameService);
+				if (obj["catunlock"] == 1)
+					gameService.unlockAchievement(Constants.ACH_UNLOCK_1_CAT);
+				else if (obj["catunlock"] == 5)
+					gameService.unlockAchievement(Constants.ACH_UNLOCK_5_CAT);
+				else if (obj["catunlock"] == 22)
+					gameService.unlockAchievement(Constants.ACH_UNLOCK_22_CAT);
+				return true;				
 			}
 			else
 			{
 				return false;
 			}
-		}
+		}		
 		
 		public function getItem(idx:int):int
 		{

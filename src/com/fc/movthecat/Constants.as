@@ -32,6 +32,13 @@ package  com.fc.movthecat
 		static public const MAX_TUT:int = 20;
 		static public const VIDEO_AD_IOS:String = "com.fc.movthecat";
 		static public const VIDEO_AD_ANDROID:String = "com.fc.movdacat";
+		static public const ACH_UNLOCK_1_CAT:String = "ach1";
+		static public const ACH_10PT:String = "ach2";
+		static public const ACH_UNLOCK_5_CAT:String = "ach3";
+		static public const ACH_20PT:String = "ach4";
+		static public const ACH_50PT:String = "ach5";
+		static public const ACH_UNLOCK_22_CAT:String = "ach6";
+		static public const ACH_100PT:String = "ach7";
 	}
 
 }

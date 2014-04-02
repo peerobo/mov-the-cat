@@ -73,14 +73,12 @@ package com.fc.movthecat.logic
 					switch (touch.phase)
 					{					
 						case TouchPhase.BEGAN: 					
-							keyPress = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
-							FPSCounter.log("began", keyPress);
+							keyPress = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;							
 							break;
 						case TouchPhase.ENDED: 
 							var releaseSide:int = touch.globalX > (Util.appWidth >> 1) ? RIGHT_KEY : LEFT_KEY;
 							if (releaseSide == keyPress)
-								keyPress = NONE_KEY;
-							FPSCounter.log("ended", keyPress);
+								keyPress = NONE_KEY;							
 							break;
 					}
 				}

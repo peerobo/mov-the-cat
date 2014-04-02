@@ -122,6 +122,7 @@ package com.fc.movthecat.screen
 		
 		private function playIntro():void 
 		{
+			var gameService:GameService = Factory.getInstance(GameService);			
 			if (needPlayIntro)
 			{
 				var resMgr:ResMgr = Factory.getInstance(ResMgr);

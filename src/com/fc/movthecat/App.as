@@ -69,6 +69,7 @@ package com.fc.movthecat
 			obj["moregames"] = Constants.LEAD_BOLT_MOREGAMES_ID;
 			CONFIG::isIOS{
 				obj["moregames"] = Constants.LEAD_BOLT_MOREGAMES_ID_IOS;
+				Util.initVideoAd(Constants.VIDEO_AD_IOS, false, CharSelectorUI.videoAdHandler);
 			}
 			obj["fbkey"] = Constants.FB_KEY;
 			obj["fbapp"] = Constants.FACEBOOK_APP_ID;
@@ -92,8 +93,9 @@ package com.fc.movthecat
 			items.load();
 			var gameService:GameService = Factory.getInstance(GameService);
 			gameService.registerType(MTCUtil.HIGHSCORE);
-			gameService.loadHighscore();
+			gameService.load();
 			var achievementBanner:IAchievementBanner = Factory.getInstance(AchievementBanner);
+			gameService.achievementBanner = achievementBanner;
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
 		}
@@ -107,7 +109,7 @@ package com.fc.movthecat
 				SoundManager.instance.muteMusic = true;   
 				SoundManager.instance.mute = true;   
 				var gameService:GameService = Factory.getInstance(GameService);
-				gameService.saveHighscore();
+				gameService.save();
 				var items:ItemsDB = Factory.getInstance(ItemsDB);
 				items.save();
 				CONFIG::isIOS {
