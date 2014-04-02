@@ -5,6 +5,12 @@
 	<en>
 		<gamename>Mov The Cat</gamename>
 		<gameover>Game Over</gameover>
+		<ok>Ok</ok>
+		<cancel>Cancel</cancel>
+		<remindlater>Later</remindlater>
+		<neverask>Never Ask</neverask>
+		<rate>Rate</rate>
+		<rateMsg>Please have some\nwords for us\nif you can?</rateMsg>
 		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
 		<needInternet>Please enable\nInternet!</needInternet>

@@ -234,10 +234,17 @@ package com.fc.movthecat.screen.game
 							visibleScreen.blockMap.ateFood(i);
 							gameSession.foodNum++;
 							
-							if (gameSession.foodNum >= 10)
+							if (gameSession.foodNum >= 100)
 							{
 								var gameService:GameService = Factory.getInstance(GameService);
-								gameService.unlockAchievement(Constants.ACH_10PT);
+								if(gameSession.foodNum >= 1000)
+									gameService.unlockAchievement(Constants.ACH_100PT);
+								else if(gameSession.foodNum >= 500)
+									gameService.unlockAchievement(Constants.ACH_50PT);
+								else if(gameSession.foodNum >= 200)
+									gameService.unlockAchievement(Constants.ACH_20PT);
+								else
+									gameService.unlockAchievement(Constants.ACH_10PT);								
 							}
 								
 							SoundManager.playSound(SoundAsset.CAT_ATE);

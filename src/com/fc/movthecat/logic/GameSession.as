@@ -1,13 +1,18 @@
 package com.fc.movthecat.logic
 {
 	import com.fc.air.base.Factory;
+	import com.fc.air.base.LangUtil;
+	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.FPSCounter;
+	import com.fc.air.Util;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.comp.ConfirmDlg;
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.screen.GameScreen;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.net.SharedObject;
 	import flash.system.System;
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
@@ -173,6 +178,38 @@ package com.fc.movthecat.logic
 			input.stop();
 			Starling.juggler.remove(this);
 			SoundManager.playSound(SoundAsset.CAT_DIE + foodType + SoundAsset.FILE_TYPE);
+			var rateData:SharedObject = Util.getLocalData("rate");			
+			if (rateData.data["launchtime"] >= Constants.REMIND_REVIEW)
+			{
+				rateData.data["launchtime"] = 0;
+				var confirmWnd:ConfirmDlg = Factory.getInstance(ConfirmDlg);
+				confirmWnd.msg = LangUtil.getText("rateMsg");
+				confirmWnd.bts = [
+					LangUtil.getText("rate"),
+					LangUtil.getText("remindlater"),
+					LangUtil.getText("neverask")				
+				];
+				confirmWnd.callback = onCallbackRate;			
+				PopupMgr.addPopUp(confirmWnd);
+			}
+		}
+		
+		private function onCallbackRate(idx:int):void 
+		{
+			var rateData:SharedObject = Util.getLocalData("rate");
+			if (idx == 0)
+			{
+				Util.rateMe();
+				rateData.data["launchtime"] = -1;
+			}
+			else if (idx == 1)
+			{				
+				rateData.data["launchtime"] = 0;
+			}
+			else
+			{
+				rateData.data["launchtime"] = -1;
+			}
 		}
 		
 		/* INTERFACE starling.animation.IAnimatable */

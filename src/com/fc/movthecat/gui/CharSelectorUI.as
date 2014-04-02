@@ -83,7 +83,7 @@ package com.fc.movthecat.gui
 				return;
 			}
 			CONFIG::isIOS{ 						
-				if(Util.isVideoAdAvailable())
+				if(!Util.isVideoAdAvailable())
 				{
 					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("videonot"), 0xFF9866, 2);
 					return;
@@ -91,7 +91,7 @@ package com.fc.movthecat.gui
 				Util.showVideoAd();			
 			}
 			CONFIG::isAndroid{ 						
-				if(Util.isVideoAdAvailable())
+				if(!Util.isVideoAdAvailable())
 				{
 					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("videonot"), 0xFF9866, 2);
 					return;
@@ -110,7 +110,7 @@ package com.fc.movthecat.gui
 		}
 		
 		private function updateChar():void 
-		{
+		{			
 			var len:int;
 			var catCfg:CatCfg = Factory.getInstance(CatCfg);
 			MTCUtil.setCatCfg(charIdx, catCfg);			
@@ -190,6 +190,12 @@ package com.fc.movthecat.gui
 			var self:CharSelectorUI = Factory.getInstance(CharSelectorUI);
 			self.playSpr.visible = true;
 			self.buySpr.visible = false;
+			SoundManager.instance.muteMusic = false;
+		}
+		
+		static public function videoAdStartHandler():void 
+		{
+			SoundManager.instance.muteMusic = true;
 		}
 		
 	}

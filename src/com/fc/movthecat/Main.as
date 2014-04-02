@@ -15,6 +15,7 @@ package com.fc.movthecat
 	import flash.display3D.Context3DProfile;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.net.SharedObject;
 	import flash.system.Capabilities;
 	import flash.ui.Multitouch;
 	import flash.ui.MultitouchInputMode;
@@ -36,7 +37,7 @@ package com.fc.movthecat
 			stage.align = StageAlign.TOP_LEFT;
 			
 			// touch or gesture?
-			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;			
 			
 			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, false, 0x0, stage.fullScreenWidth, stage.fullScreenHeight);
 			addChild(fps);
@@ -78,7 +79,7 @@ package com.fc.movthecat
 				}
 			}
 			CONFIG::isAndroid {
-				Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, CharSelectorUI.videoAdHandler);
+				Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, CharSelectorUI.videoAdHandler, CharSelectorUI.videoAdStartHandler);
 				setTimeout(Util.initAndroidUtility, 4000, onAndroidInit);
 				NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE, onAppActivate);
 				//Util.initAndroidUtility(onAndroidInit);

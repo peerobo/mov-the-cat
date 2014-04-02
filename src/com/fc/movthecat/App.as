@@ -11,6 +11,7 @@ package com.fc.movthecat
 	import com.fc.air.base.IAP;
 	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.LayerMgr;
+	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.IAchievementBanner;
@@ -24,11 +25,13 @@ package com.fc.movthecat
 	import com.fc.movthecat.asset.ParticleAsset;
 	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.comp.AchievementBanner;
+	import com.fc.movthecat.gui.CharSelectorUI;
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.logic.LevelStage;
 	import com.fc.movthecat.screen.LoadingScreen;
 	import com.fc.movthecat.screen.MainScreen;
 	import flash.desktop.NativeApplication;
+	import flash.net.SharedObject;
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -69,7 +72,7 @@ package com.fc.movthecat
 			obj["moregames"] = Constants.LEAD_BOLT_MOREGAMES_ID;
 			CONFIG::isIOS{
 				obj["moregames"] = Constants.LEAD_BOLT_MOREGAMES_ID_IOS;
-				Util.initVideoAd(Constants.VIDEO_AD_IOS, false, CharSelectorUI.videoAdHandler);
+				Util.initVideoAd(Constants.VIDEO_AD_IOS, false, CharSelectorUI.videoAdHandler,CharSelectorUI.videoAdStartHandler,null);
 			}
 			obj["fbkey"] = Constants.FB_KEY;
 			obj["fbapp"] = Constants.FACEBOOK_APP_ID;
@@ -94,10 +97,17 @@ package com.fc.movthecat
 			var gameService:GameService = Factory.getInstance(GameService);
 			gameService.registerType(MTCUtil.HIGHSCORE);
 			gameService.load();
+			PopupMgr.flattenOnPopup = true;
 			var achievementBanner:IAchievementBanner = Factory.getInstance(AchievementBanner);
 			gameService.achievementBanner = achievementBanner;
 			//Util.iLoading = 
 			//Util.iInfoDlg = 
+			
+			var rateData:SharedObject = Util.getLocalData("rate");
+			if (!rateData.data.hasOwnProperty("launchtime"))
+				rateData.data["launchtime"] = 0;
+			if(rateData.data["launchtime"] > -1)
+				rateData.data["launchtime"]++;
 		}
 		
 		public function onAppDeactivate():void
@@ -147,13 +157,13 @@ package com.fc.movthecat
 			removeEventListener(Event.ADDED_TO_STAGE, onInit);
 			
 			var gameState:GameSave = Factory.getInstance(GameSave);
-			gameState.loadState();			
-			var iap:IAP = Factory.getInstance(IAP);
-			iap.initInAppPurchase();
+			gameState.loadState();					
 			CONFIG::isAndroid
 			{
 				var shareAndroid:SocialForAndroid = Factory.getInstance(SocialForAndroid);
 				shareAndroid.init();
+				var iap:IAP = Factory.getInstance(IAP);
+				iap.initInAppPurchase();
 			}						
 			LayerMgr.init(this);
 			var input:GlobalInput = Factory.getInstance(GlobalInput);

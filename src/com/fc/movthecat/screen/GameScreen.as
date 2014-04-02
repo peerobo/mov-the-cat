@@ -174,34 +174,26 @@ package com.fc.movthecat.screen
 		}
 		
 		private function addButtons():void
-		{
-			var ob:Object = Util.getLocalData("tut").data;
-			if (!ob.hasOwnProperty("count"))
-			{
-				ob["count"] = 0;
-			}
-			if (ob["count"] < Constants.MAX_TUT)
-			{
-				var bts:Array = [];
-				var bt:BGText = new BGText();
-				bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveLeft"), BackgroundAsset.BG_BOX);
-				bt.alpha = 0.3;	
-				bt.touchable = false;
-				addChild(bt);
-				bt.y = Util.appHeight - bt.height;
-				bt.x = 0;				
-				bts.push(bt);
-				bt = new BGText();
-				bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveRight"), BackgroundAsset.BG_BOX);
-				bt.alpha = 0.3;
-				bt.touchable = false;
-				addChild(bt);				
-				Util.g_centerScreen(bt);				
-				bt.x = Util.appWidth - bt.width;								
-				bt.y = Util.appHeight - bt.height;
-				bts.push(bt);
-				Starling.juggler.delayCall(removeBts,5,bts);
-			}
+		{						
+			var bts:Array = [];
+			var bt:BGText = new BGText();
+			bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveLeft"), BackgroundAsset.BG_BOX);
+			bt.alpha = 0.3;	
+			bt.touchable = false;
+			addChild(bt);
+			bt.y = Util.appHeight - bt.height;
+			bt.x = 0;				
+			bts.push(bt);
+			bt = new BGText();
+			bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveRight"), BackgroundAsset.BG_BOX);
+			bt.alpha = 0.3;
+			bt.touchable = false;
+			addChild(bt);				
+			Util.g_centerScreen(bt);				
+			bt.x = Util.appWidth - bt.width;								
+			bt.y = Util.appHeight - bt.height;
+			bts.push(bt);
+			Starling.juggler.delayCall(removeBts,5,bts);			
 		}
 		
 		private function removeBts(btArr:Array):void 

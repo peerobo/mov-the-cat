@@ -8,6 +8,7 @@ package com.fc.movthecat.screen
 	import com.fc.air.base.GlobalInput;
 	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.LayerMgr;
+	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.LoopableSprite;
@@ -21,6 +22,7 @@ package com.fc.movthecat.screen
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.comp.ConfirmDlg;
 	import com.fc.movthecat.config.CatCfg;
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.gui.CenterMainUI;
@@ -29,6 +31,7 @@ package com.fc.movthecat.screen
 	import com.fc.movthecat.logic.Player;
 	import com.fc.movthecat.MTCUtil;
 	import flash.geom.Rectangle;
+	import flash.net.SharedObject;
 	import flash.system.System;
 	import starling.animation.DelayedCall;
 	import starling.animation.Transitions;
