@@ -30,9 +30,15 @@ package com.fc.movthecat
 	{
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		public static const EVENT_ON_PICK_CHAR:String = "on_pick_char";
-		public static const EVENT_ON_HOME:String = "on_go_home";
-		public static const HIGHSCORE:String = "catMain";
+		public static const EVENT_ON_HOME:String = "on_go_home";		
+		//CONFIG::isIOS{
+			public static const HIGHSCORE:String = "catMain";
+		//}
+		CONFIG::isAndroid {
+			public static const HIGHSCORE:String = "CgkI7_y9xv4cEAIQAQ";
+		}
 		static public var catCfgs:Array;
+		static private var constants:Object;
 		
 		public static function getGameImageWithScale(texName:String, scale:Number = -1):DisplayObject
 		{
@@ -115,7 +121,36 @@ package com.fc.movthecat
 			configObj2Set.fps = catCfgs[idx].fps;
 			configObj2Set.numIdxs = catCfgs[idx].numIdxs;
 			configObj2Set.reqIdxs = catCfgs[idx].reqIdxs;
-		}		
+		}
+		
+		public static function gsInit():void
+		{
+			constants = constants || { };
+			constants[Constants.ACH_UNLOCK_1_CAT] = 'CgkI7_y9xv4cEAIQAg';
+			constants[Constants.ACH_10PT] = 'CgkI7_y9xv4cEAIQAw';
+			constants[Constants.ACH_UNLOCK_5_CAT] = 'CgkI7_y9xv4cEAIQBA';
+			constants[Constants.ACH_20PT] = 'CgkI7_y9xv4cEAIQBQ';
+			constants[Constants.ACH_50PT] = 'CgkI7_y9xv4cEAIQBg';
+			constants[Constants.ACH_UNLOCK_22_CAT] = 'CgkI7_y9xv4cEAIQBw';
+			constants[Constants.ACH_100PT] = 'CgkI7_y9xv4cEAIQCQ';
+		}
+		
+		public static function gsGetCode(str:String):String
+		{
+			return constants[str];
+		}
+		
+		public static function gsReverseCode(code:String):String
+		{
+			for (var name:String in constants) 
+			{
+				if (constants[name] == code)
+				{
+					return name;
+				}
+			}
+			return "null";
+		}
 	}
 
 }

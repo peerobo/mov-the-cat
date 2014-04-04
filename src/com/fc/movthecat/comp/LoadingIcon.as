@@ -1,68 +1,58 @@
 package com.fc.movthecat.comp 
 {
-	import starling.animation.IAnimatable;
-	import starling.core.Starling;
-	import starling.display.DisplayObject;
-	import flash.display.Graphics;
+	import com.fc.air.base.Factory;
+	import com.fc.air.base.PopupMgr;
+	import com.fc.air.comp.ILoading;
+	import com.fc.air.comp.LoopableSprite;
+	import com.fc.air.Util;
+	import com.fc.movthecat.asset.MTCAsset;
+	import com.fc.movthecat.config.CatCfg;
+	import com.fc.movthecat.MTCUtil;
 	import starling.display.Image;
 	import starling.display.MovieClip;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.filters.ColorMatrixFilter;
-	import starling.text.TextField;
-	import starling.text.TextFieldAutoSize;
-	import starling.textures.Texture;
-	import starling.utils.deg2rad;
 	
 	/**
 	 * ...
 	 * @author ndp
 	 */
-	public class LoadingIcon extends LoopableSprite
+	public class LoadingIcon extends LoopableSprite implements ILoading
 	{	
-		//private var mc:MovieClip;
-		
-		private var stars:Array;
-		private var pageFooter:PageFooter;
-		private var currentProgress:int;
-		static private const NUM_LOADING:Number = 4;
-		
 		public function LoadingIcon() 
 		{
 			super();
-			interval = 0.4;		
-			pageFooter = new PageFooter();
-			var img:Image = Asset.getBaseImage(BackgroundAsset.BG_SQUARE) as Image;
-			var c:ColorMatrixFilter = new ColorMatrixFilter();
-			c.adjustBrightness(0.3);
-			c.adjustHue(0.5);	
-			pageFooter.initTexture(img, Asset.getBaseImage(BackgroundAsset.BG_SQUARE_ALPHA) as Image,72);
-			pageFooter.filter = c;
-			currentProgress = 0;
-		}
-		
-		override public function onRemoved(e:Event):void 
-		{
-			pageFooter.removeFromParent();
-			super.onRemoved(e);
 		}
 		
 		override public function onAdded(e:Event):void 
 		{
 			super.onAdded(e);
 			
-			pageFooter.setState(currentProgress, NUM_LOADING);
-			addChild(pageFooter);
-		}				
-		
-		override public function update(time:Number):void 
-		{
-			super.update(time);
+			var catCfg:CatCfg = Factory.getInstance(CatCfg);			
+			for (var i:int = 0; i < 3; i++) 
+			{				
+				MTCUtil.setCatCfg(i, catCfg);
+				var char:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + i + "_", null, catCfg.scale);
+				char.x = 200 * i;
+				char.fps = catCfg.fps;
+				char.play();
+				addChild(char);
+			}
 			
-			pageFooter.setState(currentProgress, NUM_LOADING);
-			currentProgress++;
-			currentProgress = currentProgress >= NUM_LOADING?0:currentProgress;
 		}
+		
+		/* INTERFACE com.fc.air.comp.ILoading */
+		
+		public function show():void 
+		{
+			PopupMgr.addPopUp(this);
+		}
+		
+		public function close():void 
+		{
+			PopupMgr.removePopup(this);
+		}
+		
 	}
 
 }

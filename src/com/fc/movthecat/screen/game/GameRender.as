@@ -237,14 +237,26 @@ package com.fc.movthecat.screen.game
 							if (gameSession.foodNum >= 100)
 							{
 								var gameService:GameService = Factory.getInstance(GameService);
-								if(gameSession.foodNum >= 1000)
-									gameService.unlockAchievement(Constants.ACH_100PT);
-								else if(gameSession.foodNum >= 500)
-									gameService.unlockAchievement(Constants.ACH_50PT);
-								else if(gameSession.foodNum >= 200)
-									gameService.unlockAchievement(Constants.ACH_20PT);
-								else
-									gameService.unlockAchievement(Constants.ACH_10PT);								
+								CONFIG::isIOS{
+									if(gameSession.foodNum >= 1000)
+										gameService.unlockAchievement(Constants.ACH_100PT);
+									else if(gameSession.foodNum >= 500)
+										gameService.unlockAchievement(Constants.ACH_50PT);
+									else if(gameSession.foodNum >= 200)
+										gameService.unlockAchievement(Constants.ACH_20PT);
+									else
+										gameService.unlockAchievement(Constants.ACH_10PT);								
+								}
+								CONFIG::isAndroid {
+									if(gameSession.foodNum >= 1000)
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_100PT));
+									else if(gameSession.foodNum >= 500)
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_50PT));
+									else if(gameSession.foodNum >= 200)
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_20PT));
+									else
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_10PT));
+								}
 							}
 								
 							SoundManager.playSound(SoundAsset.CAT_ATE);

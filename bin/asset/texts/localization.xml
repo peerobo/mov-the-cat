@@ -14,11 +14,13 @@
 		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
 		<needInternet>Please enable\nInternet!</needInternet>
+		<loginGC>Not login\nGameCenter yet!</loginGC>
+		<loginGP>Not login\nGooglePlay yet!</loginGP>
 		<videonot>Video not yet\navailable</videonot>
 		<new>new</new>
-		<more>More Games</more>
-		<moveLeft>Move\nLeft</moveLeft>
-		<moveRight>Move\nRight</moveRight>
+		<more>Games</more>
+		<moveLeft>Hold to\nMove Left</moveLeft>
+		<moveRight>Hold to\nMove Right</moveRight>
 		<rate>Rate</rate>
 		<pick>Pick</pick>
 		<char>Cats</char>
@@ -53,57 +55,58 @@
 		<achi6>Family matters</achi6>
 		<achi7>Oh my god</achi7>
 		<try>Try</try>
-		<quote1>"Don't cry because it's over, smile because it happened."\n- Dr. Seuss -</quote1>
-		<quote2>"You only live once, but if you do it right, once is enough."\n- Mae West -</quote2>
-		<quote3>"In three words I can sum up everything I've learned about life: it goes on."\n- Robert Frost -</quote3>
-		<quote4>"To live is the rarest thing in the world. Most people exist, that is all."\n- Oscar Wilde -</quote4>
-		<quote5>"It is better to be hated for what you are than to be loved for what you are not."\n- André Gide -</quote5>
-		<quote6>"Life is what happens to you while you're busy making other plans."\n- Allen Saunders -</quote6>
-		<quote7>"Sometimes the questions are complicated and the answers are simple."\n- Dr. Seuss -</quote7>
-		<quote8>"I'm not afraid of death; I just don't want to be there when it happens."\n- Woody Allen -</quote8>
-		<quote9>"Everything you can imagine is real."\n- Pablo Picasso -</quote9>
-		<quote10>"Life is like riding a bicycle. To keep your balance, you must keep moving."\n- Albert Einstein -</quote10>
-		<quote11>"Life isn't about finding yourself. Life is about creating yourself."\n- George Bernard Shaw -</quote11>
-		<quote12>"I'm the one that's got to die when it's time for me to die, so let me live my life the way I want to."\n- Jimi Hendrix -</quote12>
-		<quote13>"Just when you think it can't get any worse, it can. And just when you think it can't get any better, it can."\n- Nicholas Sparks -</quote13>
-		<quote14>"Things change. And friends leave. Life doesn't stop for anybody."\n- Stephen Chbosky -</quote14>
-		<quote15>"The fear of death follows from the fear of life. A man who lives fully is prepared to die at any time."\n- Mark Twain -</quote15>
-		<quote16>"The one you love and the one who loves you are never, ever the same person."\n- Chuck Palahniuk -</quote16>
-		<quote17>"If you don't know where you're going, any road'll take you there"\n- George Harrison -</quote17>
-		<quote18>"We are what we pretend to be, so we must be careful about what we pretend to be."\n- Kurt Vonnegut -</quote18>
-		<quote19>"Some infinities are bigger than other infinities."\n- John Green -</quote19>
-		<quote20>"Life's hard. It's even harder when you're stupid."\n- John Wayne -</quote20>
-		<quote21>"Death ends a life, not a relationship."\n- Mitch Albom -</quote21>
-		<quote22>"Fear is a part of life, if you live, you fear."\n- Diablo 3 -</quote22>
-		<quote23>"Where there is love there is life."\n- Mahatma Gandhi -</quote23>
-		<quote24>"You cannot find peace by avoiding life."\n- Virginia Woolf -</quote24>
-		<quote25>"We have to dare to be ourselves, however frightening or strange that self may prove to be."\n- May Sarton -</quote25>
-		<quote26>"Anyone who lives within their means suffers from a lack of imagination."\n- Oscar Wilde -</quote26>
-		<quote27>"Get busy living or get busy dying."\n- Stephen King -</quote27>
-		<quote28>"May you live every day of your life."\n- Jonathan Swift -</quote28>
-		<quote29>"Life can only be understood backwards; but it must be lived forwards."\n- Søren Kierkegaard -</quote29>
-		<quote30>"Do not go where the path may lead, go instead where there is no path and leave a trail."\n- Ralph Waldo Emerson -</quote30>
-		<quote31>"If my life is going to mean anything, I have to live it myself."\n- Rick Riordan -</quote31>
-		<quote32>"It is said that your life flashes before your eyes just before you die. That is true, it's called Life."\n- Terry Pratchett -</quote32>
-		<quote33>"Life is to be enjoyed, not endured"\n- Gordon B. Hinckley -</quote33>
-		<quote34>"Tell the truth, or someone will tell it for you."\n- Stephanie Klein -</quote34>
-		<quote35>"Monsters are real, and ghosts are real too. They live inside us, and sometimes, they win."\n- Stephen King -</quote35>
-		<quote36>"The more I see, the less I know for sure."\n- John Lennon -</quote36>
-		<quote37>"If I can stop one heart from breaking, I shall not live in vain."\n- Emily Dickinson -</quote37>
-		<quote38>"The most wasted of all days is one without laughter."\n- E.E. Cummings -</quote38>
-		<quote39>"Unbeing dead isn't being alive."\n- E.E. Cummings -</quote39>
-		<quote40>"Some people have lives; some people have music."\n- John Green -</quote40>
-		<quote41>"This is your life and its ending one moment at a time."\n- Chuck Palahniuk -</quote41>
-		<quote42>"I've got nothing to do today but smile."\n- Paul Simon -</quote42>
-		<quote43>"That it will never come again is what makes life so sweet."\n- Emily Dickinson -</quote43>
-		<quote44>"Do I not destroy my enemies when I make them my friends?"\n- Abraham Lincoln -</quote44>
-		<quote45>"No persons are more frequently wrong, than those who will not admit they are wrong."\n- François de La Rochefoucauld -</quote45>
-		<quote46>"Life is a book and there are a thousand pages I have not yet read."\n- Cassandra Clare -</quote46>
-		<quote47>"I don't like people who have never fallen or stumbled"\n- Boris Pasternak -</quote47>
-		<quote48>"The past has no power over the present moment."\n- Eckhart Tolle -</quote48>
-		<quote49>"The trouble is if you don’t spend your life yourself, other people spend it for you."\n- Peter Shaffer -</quote49>
-		<quote50>"There's nowhere you can be that isn't where you're meant to be..."\n- John Lennon -</quote50>
-		<quote51>"You can have it all. Just not all at once."\n- Oprah Winfrey -</quote51>
-		<quote52>"I'll try anything once, twice if I like it, three times to make sure."\n- Mae West -</quote52>
+		<share>\n#movthecat http://t.co/22k8Joe62s</share>
+		<quote1>"Don't cry because it's over, smile because it happened."\n- Dr. Cat-Seuss -</quote1>
+		<quote2>"You only live once, but if you do it right, once is enough."\n- Mae Cat-West -</quote2>
+		<quote3>"In three words I can sum up everything I've learned about life: it goes on."\n- Robert Cat-Frost -</quote3>
+		<quote4>"To live is the rarest thing in the world. Most people exist, that is all."\n- Oscar Cat-Wilde -</quote4>
+		<quote5>"It is better to be hated for what you are than to be loved for what you are not."\n- André Cat-Gide -</quote5>
+		<quote6>"Life is what happens to you while you're busy making other plans."\n- Allen Cat-Saunders -</quote6>
+		<quote7>"Sometimes the questions are complicated and the answers are simple."\n- Dr. Cat-Seuss -</quote7>
+		<quote8>"I'm not afraid of death; I just don't want to be there when it happens."\n- Woody Cat-Allen -</quote8>
+		<quote9>"Everything you can imagine is real."\n- Pablo Cat-Picasso -</quote9>
+		<quote10>"Life is like riding a bicycle. To keep your balance, you must keep moving."\n- Albert Cat-Einstein -</quote10>
+		<quote11>"Life isn't about finding yourself. Life is about creating yourself."\n- George Bernard Cat-Shaw -</quote11>
+		<quote12>"I'm the one that's got to die when it's time for me to die, so let me live my life the way I want to."\n- Jimi Cat-Hendrix -</quote12>
+		<quote13>"Just when you think it can't get any worse, it can. And just when you think it can't get any better, it can."\n- Nicholas Cat-Sparks -</quote13>
+		<quote14>"Things change. And friends leave. Life doesn't stop for anybody."\n- Stephen Cat-Chbosky -</quote14>
+		<quote15>"The fear of death follows from the fear of life. A man who lives fully is prepared to die at any time."\n- Mark Cat-Twain -</quote15>
+		<quote16>"The one you love and the one who loves you are never, ever the same person."\n- Chuck Cat-Palahniuk -</quote16>
+		<quote17>"If you don't know where you're going, any road'll take you there"\n- George Cat-Harrison -</quote17>
+		<quote18>"We are what we pretend to be, so we must be careful about what we pretend to be."\n- Kurt Cat-Vonnegut -</quote18>
+		<quote19>"Some infinities are bigger than other infinities."\n- John Cat-Green -</quote19>
+		<quote20>"Life's hard. It's even harder when you're stupid."\n- John Cat-Wayne -</quote20>
+		<quote21>"Death ends a life, not a relationship."\n- Mitch Cat-Albom -</quote21>
+		<quote22>"Fear is a part of life, if you live, you fear."\n- Cat-Diablo 3 -</quote22>
+		<quote23>"Where there is love there is life."\n- Mahatma Cat-Gandhi -</quote23>
+		<quote24>"You cannot find peace by avoiding life."\n- Virginia Cat-Woolf -</quote24>
+		<quote25>"We have to dare to be ourselves, however frightening or strange that self may prove to be."\n- May Cat-Sarton -</quote25>
+		<quote26>"Anyone who lives within their means suffers from a lack of imagination."\n- Oscar Cat-Wilde -</quote26>
+		<quote27>"Get busy living or get busy dying."\n- Stephen Cat-King -</quote27>
+		<quote28>"May you live every day of your life."\n- Jonathan Cat-Swift -</quote28>
+		<quote29>"Life can only be understood backwards; but it must be lived forwards."\n- Søren Cat-Kierkegaard -</quote29>
+		<quote30>"Do not go where the path may lead, go instead where there is no path and leave a trail."\n- Ralph Waldo Cat-Emerson -</quote30>
+		<quote31>"If my life is going to mean anything, I have to live it myself."\n- Rick Cat-Riordan -</quote31>
+		<quote32>"It is said that your life flashes before your eyes just before you die. That is true, it's called Life."\n- Terry Cat-Pratchett -</quote32>
+		<quote33>"Life is to be enjoyed, not endured"\n- Gordon B. Cat-Hinckley -</quote33>
+		<quote34>"Tell the truth, or someone will tell it for you."\n- Stephanie Cat-Klein -</quote34>
+		<quote35>"Monsters are real, and ghosts are real too. They live inside us, and sometimes, they win."\n- Stephen Cat-King -</quote35>
+		<quote36>"The more I see, the less I know for sure."\n- John Cat-Lennon -</quote36>
+		<quote37>"If I can stop one heart from breaking, I shall not live in vain."\n- Emily Cat-Dickinson -</quote37>
+		<quote38>"The most wasted of all days is one without laughter."\n- E.E. Cat-Cummings -</quote38>
+		<quote39>"Unbeing dead isn't being alive."\n- E.E. Cat-Cummings -</quote39>
+		<quote40>"Some people have lives; some people have music."\n- John Cat-Green -</quote40>
+		<quote41>"This is your life and its ending one moment at a time."\n- Chuck Cat-Palahniuk -</quote41>
+		<quote42>"I've got nothing to do today but smile."\n- Paul Cat-Simon -</quote42>
+		<quote43>"That it will never come again is what makes life so sweet."\n- Emily Cat-Dickinson -</quote43>
+		<quote44>"Do I not destroy my enemies when I make them my friends?"\n- Abraham Cat-Lincoln -</quote44>
+		<quote45>"No persons are more frequently wrong, than those who will not admit they are wrong."\n- François de La Cat-Rochefoucauld -</quote45>
+		<quote46>"Life is a book and there are a thousand pages I have not yet read."\n- Cassandra Cat-Clare -</quote46>
+		<quote47>"I don't like people who have never fallen or stumbled"\n- Boris Cat-Pasternak -</quote47>
+		<quote48>"The past has no power over the present moment."\n- Eckhart Cat-Tolle -</quote48>
+		<quote49>"The trouble is if you don’t spend your life yourself, other people spend it for you."\n- Peter Cat-Shaffer -</quote49>
+		<quote50>"There's nowhere you can be that isn't where you're meant to be..."\n- John Cat-Lennon -</quote50>
+		<quote51>"You can have it all. Just not all at once."\n- Oprah Cat-Winfrey -</quote51>
+		<quote52>"I'll try anything once, twice if I like it, three times to make sure."\n- Mae Cat-West -</quote52>
 	</en>
 </localization>

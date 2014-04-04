@@ -7,6 +7,8 @@ package com.fc.movthecat.asset
 	public class IconAsset 
 	{
 		public static const ICO_CLOUD:String = "ico_cloud";
+		public static const ICO_RAIN:String = "ico_rain";
+		public static const ICO_SNOW:String = "ico_snow";
 		public static const ICO_FOOD_PREFIX:String = "food";
 	}
 

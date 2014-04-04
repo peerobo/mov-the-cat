@@ -1,14 +1,8 @@
 package com.fc.movthecat.screen 
 {
-	import com.fc.air.base.BaseButton;
-	import com.fc.air.base.BFConstructor;
 	import com.fc.air.base.Factory;
-	import com.fc.air.base.font.BaseBitmapTextField;
 	import com.fc.air.base.GameService;
 	import com.fc.air.base.GlobalInput;
-	import com.fc.air.base.LangUtil;
-	import com.fc.air.base.LayerMgr;
-	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.ScreenMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.LoopableSprite;
@@ -16,39 +10,38 @@ package com.fc.movthecat.screen
 	import com.fc.air.FPSCounter;
 	import com.fc.air.res.Asset;
 	import com.fc.air.res.ResMgr;
-	import com.fc.air.Util;
+	import com.fc.air.Util;	
 	import com.fc.movthecat.asset.BackgroundAsset;
-	import com.fc.movthecat.asset.ButtonAsset;
-	import com.fc.movthecat.asset.FontAsset;
+	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.asset.SoundAsset;
-	import com.fc.movthecat.comp.ConfirmDlg;
 	import com.fc.movthecat.config.CatCfg;
 	import com.fc.movthecat.Constants;
-	import com.fc.movthecat.gui.CenterMainUI;
 	import com.fc.movthecat.gui.CharSelectorUI;
 	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.logic.Player;
 	import com.fc.movthecat.MTCUtil;
+	import flash.events.GeolocationEvent;
+	import flash.events.StatusEvent;
+	import flash.events.Event;
 	import flash.geom.Rectangle;
-	import flash.net.SharedObject;
-	import flash.system.System;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.sensors.Geolocation;
 	import starling.animation.DelayedCall;
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
-	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.MovieClip;
 	import starling.events.Event;
-	import starling.filters.BlurFilter;
 	import starling.filters.ColorMatrixFilter;
-	import starling.filters.FragmentFilter;
-	import starling.text.TextField;
-	import starling.text.TextFieldAutoSize;
-	import starling.textures.RenderTexture;
 	import starling.textures.Texture;
-	import starling.textures.TextureSmoothing;
+	import starling.utils.deg2rad;
+	
+	CONFIG::isAndroid{
+		import com.fc.FCAndroidUtility;
+	}
 	
 	/**
 	 * ...
@@ -117,7 +110,7 @@ package com.fc.movthecat.screen
 			charUI.removeFromParent();
 		}
 
-		override public function onAdded(e:Event):void 
+		override public function onAdded(e:starling.events.Event):void 
 		{
 			super.onAdded(e);						
 			playIntro();		
@@ -128,29 +121,37 @@ package com.fc.movthecat.screen
 			var gameService:GameService = Factory.getInstance(GameService);			
 			if (needPlayIntro)
 			{
-				var resMgr:ResMgr = Factory.getInstance(ResMgr);
-				var tex:Texture = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY);
-				var tileImages:TileImage = Factory.getObjectFromPool(TileImage);
-				tileImages.scale = Constants.GAME_SCALE * Starling.contentScaleFactor;
-				tileImages.draw(tex, Util.appWidth, Util.appHeight);			
-				bg = tileImages;
+				var resMgr:ResMgr = Factory.getInstance(ResMgr);				
+				var tex:Texture;
 				var date:Date = new Date();
 				var h:Number = date.getHours();
-				var c:ColorMatrixFilter;
-				if (h > 18 || h < 4)
+				if (h >= 22 || h < 4)
 				{
-					c = new ColorMatrixFilter();
-					c.adjustBrightness( -0.5);
-					c.adjustSaturation( -1);
-					c.cache();
-					bg.filter = c;
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MIDNIGHT);
 				}
-				else if (h > 12)
+				else if (h >= 4 && h < 9)
 				{
-					c = Util.getFilter(Util.DISABLE_FILTER) as ColorMatrixFilter;
-					c.cache();
-					bg.filter = c;
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MORNING);
 				}
+				else if (h >= 9 && h < 14)
+				{
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_NOON);
+				}
+				else if(h>=14 && h < 17)
+				{
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_AFTERNOON);
+				}
+				else
+				{
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_EVENING);
+				}
+				
+				var tileImages:TileImage = Factory.getObjectFromPool(TileImage);	
+				tileImages.scale = 1;
+				tileImages.draw(tex, Util.appWidth, Util.appHeight);				
+				bg = tileImages;
+				//onGeoHandler();
+				drawWeather();
 				cloudBg = MTCUtil.getRandomCloudBG();					
 				addChildAt(cloudBg, 0);
 				addChildAt(bg, 0);
@@ -172,7 +173,7 @@ package com.fc.movthecat.screen
 			
 		}
 		
-		private function onPlayGame(e:Event):void 
+		private function onPlayGame(e:starling.events.Event):void 
 		{
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);		
 			globalInput.setDisableTimeout(2);
@@ -201,7 +202,114 @@ package com.fc.movthecat.screen
 			gameScreen.addChild(getChildAt(0));
 			gameScreen.addChild(char);
 			ScreenMgr.showScreen(GameScreen);
-		}			
+		}		
+		
+				
+		private function onImmersive():void
+		{	
+			//var resMgr:ResMgr = Factory.getInstance(ResMgr);				
+			//var tex:Texture;
+			//var date:Date = new Date();
+			//var h:Number = date.getHours();
+			//if (h >= 22 || h < 4)
+			//{
+				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MIDNIGHT);
+			//}
+			//else if (h >= 4 && h < 9)
+			//{
+				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MORNING);
+			//}
+			//else if (h >= 9 && h < 14)
+			//{
+				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_NOON);
+			//}
+			//else if(h>=14 && h < 17)
+			//{
+				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_AFTERNOON);
+			//}
+			//else
+			//{
+				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_EVENING);
+			//}
+			//bg.draw(tex, Util.appWidth, Util.appHeight);
+			//onGeoHandler();
+			//drawWeather();
+		}
+		
+		private function drawWeather():void 
+		{
+			var resMgr:ResMgr = Factory.getInstance(ResMgr);
+			if (!resMgr.isInternetAvailable)
+				return;
+			if (Geolocation.isSupported)
+			{
+				var geo:Geolocation = new Geolocation();
+				if(geo.muted)
+					geo.addEventListener(StatusEvent.STATUS, onChangeState);
+				else
+					geo.addEventListener(GeolocationEvent.UPDATE, onGeoHandler);
+			}
+		}
+		
+		private function onChangeState(e:StatusEvent):void 
+		{
+			var geo:Geolocation = e.currentTarget as Geolocation;
+			if (!geo.muted)
+			{
+				geo.removeEventListener(StatusEvent.STATUS, onChangeState)
+				geo.addEventListener(GeolocationEvent.UPDATE, onGeoHandler);
+			}
+		}
+		
+		private function onGeoHandler(e:GeolocationEvent = null):void 
+		{
+			var geo:Geolocation = e.currentTarget as Geolocation;
+			geo.removeEventListener(GeolocationEvent.UPDATE, onGeoHandler);			
+			var urlRequest:URLRequest = new URLRequest("http://api.openweathermap.org/data/2.5/weather?lat=" + e.latitude.toString() + "&lon=" + e.longitude.toString());
+			//var urlRequest:URLRequest = new URLRequest("http://api.openweathermap.org/data/2.5/weather?lat=21.033333&lon=105.85");
+			var urlLoader:URLLoader = new URLLoader();
+			urlLoader.addEventListener(flash.events.Event.COMPLETE, onCompleteWeather);
+			urlLoader.load(urlRequest);
+        } 
+		
+		private function onCompleteWeather(e:flash.events.Event):void 
+		{
+			var urlLoader:URLLoader = e.currentTarget as URLLoader;
+			urlLoader.removeEventListener(flash.events.Event.COMPLETE, onCompleteWeather);
+			var resMgr:ResMgr = Factory.getInstance(ResMgr);				
+			var tex:Texture;
+			var str:String = (e.currentTarget as URLLoader).data;
+			var weatherObj:Object = JSON.parse(str);
+			switch(weatherObj.weather[0].main)
+			{
+				case "Rain":
+				case "Thunderstorm":
+				case "Drizzle":
+				case "Extreme":
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, IconAsset.ICO_RAIN);
+				break;
+				case "Snow":
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, IconAsset.ICO_SNOW);
+				break;
+				default:
+					return;
+			}
+			
+			var img:Image = Factory.getObjectFromPool(Image);
+			img.texture = tex;
+			img.readjustSize();
+			img.scaleX = img.scaleY = Starling.contentScaleFactor;			
+			for (var i:int = 0; i < 50; i++) 
+			{
+				img.x = Util.getRandom(Util.appWidth - img.width);
+				img.y = Util.getRandom(Util.appHeight - img.height);				
+				
+				bg.addImage(img);
+			}
+			Factory.toPool(img);
+		}
+			
+		
 	}
 
 }

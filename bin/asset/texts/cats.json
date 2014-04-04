@@ -147,7 +147,7 @@
 		"speed" : "0.25",
 		"scale" : 6,
 		"weight" : 1,
-		"fps" : 3,
+		"fps" : 5,
 		"reqIdxs": [],
 		"numIdxs": []
 	}, {
@@ -155,7 +155,7 @@
 		"speed" : "0.25",
 		"scale" : 6,
 		"weight" : 1,
-		"fps" : 3,
+		"fps" : 5,
 		"reqIdxs": [],
 		"numIdxs": []
 	}, {
@@ -163,7 +163,7 @@
 		"speed" : "0.25",
 		"scale" : 6,
 		"weight" : 1,
-		"fps" : 3,
+		"fps" : 5,
 		"reqIdxs": [],
 		"numIdxs": []
 	}, {
@@ -171,7 +171,7 @@
 		"speed" : "0.25",
 		"scale" : 6,
 		"weight" : 1,
-		"fps" : 3,
+		"fps" : 5,
 		"reqIdxs": [],
 		"numIdxs": []
 	}

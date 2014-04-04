@@ -10,18 +10,25 @@ package com.fc.movthecat.gui
 	import com.fc.air.base.GlobalInput;
 	import com.fc.air.base.LangUtil;
 	import com.fc.air.base.SoundManager;
+	import com.fc.air.res.ResMgr;
 	import com.fc.air.Util;
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.IconAsset;
+	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.comp.LoadingIcon;
+	import com.fc.movthecat.config.CatCfg;
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.MTCUtil;
+	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.net.navigateToURL;
 	import flash.net.URLRequest;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.MovieClip;
 	import starling.events.Event;
 	import starling.filters.BlurFilter;
 	import starling.text.TextField;
@@ -72,20 +79,98 @@ package com.fc.movthecat.gui
 			facebookBt.setCallbackFunc(onFB);
 			twitterBt.setCallbackFunc(onTwitter);
 			leaderboardBt.setCallbackFunc(onLeaderboard);
+			
+			var catCfg:CatCfg = Factory.getInstance(CatCfg);	
+			var arr:Array = [playBt, btMoreGame, charBt];
+			for (var i:int = 0; i < 6; i++) 
+			{				
+				var idx2:int = i / 2;
+				var idx:int = Util.getRandom(MTCUtil.catCfgs.length);
+				MTCUtil.setCatCfg(idx, catCfg);
+				var char:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + idx + "_", null, catCfg.scale);
+				
+				char.fps = catCfg.fps;
+				char.play();
+				char.touchable = false;
+				if (i % 2 == 0)
+				{
+					char.scaleX = -char.scaleX;
+					char.x = arr[idx2].x + char.width/2;					
+				}
+				else
+				{
+					char.x = arr[idx2].x + arr[idx2].width - char.width/2;					
+				}
+				char.y = arr[idx2].y + (arr[idx2].height - char.height >>1);
+				addChild(char);
+			}
 		}
 		
 		private function onLeaderboard():void 
 		{
+			var gameService:GameService = Factory.getInstance(GameService);			
+			CONFIG::isIOS {
+				if(Util.internetAvailable)
+				{					
+					gameService.showGameCenterHighScore(MTCUtil.HIGHSCORE);				
+				}
+				else
+				{
+					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF8080, 2);					
+				}
+			}
+			CONFIG::isAndroid {
+				if (Util.internetAvailable)
+				{				
+					gameService.showGooglePlayLeaderboard(MTCUtil.gsGetCode(MTCUtil.HIGHSCORE));
+				}
+				else
+				{
+					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF8080, 2);
+				}
+			}
+			
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);
 		}
 		
 		private function onTwitter():void 
 		{
+			var bitmapData:BitmapData = Util.g_takeSnapshot();
+			var loadingIcon:LoadingIcon = Factory.getInstance(LoadingIcon);
+			loadingIcon.show();
+			var msg:String = LangUtil.getText("quote" + (int(Util.getRandom(Constants.QUOTE_NUM) + 1))) + LangUtil.getText("share");
+			CONFIG::isAndroid {
+				Util.shareOnTTAndroid(msg, bitmapData, onDoneShare);
+				Starling.juggler.delayCall(loadingIcon.close, 5);
+			}
+			CONFIG::isIOS {
+				Util.shareOnIOS(true, msg, bitmapData);
+				Starling.juggler.delayCall(loadingIcon.close, 5);
+			}
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);
+		}
+		
+		private function onDoneShare(shareOK:Boolean):void 
+		{
+			var loadingIcon:LoadingIcon = Factory.getInstance(LoadingIcon);
+			loadingIcon.close();
 		}
 		
 		private function onFB():void 
 		{
+			var bitmapData:BitmapData = Util.g_takeSnapshot();
+			var loadingIcon:LoadingIcon = Factory.getInstance(LoadingIcon);
+			loadingIcon.show();
+			var msg:String = LangUtil.getText("quote" + (int(Util.getRandom(Constants.QUOTE_NUM) + 1))) + LangUtil.getText("share");
+			CONFIG::isAndroid {
+				Util.shareOnFBAndroid(msg, bitmapData, onDoneShare);
+				Starling.juggler.delayCall(loadingIcon.close, 5);
+			}
+			CONFIG::isIOS {
+				Util.shareOnIOS(true, msg, bitmapData);
+				Starling.juggler.delayCall(loadingIcon.close, 5);
+			}
+			
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);
 		}
 		
@@ -176,7 +261,12 @@ package com.fc.movthecat.gui
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			globalInput.disable = false;
 			var gameService:GameService = Factory.getInstance(GameService);
-			gameService.setHighscore(MTCUtil.HIGHSCORE,best);
+			CONFIG::isAndroid{
+				gameService.setHighscore(MTCUtil.gsGetCode(MTCUtil.HIGHSCORE), best);
+			}
+			CONFIG::isIOS {
+				gameService.setHighscore(MTCUtil.HIGHSCORE, best);
+			}
 		}
 		
 	}

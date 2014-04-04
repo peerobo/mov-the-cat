@@ -7,6 +7,7 @@ package com.fc.movthecat.comp
 	import com.fc.air.Util;
 	import com.fc.movthecat.asset.BackgroundAsset;
 	import com.fc.movthecat.asset.FontAsset;
+	import com.fc.movthecat.MTCUtil;
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	/**
@@ -37,6 +38,9 @@ package com.fc.movthecat.comp
 		{
 			CONFIG::isIOS {
 				achName = LangUtil.getText(achName); 
+			}
+			CONFIG::isAndroid {
+				achName = LangUtil.getText(MTCUtil.gsReverseCode(achName));
 			}
 			if (Util.isDesktop)
 				achName = LangUtil.getText(achName); 

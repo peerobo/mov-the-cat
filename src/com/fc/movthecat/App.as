@@ -25,6 +25,7 @@ package com.fc.movthecat
 	import com.fc.movthecat.asset.ParticleAsset;
 	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.comp.AchievementBanner;
+	import com.fc.movthecat.comp.LoadingIcon;
 	import com.fc.movthecat.gui.CharSelectorUI;
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.logic.LevelStage;
@@ -92,15 +93,16 @@ package com.fc.movthecat
 			BaseJsonGUI.loadCfg();
 			EffectMgr.DEFAULT_FONT = FontAsset.GEARHEAD;		
 			MTCUtil.loadCfgCats();
+			MTCUtil.gsInit();
 			var items:ItemsDB = Factory.getInstance(ItemsDB);
 			items.load();
-			var gameService:GameService = Factory.getInstance(GameService);
-			gameService.registerType(MTCUtil.HIGHSCORE);
+			var gameService:GameService = Factory.getInstance(GameService);						
+			gameService.registerType(MTCUtil.HIGHSCORE);						
 			gameService.load();
 			PopupMgr.flattenOnPopup = true;
 			var achievementBanner:IAchievementBanner = Factory.getInstance(AchievementBanner);
 			gameService.achievementBanner = achievementBanner;
-			//Util.iLoading = 
+			Util.iLoading = Factory.getInstance(LoadingIcon);
 			//Util.iInfoDlg = 
 			
 			var rateData:SharedObject = Util.getLocalData("rate");
@@ -138,12 +140,7 @@ package com.fc.movthecat
 					SoundManager.instance.muteMusic = false;
 				SoundManager.instance.mute = false;   
 			}
-		}
-		
-		public function onAppExit():void
-		{
-			
-		}
+		}		
 		
 		public function reinitializeTextures():void
 		{

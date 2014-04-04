@@ -29,18 +29,22 @@ package com.fc.movthecat
 	public class Main extends Sprite
 	{
 		private var starling:Starling;
+		private var isLaunching:Boolean;
+		private var timeOut:uint;
 		
 		public function Main():void
 		{
 			stage.quality = StageQuality.LOW;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
+			isLaunching = true;
 			
+			timeOut = 0;
 			// touch or gesture?
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;			
 			
 			var fps:FPSCounter = new FPSCounter(0, 0, 0xFFFFFF, false, 0x0, stage.fullScreenWidth, stage.fullScreenHeight);
-			addChild(fps);
+			//addChild(fps);
 			var highscoreDB:GameService = Factory.getInstance(GameService);			
 			if (Util.isIOS)
 				highscoreDB.initGameCenter();	
@@ -50,18 +54,15 @@ package com.fc.movthecat
 			{
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
 			}			
-			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onAppActivate);
+			NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE, onAppActivate);			
+			NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
 			CONFIG::isIOS
 			{								
-				startStarlingFramework();
-				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);						
-				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
+				startStarlingFramework();				
 			}
 			if (Util.isDesktop)
 			{
-				startStarlingFramework();
-				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onAppExit);						
-				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onAppDeactivate);
+				startStarlingFramework();				
 			}			
 		}
 		
@@ -79,9 +80,23 @@ package com.fc.movthecat
 				}
 			}
 			CONFIG::isAndroid {
-				Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, CharSelectorUI.videoAdHandler, CharSelectorUI.videoAdStartHandler);
-				setTimeout(Util.initAndroidUtility, 4000, onAndroidInit);
-				NativeApplication.nativeApplication.removeEventListener(Event.ACTIVATE, onAppActivate);
+				if (isLaunching)
+				{
+					Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, CharSelectorUI.videoAdHandler, CharSelectorUI.videoAdStartHandler, null);
+					if(timeOut == 0)
+						timeOut = setTimeout(onAndroidInit, 3000);
+					Util.initAndroidUtility();					
+					//onAndroidInit();
+				}
+				else
+				{
+					Util.initAndroidUtility();
+					onAndroidInit();
+				}
+				if (App.ins)
+				{				
+					App.ins.onAppActivate();
+				}
 				//Util.initAndroidUtility(onAndroidInit);
 			}
 		}
@@ -89,56 +104,27 @@ package com.fc.movthecat
 		CONFIG::isAndroid{		
 			private function onAndroidInit():void 
 			{
-				
-				if (Util.androidVersionInt >= Util.KITKAT)
+				if (isLaunching)
 				{
-					Starling.handleLostContext = true;
-					stage.addEventListener(Event.RESIZE, onStageResize);
-					//startStarlingFramework();
-					FPSCounter.log("fullscreen");
-					Util.setAndroidFullscreen(true);
+					if (Util.androidVersionInt >= Util.KITKAT)
+					{	
+						Starling.handleLostContext = true;
+						stage.addEventListener(Event.RESIZE, onStageResize);
+					}
+					else 
+					{
+						Starling.handleLostContext = false;
+						startStarlingFramework();
+					}
+					isLaunching = false;
 				}
-				else 
-				{
-					Starling.handleLostContext = false;
-					startStarlingFramework();
-				}
-				Util.initAndroidAppStateHandle(onAndroidPause, onAndroidStop, onAndroidResume);		
+				Util.setAndroidFullscreen(true);
 			}
-			
-			private function onAndroidPause():void
-			{
-				if (App.ins)
-					App.ins.onAppDeactivate();
-			}
-			
-			private function onAndroidStop():void
-			{
-				if (App.ins)
-				{
-					App.ins.onAppDeactivate();
-					App.ins.onAppExit();
-				}
-			}
-			
-			private function onAndroidResume():void
-			{
-				if (App.ins)
-					App.ins.onAppActivate();
-			}
-			
 			
 			private function onStageResize(e:Event):void 
 			{
 				startStarlingFramework();
-			}
-		}
-		
-		private function onAppExit(e:Event):void
-		{
-			if (App.ins)
-			{
-				App.ins.onAppExit();
+				stage.removeEventListener(Event.RESIZE, onStageResize);
 			}
 		}
 		

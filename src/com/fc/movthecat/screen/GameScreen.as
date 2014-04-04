@@ -179,6 +179,7 @@ package com.fc.movthecat.screen
 			var bt:BGText = new BGText();
 			bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveLeft"), BackgroundAsset.BG_BOX);
 			bt.alpha = 0.3;	
+			bt.scaleX = bt.scaleY = 0.7;
 			bt.touchable = false;
 			addChild(bt);
 			bt.y = Util.appHeight - bt.height;
@@ -187,6 +188,7 @@ package com.fc.movthecat.screen
 			bt = new BGText();
 			bt.setText(FontAsset.GEARHEAD, LangUtil.getText("moveRight"), BackgroundAsset.BG_BOX);
 			bt.alpha = 0.3;
+			bt.scaleX = bt.scaleY = 0.7;
 			bt.touchable = false;
 			addChild(bt);				
 			Util.g_centerScreen(bt);				
