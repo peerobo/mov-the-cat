@@ -125,25 +125,37 @@ package com.fc.movthecat.screen
 				var tex:Texture;
 				var date:Date = new Date();
 				var h:Number = date.getHours();
-				if (h >= 22 || h < 4)
+				if (h >= 0 && h < 1)
 				{
-					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MIDNIGHT);
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_0_1);
 				}
-				else if (h >= 4 && h < 9)
+				else if (h >= 11 && h < 14)
 				{
-					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MORNING);
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_11_14);
 				}
-				else if (h >= 9 && h < 14)
+				else if (h >= 14 && h < 17)
 				{
-					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_NOON);
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_14_17);
 				}
-				else if(h>=14 && h < 17)
+				else if((h>=17 && h < 19)||(h>=6 && h < 8))
 				{
-					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_AFTERNOON);
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_17_19_6_8);
+				}
+				else if((h>=21 && h < 23)||(h>=2 && h < 5))
+				{
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_21_23_2_5);
+				}
+				else if(h>=1 && h < 2)
+				{
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_23_0_1_2);
+				}
+				else if(h>=8 && h < 11)
+				{
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_8_11);
 				}
 				else
 				{
-					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_EVENING);
+					tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_19_21_5_6);
 				}
 				
 				var tileImages:TileImage = Factory.getObjectFromPool(TileImage);	

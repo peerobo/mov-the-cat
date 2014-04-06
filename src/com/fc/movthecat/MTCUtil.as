@@ -31,9 +31,9 @@ package com.fc.movthecat
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		public static const EVENT_ON_PICK_CHAR:String = "on_pick_char";
 		public static const EVENT_ON_HOME:String = "on_go_home";		
-		//CONFIG::isIOS{
+		CONFIG::isIOS{
 			public static const HIGHSCORE:String = "catMain";
-		//}
+		}
 		CONFIG::isAndroid {
 			public static const HIGHSCORE:String = "CgkI7_y9xv4cEAIQAQ";
 		}
@@ -121,6 +121,14 @@ package com.fc.movthecat
 			configObj2Set.fps = catCfgs[idx].fps;
 			configObj2Set.numIdxs = catCfgs[idx].numIdxs;
 			configObj2Set.reqIdxs = catCfgs[idx].reqIdxs;
+			if (configObj2Set.numIdxs < configObj2Set.reqIdxs)
+			{
+				var len:int = configObj2Set.numIdxs.length;
+				for (var i:int = len; i < configObj2Set.reqIdxs.length; i++) 
+				{
+					configObj2Set.numIdxs[i] = configObj2Set.numIdxs[len - 1];
+				}
+			}
 		}
 		
 		public static function gsInit():void

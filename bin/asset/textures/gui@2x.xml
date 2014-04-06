@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:c8eca614118df8466eb4a3868a297316$ -->
+<!-- $TexturePacker:SmartUpdate:5a170a514215c633a7f7320007defabd$ -->
 <TextureAtlas imagePath="gui@2x.png">
-    <SubTexture name="bg_box" x="437" y="481" width="19" height="18"/>
-    <SubTexture name="bg_square" x="438" y="454" width="13" height="13"/>
-    <SubTexture name="bg_square_alpha" x="383" y="454" width="26" height="26"/>
-    <SubTexture name="bt_blue" x="411" y="454" width="25" height="25"/>
-    <SubTexture name="bt_facebook" x="256" y="372" width="125" height="125"/>
-    <SubTexture name="bt_green" x="410" y="482" width="25" height="25"/>
-    <SubTexture name="bt_leaderboard" x="129" y="372" width="125" height="125"/>
-    <SubTexture name="bt_twitter" x="2" y="372" width="125" height="125"/>
-    <SubTexture name="bt_yellow" x="383" y="482" width="25" height="25"/>
+    <SubTexture name="bg_box" x="111" y="474" width="19" height="18"/>
+    <SubTexture name="bg_square" x="111" y="494" width="13" height="13"/>
+    <SubTexture name="bg_square_alpha" x="2" y="474" width="26" height="26"/>
+    <SubTexture name="bt_achievement" x="308" y="372" width="100" height="100"/>
+    <SubTexture name="bt_blue" x="84" y="474" width="25" height="25"/>
+    <SubTexture name="bt_facebook" x="206" y="372" width="100" height="100"/>
+    <SubTexture name="bt_green" x="57" y="474" width="25" height="25"/>
+    <SubTexture name="bt_leaderboard" x="104" y="372" width="100" height="100"/>
+    <SubTexture name="bt_twitter" x="2" y="372" width="100" height="100"/>
+    <SubTexture name="bt_yellow" x="30" y="474" width="25" height="25"/>
     <SubTexture name="gearhead" x="2" y="2" width="510" height="368" frameX="-1" frameY="-1" frameWidth="512" frameHeight="370"/>
-    <SubTexture name="ico_arrow" x="383" y="372" width="80" height="80"/>
-    <SubTexture name="ico_indicator" x="465" y="372" width="85" height="68"/>
+    <SubTexture name="ico_arrow" x="410" y="372" width="80" height="80"/>
+    <SubTexture name="ico_indicator" x="492" y="372" width="85" height="68"/>
 </TextureAtlas>

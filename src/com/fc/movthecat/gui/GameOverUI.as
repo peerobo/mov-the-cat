@@ -12,6 +12,7 @@ package com.fc.movthecat.gui
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.res.ResMgr;
 	import com.fc.air.Util;
+	import com.fc.FCAndroidUtility;
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
@@ -21,6 +22,7 @@ package com.fc.movthecat.gui
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.MTCUtil;
+	import com.fc.movthecat.screen.GameScreen;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.net.navigateToURL;
@@ -51,6 +53,7 @@ package com.fc.movthecat.gui
 		public var twitterBt:BaseButton;
 		public var facebookBt:BaseButton;
 		public var leaderboardBt:BaseButton;
+		public var achievementBt:BaseButton;
 		public var newScoreBt:BaseButton;
 		public var best:int;
 		
@@ -76,9 +79,11 @@ package com.fc.movthecat.gui
 			charBt.setCallbackFunc(onChar);
 			playBt.setCallbackFunc(onPlayGame);
 			btMoreGame.setCallbackFunc(onMoreGame);			
-			facebookBt.setCallbackFunc(onFB);
+			
+			facebookBt.setCallbackFunc(onFB);			
 			twitterBt.setCallbackFunc(onTwitter);
 			leaderboardBt.setCallbackFunc(onLeaderboard);
+			achievementBt.setCallbackFunc(onAchievement);			
 			
 			var catCfg:CatCfg = Factory.getInstance(CatCfg);	
 			var arr:Array = [playBt, btMoreGame, charBt];
@@ -106,6 +111,35 @@ package com.fc.movthecat.gui
 			}
 		}
 		
+		private function onAchievement():void 
+		{
+			var gameService:GameService = Factory.getInstance(GameService);			
+			CONFIG::isIOS {
+				if(Util.internetAvailable)
+				{					
+					gameService.showGameCenterAchievements();
+				}
+				else
+				{
+					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF8080, 2);					
+				}
+			}
+			CONFIG::isAndroid {
+				if (Util.internetAvailable)
+				{				
+					gameService.googlePlayTaskDone = onShowGooplePlayDone;
+					gameService.googlePlayTaskRetValueReq = [FCAndroidUtility.ACHIVEMENT_WND_SHOWN, FCAndroidUtility.SIGN_IN_FAILED];
+					gameService.showGooglePlayAchievements();
+				}
+				else
+				{
+					EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF8080, 2);
+				}
+			}
+			
+			SoundManager.playSound(SoundAsset.SOUND_CLICK);
+		}
+		
 		private function onLeaderboard():void 
 		{
 			var gameService:GameService = Factory.getInstance(GameService);			
@@ -122,7 +156,9 @@ package com.fc.movthecat.gui
 			CONFIG::isAndroid {
 				if (Util.internetAvailable)
 				{				
-					gameService.showGooglePlayLeaderboard(MTCUtil.gsGetCode(MTCUtil.HIGHSCORE));
+					gameService.googlePlayTaskDone = onShowGooplePlayDone;
+					gameService.googlePlayTaskRetValueReq = [FCAndroidUtility.LEADERBOARD_WND_SHOWN, FCAndroidUtility.SIGN_IN_FAILED];
+					gameService.showGooglePlayLeaderboard();
 				}
 				else
 				{
@@ -131,6 +167,12 @@ package com.fc.movthecat.gui
 			}
 			
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);
+		}
+		
+		private function onShowGooplePlayDone(isOK:Boolean):void 
+		{
+			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
+			gameScreen.playCharacterTheme();
 		}
 		
 		private function onTwitter():void 
@@ -262,7 +304,7 @@ package com.fc.movthecat.gui
 			globalInput.disable = false;
 			var gameService:GameService = Factory.getInstance(GameService);
 			CONFIG::isAndroid{
-				gameService.setHighscore(MTCUtil.gsGetCode(MTCUtil.HIGHSCORE), best);
+				gameService.setHighscore(MTCUtil.HIGHSCORE, best);
 			}
 			CONFIG::isIOS {
 				gameService.setHighscore(MTCUtil.HIGHSCORE, best);

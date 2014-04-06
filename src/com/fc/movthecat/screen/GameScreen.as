@@ -70,7 +70,7 @@ package com.fc.movthecat.screen
 				var url:String = SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE;
 				SoundManager.instance.queueSound(url,url);
 				SoundManager.instance.loadAll(playSpecificTheme);				
-			}									
+			}
 		}
 		
 		private function playSpecificTheme(progress:Number):void 
@@ -232,6 +232,11 @@ package com.fc.movthecat.screen
 			sndCh = null;
 			SoundManager.instance.removeSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE);
 			SoundManager.instance.muteMusic = false;	
+		}
+		
+		public function playCharacterTheme():void 
+		{
+			sndCh = SoundManager.instance.playSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE, false, int.MAX_VALUE);
 		}
 		
 		private function onCloudVanished():void 

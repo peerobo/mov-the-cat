@@ -19,6 +19,7 @@ package com.fc.movthecat.gui
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.MTCUtil;
 	import flash.geom.Rectangle;
+	import flash.net.SharedObject;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.MovieClip;
@@ -56,6 +57,12 @@ package com.fc.movthecat.gui
 		override public function onAdded(e:Event):void 
 		{
 			super.onAdded(e);
+			
+			var saveCharObj:SharedObject = Util.getLocalData("saveChar");
+			if(saveCharObj.data.hasOwnProperty("charIdx"))
+				charIdx = saveCharObj.data["charIdx"];
+			else
+				charIdx = 0;
 			
 			pickCharBt.setCallbackFunc(onCharSelect);			
 			nextBt.setCallbackFunc(onUpdate,[1]);
@@ -173,6 +180,8 @@ package com.fc.movthecat.gui
 		
 		private function onCharSelect():void 
 		{
+			var saveCharObj:SharedObject = Util.getLocalData("saveChar");
+			saveCharObj.data["charIdx"] = charIdx;
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);
 			dispatchEventWith(MTCUtil.EVENT_ON_PICK_CHAR);					
 		}

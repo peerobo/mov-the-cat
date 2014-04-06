@@ -47,9 +47,14 @@ package com.fc.movthecat
 			//addChild(fps);
 			var highscoreDB:GameService = Factory.getInstance(GameService);			
 			if (Util.isIOS)
+			{
 				highscoreDB.initGameCenter();	
+			}
 			else if (Util.isAndroid)
-				highscoreDB.initGooglePlayGameService();			
+			{
+				Util.initAndroidUtility(true, onAndroidInit);
+				Util.setAndroidFullscreen(true);
+			}
 			if (Capabilities.cpuArchitecture == "ARM")
 			{
 				NativeApplication.nativeApplication.systemIdleMode = SystemIdleMode.KEEP_AWAKE;
@@ -79,25 +84,12 @@ package com.fc.movthecat
 					App.ins.onAppActivate();
 				}
 			}
-			CONFIG::isAndroid {
-				if (isLaunching)
-				{
-					Util.initVideoAd(Constants.VIDEO_AD_ANDROID, false, CharSelectorUI.videoAdHandler, CharSelectorUI.videoAdStartHandler, null);
-					if(timeOut == 0)
-						timeOut = setTimeout(onAndroidInit, 3000);
-					Util.initAndroidUtility();					
-					//onAndroidInit();
-				}
-				else
-				{
-					Util.initAndroidUtility();
-					onAndroidInit();
-				}
+			CONFIG::isAndroid {							
 				if (App.ins)
 				{				
 					App.ins.onAppActivate();
 				}
-				//Util.initAndroidUtility(onAndroidInit);
+				Util.setAndroidFullscreen(true);
 			}
 		}
 		
@@ -108,23 +100,16 @@ package com.fc.movthecat
 				{
 					if (Util.androidVersionInt >= Util.KITKAT)
 					{	
-						Starling.handleLostContext = true;
-						stage.addEventListener(Event.RESIZE, onStageResize);
+						Starling.handleLostContext = true;						
 					}
 					else 
 					{
-						Starling.handleLostContext = false;
-						startStarlingFramework();
-					}
-					isLaunching = false;
+						Starling.handleLostContext = false;						
+					}	
+					startStarlingFramework();
+					var gS:GameService = Factory.getInstance(GameService);			
+					gS.initGooglePlayGameService();
 				}
-				Util.setAndroidFullscreen(true);
-			}
-			
-			private function onStageResize(e:Event):void 
-			{
-				startStarlingFramework();
-				stage.removeEventListener(Event.RESIZE, onStageResize);
 			}
 		}
 		
