@@ -50,7 +50,8 @@ package com.fc.movthecat
 			{
 				highscoreDB.initGameCenter();	
 			}
-			CONFIG::isAndroid{
+			CONFIG::isAndroid {
+				Util.initVideoAd(Constants.VIDEO_AD_ANDROID,false,CharSelectorUI.videoAdHandler,CharSelectorUI.videoAdStartHandler,null);
 				Util.initAndroidUtility(true, onAndroidInit);
 				Util.setAndroidFullscreen(true);
 			}

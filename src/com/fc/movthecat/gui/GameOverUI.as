@@ -12,7 +12,9 @@ package com.fc.movthecat.gui
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.res.ResMgr;
 	import com.fc.air.Util;
-	import com.fc.FCAndroidUtility;
+	CONFIG::isAndroid{
+		import com.fc.FCAndroidUtility;
+	}
 	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
@@ -116,7 +118,7 @@ package com.fc.movthecat.gui
 			var gameService:GameService = Factory.getInstance(GameService);			
 			CONFIG::isIOS {
 				if(Util.internetAvailable)
-				{					
+				{							
 					gameService.showGameCenterAchievements();
 				}
 				else
@@ -126,9 +128,7 @@ package com.fc.movthecat.gui
 			}
 			CONFIG::isAndroid {
 				if (Util.internetAvailable)
-				{				
-					gameService.googlePlayTaskDone = onShowGooplePlayDone;
-					gameService.googlePlayTaskRetValueReq = [FCAndroidUtility.ACHIVEMENT_WND_SHOWN, FCAndroidUtility.SIGN_IN_FAILED];
+				{									
 					gameService.showGooglePlayAchievements();
 				}
 				else
@@ -155,9 +155,7 @@ package com.fc.movthecat.gui
 			}
 			CONFIG::isAndroid {
 				if (Util.internetAvailable)
-				{				
-					gameService.googlePlayTaskDone = onShowGooplePlayDone;
-					gameService.googlePlayTaskRetValueReq = [FCAndroidUtility.LEADERBOARD_WND_SHOWN, FCAndroidUtility.SIGN_IN_FAILED];
+				{									
 					gameService.showGooglePlayLeaderboard();
 				}
 				else
@@ -168,13 +166,7 @@ package com.fc.movthecat.gui
 			
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);
 		}
-		
-		private function onShowGooplePlayDone(isOK:Boolean):void 
-		{
-			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
-			gameScreen.playCharacterTheme();
-		}
-		
+	
 		private function onTwitter():void 
 		{
 			var bitmapData:BitmapData = Util.g_takeSnapshot();
@@ -186,7 +178,7 @@ package com.fc.movthecat.gui
 				Starling.juggler.delayCall(loadingIcon.close, 5);
 			}
 			CONFIG::isIOS {
-				Util.shareOnIOS(true, msg, bitmapData);
+				Util.shareOnIOS(false, msg, bitmapData);
 				Starling.juggler.delayCall(loadingIcon.close, 5);
 			}
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);

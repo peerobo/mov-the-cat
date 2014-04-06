@@ -26,6 +26,7 @@ package com.fc.movthecat.screen.game
 	import starling.display.QuadBatch;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import starling.textures.TextureSmoothing;
 	
 	/**
 	 * ...
@@ -133,15 +134,18 @@ package com.fc.movthecat.screen.game
 				
 				var image:Image = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_TILE) as Image;
 				image.width = rec.width;
+				image.smoothing = TextureSmoothing.NONE;
 				image.height = rec.height;
 				
 				var imageL:Image = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_LEFT) as Image;
 				imageL.width = rec.width;
 				imageL.height = rec.height;
+				imageL.smoothing = TextureSmoothing.NONE;
 				
 				var imageR:Image = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_RIGHT) as Image;
 				imageR.width = rec.width;
 				imageR.height = rec.height;
+				imageR.smoothing = TextureSmoothing.NONE;
 				
 				var foodImg:Image = MTCUtil.getGameImageWithScale(foodTex) as Image;
 				if(foodImg.width > rec.width)
@@ -154,6 +158,7 @@ package com.fc.movthecat.screen.game
 					foodImg.height = rec.height;
 					foodImg.scaleX = foodImg.scaleY;
 				}
+				foodImg.smoothing = TextureSmoothing.NONE;
 				hitRec1.width = foodImg.width;
 				hitRec1.height = foodImg.height;
 				// draw character				

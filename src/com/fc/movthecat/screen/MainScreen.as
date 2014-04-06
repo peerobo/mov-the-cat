@@ -71,42 +71,9 @@ package com.fc.movthecat.screen
 			charUI = Factory.getInstance(CharSelectorUI);
 			charUI.addEventListener(MTCUtil.EVENT_ON_PICK_CHAR, onPlayGame);					
 		}
-		
-		//private function onPlayGame(e:Event):void 
-		//{						
-			/*var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
-			//centerUI.flatten();			
-			globalInput.setDisableTimeout(1);
-			//Starling.juggler.tween(centerUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );
-			//Starling.juggler.remove(randomPlayerCall);
-			var charScreen:CharacterSelectScreen = Factory.getInstance(CharacterSelectScreen);
-			charScreen.addChild(bg);			
-			charScreen.addChild(cloudBg);
-			//charScreen.addChild(centerUI);			
-			ScreenMgr.showScreen(CharacterSelectScreen);*/
-			
-			/*Starling.juggler.remove(randomPlayerCall);
-			
-			character = MTCUtil.getGameMVWithScale(MTCAsset.MV_CHAR_IDLE, character);
-			if (character.scaleX < 1)
-				character.smoothing = TextureSmoothing.TRILINEAR;
-			else
-				character.smoothing = TextureSmoothing.NONE;
-			
-			character.fps = 4;			
-			character.play();	
-			
-			var gameScreen:GameScreen = Factory.getInstance(GameScreen);
-			gameScreen.addChild(bg);			
-			gameScreen.addChild(cloudBg);
-			gameScreen.addChild(centerUI);
-			gameScreen.addChild(character);
-			ScreenMgr.showScreen(GameScreen);*/
-		//}
-		
+	
 		private function onHideUI():void 
 		{
-			//centerUI.removeFromParent();			
 			charUI.removeFromParent();
 		}
 

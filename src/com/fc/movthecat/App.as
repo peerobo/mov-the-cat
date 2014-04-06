@@ -29,6 +29,7 @@ package com.fc.movthecat
 	import com.fc.movthecat.gui.CharSelectorUI;
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.logic.LevelStage;
+	import com.fc.movthecat.screen.GameScreen;
 	import com.fc.movthecat.screen.LoadingScreen;
 	import com.fc.movthecat.screen.MainScreen;
 	import flash.desktop.NativeApplication;
@@ -138,7 +139,10 @@ package com.fc.movthecat
 					Starling.current.start();
 				if(ScreenMgr.currScr is MainScreen)
 					SoundManager.instance.muteMusic = false;
-				SoundManager.instance.mute = false;   
+				SoundManager.instance.mute = false;
+				var gameScreen:GameScreen = Factory.getInstance(GameScreen);
+				if (gameScreen == ScreenMgr.currScr)
+					gameScreen.playCharacterTheme();
 			}
 		}		
 		

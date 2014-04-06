@@ -66,10 +66,15 @@ package com.fc.movthecat.screen
 			var gSession:GameSession = Factory.getInstance(GameSession);
 			if (charIdx != gSession.foodType)
 			{
+				SoundManager.instance.removeSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE);
 				charIdx = gSession.foodType;
 				var url:String = SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE;
 				SoundManager.instance.queueSound(url,url);
 				SoundManager.instance.loadAll(playSpecificTheme);				
+			}
+			else
+			{
+				playCharacterTheme();
 			}
 		}
 		
@@ -131,8 +136,7 @@ package com.fc.movthecat.screen
 		
 		private function onGoHome(e:Event):void 
 		{
-			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
-			//centerUI.flatten();			
+			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);		
 			globalInput.setDisableTimeout(1);
 			Starling.juggler.tween(gameOverUI, 1, { y: -Util.appHeight, onComplete: onHideUI } );			
 			var manScr:MainScreen = Factory.getInstance(MainScreen);
@@ -228,9 +232,9 @@ package com.fc.movthecat.screen
 		override public function onRemoved(e:Event):void 
 		{
 			super.onRemoved(e);
-			sndCh.stop();
-			sndCh = null;
-			SoundManager.instance.removeSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE);
+			if(sndCh)
+				sndCh.stop();
+			sndCh = null;			
 			SoundManager.instance.muteMusic = false;	
 		}
 		

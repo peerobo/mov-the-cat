@@ -52,11 +52,11 @@ package com.fc.movthecat.logic
 						gameService.unlockAchievement(Constants.ACH_UNLOCK_22_CAT);
 				}
 				CONFIG::isAndroid {
-					if (obj["catunlock"] == 1)
+					if (obj["catunlock"] >= 1)
 						gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_UNLOCK_1_CAT));
-					else if (obj["catunlock"] == 5)
+					else if (obj["catunlock"] >= 5)
 						gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_UNLOCK_5_CAT));
-					else if (obj["catunlock"] == 22)
+					else if (obj["catunlock"] >= 22)
 						gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_UNLOCK_22_CAT));
 				}
 				return true;			

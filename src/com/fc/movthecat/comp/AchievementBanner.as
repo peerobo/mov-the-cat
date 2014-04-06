@@ -49,14 +49,14 @@ package com.fc.movthecat.comp
 			spr.scaleX = spr.scaleY = 0.8;			
 			spr.alpha = 0.9;
 			LayerMgr.getLayer(LayerMgr.LAYER_EFFECT).addChild(spr);
-			spr.y = -spr.height;
+			spr.y = Util.appHeight;
 			spr.x = Util.appWidth - spr.width >> 1;
-			Starling.juggler.tween(spr, 0.5, { y:0, onComplete: onShowed } );
+			Starling.juggler.tween(spr, 0.5, { y:Util.appHeight-spr.height, onComplete: onShowed } );
 		}
 		
 		private function onShowed():void 
 		{
-			Starling.juggler.tween(spr, 0.5, {y: -spr.height, delay: 2, onComplete: onHidden})
+			Starling.juggler.tween(spr, 0.5, {y: Util.appHeight, delay: 2, onComplete: onHidden})
 		}
 		
 		private function onHidden():void 
