@@ -50,8 +50,7 @@ package com.fc.movthecat
 			{
 				highscoreDB.initGameCenter();	
 			}
-			else if (Util.isAndroid)
-			{
+			CONFIG::isAndroid{
 				Util.initAndroidUtility(true, onAndroidInit);
 				Util.setAndroidFullscreen(true);
 			}

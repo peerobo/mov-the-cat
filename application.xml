@@ -111,11 +111,11 @@
 	http://developer.android.com/guide/topics/manifest/manifest-intro.html
 	-->
 	<extensions>
-		<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
+		<!--<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
 		<extensionID>com.vungle.extensions.Vungle</extensionID>
 		<extensionID>com.leadbolt.LeadboltANE</extensionID>		
 		<extensionID>com.pozirk.AndroidInAppPurchase</extensionID>
-		<extensionID>com.fc.AndroidUtility</extensionID>
+		<extensionID>com.fc.AndroidUtility</extensionID>-->
 		<!--<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>	
 		<extensionID>com.vungle.extensions.Vungle</extensionID>
 		<extensionID>com.leadbolt.LeadboltANE</extensionID>

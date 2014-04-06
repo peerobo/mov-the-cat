@@ -31,9 +31,9 @@ package com.fc.movthecat
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		public static const EVENT_ON_PICK_CHAR:String = "on_pick_char";
 		public static const EVENT_ON_HOME:String = "on_go_home";		
-		CONFIG::isIOS{
+		//CONFIG::isIOS{
 			public static const HIGHSCORE:String = "catMain";
-		}
+		//}
 		CONFIG::isAndroid {
 			public static const HIGHSCORE:String = "CgkI7_y9xv4cEAIQAQ";
 		}
