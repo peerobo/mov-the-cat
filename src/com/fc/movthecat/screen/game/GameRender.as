@@ -40,6 +40,10 @@ package com.fc.movthecat.screen.game
 		private var leftCharacter:MovieClip;
 		private var previousState:Boolean;
 		private var foodTex:String;
+		private var image:Image;
+		private var imageL:Image;
+		private var imageR:Image;
+		private var foodImg:Image;
 		
 		public function GameRender()
 		{
@@ -57,17 +61,55 @@ package com.fc.movthecat.screen.game
 		
 		override public function onRemoved(e:Event):void 
 		{
+			Factory.toPool(foodImg);
+			Factory.toPool(imageR);
+			Factory.toPool(imageL);
+			Factory.toPool(image);
 			character = null;
 			leftCharacter = null;
 			quadBatch.removeFromParent();
-			super.onRemoved(e);
-			
+			super.onRemoved(e);			
 		}
 		
 		override public function onAdded(e:Event):void 
 		{
 			addChildAt(quadBatch,0);
 			super.onAdded(e);
+			
+			var r:Rectangle = Factory.getObjectFromPool(Rectangle);
+			r.setTo(0, 0, 1, 1);
+			var rec:Rectangle = visibleScreen.blockMap.blockToPixel(r);
+			
+			image = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_TILE) as Image;
+			image.width = rec.width;
+			image.smoothing = TextureSmoothing.NONE;
+			image.height = rec.height;
+			
+			imageL = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_LEFT) as Image;
+			imageL.width = rec.width;
+			imageL.height = rec.height;
+			imageL.smoothing = TextureSmoothing.NONE;
+			
+			imageR = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_RIGHT) as Image;
+			imageR.width = rec.width;
+			imageR.height = rec.height;
+			imageR.smoothing = TextureSmoothing.NONE;
+			
+			foodImg = MTCUtil.getGameImageWithScale(foodTex) as Image;
+			if(foodImg.width > rec.width)
+			{
+				foodImg.width = rec.width;
+				foodImg.scaleY = foodImg.scaleX;
+			}
+			if(foodImg.height > rec.height)
+			{
+				foodImg.height = rec.height;
+				foodImg.scaleX = foodImg.scaleY;
+			}
+			foodImg.smoothing = TextureSmoothing.NONE;
+			
+			Factory.toPool(r);
+			Factory.toPool(rec);
 		}
 		
 		public function setCharacter(disp:MovieClip):void
@@ -130,35 +172,8 @@ package com.fc.movthecat.screen.game
 				var len:int = visibleScreen.blockMap.blocks.length;
 				var row:int;
 				var col:int;
-				quadBatch.reset();
-				
-				var image:Image = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_TILE) as Image;
-				image.width = rec.width;
-				image.smoothing = TextureSmoothing.NONE;
-				image.height = rec.height;
-				
-				var imageL:Image = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_LEFT) as Image;
-				imageL.width = rec.width;
-				imageL.height = rec.height;
-				imageL.smoothing = TextureSmoothing.NONE;
-				
-				var imageR:Image = MTCUtil.getGameImageWithScale(BackgroundAsset.BG_LAND_RIGHT) as Image;
-				imageR.width = rec.width;
-				imageR.height = rec.height;
-				imageR.smoothing = TextureSmoothing.NONE;
-				
-				var foodImg:Image = MTCUtil.getGameImageWithScale(foodTex) as Image;
-				if(foodImg.width > rec.width)
-				{
-					foodImg.width = rec.width;
-					foodImg.scaleY = foodImg.scaleX;
-				}
-				if(foodImg.height > rec.height)
-				{
-					foodImg.height = rec.height;
-					foodImg.scaleX = foodImg.scaleY;
-				}
-				foodImg.smoothing = TextureSmoothing.NONE;
+				quadBatch.reset();								
+								
 				hitRec1.width = foodImg.width;
 				hitRec1.height = foodImg.height;
 				// draw character				
@@ -283,11 +298,7 @@ package com.fc.movthecat.screen.game
 				Factory.toPool(hitRec2);
 				Factory.toPool(cR);
 				Factory.toPool(cRInPixel);				
-				Factory.toPool(centerChar);
-				Factory.toPool(foodImg);
-				Factory.toPool(imageR);
-				Factory.toPool(imageL);
-				Factory.toPool(image);
+				Factory.toPool(centerChar);				
 			}
 		}
 	

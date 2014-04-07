@@ -31,9 +31,9 @@ package com.fc.movthecat
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		public static const EVENT_ON_PICK_CHAR:String = "on_pick_char";
 		public static const EVENT_ON_HOME:String = "on_go_home";		
-		//CONFIG::isIOS{
+		CONFIG::isIOS{
 			public static const HIGHSCORE:String = "catMain";
-		//}
+		}
 		CONFIG::isAndroid {
 			public static const HIGHSCORE:String = "CgkI7_y9xv4cEAIQAQ";
 		}
@@ -43,6 +43,7 @@ package com.fc.movthecat
 		public static function getGameImageWithScale(texName:String, scale:Number = -1):DisplayObject
 		{
 			var disp:DisplayObject = Asset.getImage(MTCAsset.MTC_TEX_ATLAS, texName);
+			disp.touchable = false;
 			disp.scaleX = disp.scaleY = (scale == -1 ? Constants.GAME_SCALE: scale) * Starling.contentScaleFactor;
 			if(disp as Image)
 				(disp as Image).smoothing = TextureSmoothing.NONE;
@@ -61,12 +62,14 @@ package com.fc.movthecat
 				mv.smoothing = TextureSmoothing.BILINEAR;
 			else
 				mv.smoothing = TextureSmoothing.NONE;
+			mv.touchable = false;
 			return mv;
 		}
 		
 		public static function getRandomCloudBG():TileImage
 		{
 			var tileImages:TileImage = Factory.getObjectFromPool(TileImage);		
+			tileImages.touchable = false;
 			tileImages.reset();
 			var scale:Number = Constants.GAME_SCALE * Starling.contentScaleFactor;
 			tileImages.scale = scale;
@@ -121,7 +124,7 @@ package com.fc.movthecat
 			configObj2Set.fps = catCfgs[idx].fps;
 			configObj2Set.numIdxs = catCfgs[idx].numIdxs;
 			configObj2Set.reqIdxs = catCfgs[idx].reqIdxs;
-			if (configObj2Set.numIdxs < configObj2Set.reqIdxs)
+			if (configObj2Set.numIdxs.length < configObj2Set.reqIdxs.length)
 			{
 				var len:int = configObj2Set.numIdxs.length;
 				for (var i:int = len; i < configObj2Set.reqIdxs.length; i++) 

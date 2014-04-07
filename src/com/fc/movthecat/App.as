@@ -143,6 +143,8 @@ package com.fc.movthecat
 				var gameScreen:GameScreen = Factory.getInstance(GameScreen);
 				if (gameScreen == ScreenMgr.currScr)
 					gameScreen.playCharacterTheme();
+				var mainScreen:MainScreen = Factory.getInstance(MainScreen);
+				mainScreen.refreshBG();
 			}
 		}		
 		

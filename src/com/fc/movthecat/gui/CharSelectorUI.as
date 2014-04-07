@@ -18,6 +18,7 @@ package com.fc.movthecat.gui
 	import com.fc.movthecat.config.CatCfg;
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.MTCUtil;
+	import com.fc.movthecat.screen.MainScreen;
 	import flash.geom.Rectangle;
 	import flash.net.SharedObject;
 	import starling.display.DisplayObject;
@@ -46,6 +47,7 @@ package com.fc.movthecat.gui
 		public var playSpr:Sprite;
 		public var buySpr:Sprite;
 		private var reqs:Array;
+		public var lbl:BaseBitmapTextField;
 			
 		public function CharSelectorUI() 
 		{
@@ -69,7 +71,19 @@ package com.fc.movthecat.gui
 			backBt.setCallbackFunc(onUpdate, [ -1]);			
 			tryBt.setCallbackFunc(onTry);
 			buyBt.setCallbackFunc(onBuy);
+			lbl.touchable = true;
+			Factory.addMouseClickCallback(lbl, onCheat);
 			updateChar();
+		}
+		
+		private var h:int = 0;
+		private var weather:int = 0;
+		private function onCheat():void 
+		{
+			var mainScreen:MainScreen = Factory.getInstance(MainScreen);
+			mainScreen.refreshBG(h++,weather++);
+			h = h % 24;
+			weather = weather % 3;
 		}
 		
 		private function onBuy():void 
@@ -83,6 +97,11 @@ package com.fc.movthecat.gui
 		
 		private function onTry():void 
 		{
+			if (Util.isDesktop)
+			{
+				onCharSelect();
+				return;
+			}
 			var resMgr:ResMgr = Factory.getInstance(ResMgr);
 			if (!resMgr.isInternetAvailable)
 			{
@@ -188,6 +207,7 @@ package com.fc.movthecat.gui
 		
 		override public function onRemoved(e:Event):void 
 		{
+			Factory.removeMouseClickCallback(lbl);
 			reqs.splice(0, reqs.length);
 			char = null;
 			super.onRemoved(e);					

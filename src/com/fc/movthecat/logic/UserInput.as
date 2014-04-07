@@ -9,6 +9,7 @@ package com.fc.movthecat.logic
 	import flash.ui.Keyboard;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Quad;
 	import starling.display.Sprite;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -20,6 +21,7 @@ package com.fc.movthecat.logic
 	 */
 	public class UserInput
 	{
+		private var quadInput:Quad;
 		public var keyPress:int;
 		
 		public static const NONE_KEY:int = -1;
@@ -27,11 +29,13 @@ package com.fc.movthecat.logic
 		public static const RIGHT_KEY:int = 1;
 		
 		public function UserInput()
-		{
-			
+		{			
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			globalInput.registerKey(Keyboard.LEFT, onKeyPress);
 			globalInput.registerKey(Keyboard.RIGHT, onKeyPress);
+			
+			quadInput = new Quad(Util.appWidth, Util.appHeight, 0x0);
+			quadInput.alpha = 0;
 		}
 		
 		private function onKeyPress():void
@@ -50,14 +54,16 @@ package com.fc.movthecat.logic
 		{
 			keyPress = NONE_KEY;
 			//var layerGame:Sprite = LayerMgr.getLayer(LayerMgr.LAYER_GAME);
-			Starling.current.stage.addEventListener(TouchEvent.TOUCH, onTouch);
+			LayerMgr.getLayer(LayerMgr.LAYER_EFFECT).addChild(quadInput);
+			quadInput.addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
 		public function stop():void
 		{
 			keyPress = NONE_KEY;
 			//var layerGame:Sprite = LayerMgr.getLayer(LayerMgr.LAYER_GAME);
-			Starling.current.stage.removeEventListener(TouchEvent.TOUCH, onTouch);
+			quadInput.removeFromParent();
+			quadInput.removeEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
 		private function onTouch(e:TouchEvent):void

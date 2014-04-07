@@ -100,9 +100,6 @@ package com.fc.movthecat.screen
 			gameOverUI.y = -gameOverUI.height;
 			
 			Starling.juggler.delayCall(showScore, 3);
-						
-			//Starling.juggler.delayCall(flattenGOUI, 0.1);
-			//SoundManager.instance.muteMusic = false;
 			System.pauseForGCIfCollectionImminent(0);
 		}
 		

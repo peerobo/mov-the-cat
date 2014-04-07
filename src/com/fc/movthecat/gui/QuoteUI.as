@@ -1,5 +1,6 @@
 package com.fc.movthecat.gui 
 {
+	import com.adobe.ane.gameCenter.GameCenterAchievement;
 	import com.fc.air.base.BaseJsonGUI;
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.LangUtil;
@@ -9,6 +10,7 @@ package com.fc.movthecat.gui
 	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.logic.GameSession;
 	import com.fc.movthecat.MTCUtil;
+	import com.fc.movthecat.screen.GameScreen;
 	import starling.core.Starling;
 	import starling.display.MovieClip;
 	import starling.events.Event;
@@ -35,13 +37,12 @@ package com.fc.movthecat.gui
 			this.scaleX = this.scaleY = 0.6;
 			quoteTxt.text = LangUtil.getText("quote" + (1 + int(Util.getRandom(Constants.QUOTE_NUM)))); 
 			
-			var gs:GameSession = Factory.getInstance(GameSession);
-			var character:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + gs.foodType);
+			var gs:GameScreen = Factory.getInstance(GameScreen);
+			var character:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + gs.charIdx + "_");
 			character.play();
 			
-			
 			var catCfg:CatCfg = Factory.getInstance(CatCfg);
-			MTCUtil.setCatCfg(gs.foodType, catCfg);
+			MTCUtil.setCatCfg(gs.charIdx, catCfg);
 			character.fps = catCfg.fps;
 			character.height = Util.appHeight - this.height >> 1;
 			character.scaleX = character.scaleY;

@@ -126,6 +126,7 @@ package com.fc.movthecat.screen
 				}
 				
 				var tileImages:TileImage = Factory.getObjectFromPool(TileImage);	
+				tileImages.touchable = false;
 				tileImages.scale = 1;
 				tileImages.draw(tex, Util.appWidth, Util.appHeight);				
 				bg = tileImages;
@@ -181,38 +182,80 @@ package com.fc.movthecat.screen
 			gameScreen.addChild(getChildAt(0));
 			gameScreen.addChild(char);
 			ScreenMgr.showScreen(GameScreen);
-		}		
+		}				
 		
-				
-		private function onImmersive():void
+		public function refreshBG(hour:int = -1, weather:int = -1):void		
 		{	
-			//var resMgr:ResMgr = Factory.getInstance(ResMgr);				
-			//var tex:Texture;
-			//var date:Date = new Date();
-			//var h:Number = date.getHours();
-			//if (h >= 22 || h < 4)
-			//{
-				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MIDNIGHT);
-			//}
-			//else if (h >= 4 && h < 9)
-			//{
-				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_MORNING);
-			//}
-			//else if (h >= 9 && h < 14)
-			//{
-				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_NOON);
-			//}
-			//else if(h>=14 && h < 17)
-			//{
-				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_AFTERNOON);
-			//}
-			//else
-			//{
-				//tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_EVENING);
-			//}
-			//bg.draw(tex, Util.appWidth, Util.appHeight);
-			//onGeoHandler();
-			//drawWeather();
+			var resMgr:ResMgr = Factory.getInstance(ResMgr);				
+			var tex:Texture;
+			var date:Date = new Date();			
+			var h:Number = date.getHours();
+			if (hour > -1)
+				h = hour;
+			if (h >= 0 && h < 1)
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_0_1);
+			}
+			else if (h >= 11 && h < 14)
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_11_14);
+			}
+			else if (h >= 14 && h < 17)
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_14_17);
+			}
+			else if((h>=17 && h < 19)||(h>=6 && h < 8))
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_17_19_6_8);
+			}
+			else if((h>=21 && h < 23)||(h>=2 && h < 5))
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_21_23_2_5);
+			}
+			else if(h>=1 && h < 2)
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_23_0_1_2);
+			}
+			else if(h>=8 && h < 11)
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_8_11);
+			}
+			else
+			{
+				tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, BackgroundAsset.BG_SKY_19_21_5_6);
+			}
+			bg.draw(tex, Util.appWidth, Util.appHeight);			
+			if(weather == -1)
+			{
+				drawWeather();			
+			}
+			else
+			{
+				switch(weather)
+				{
+					case 0:
+						tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, IconAsset.ICO_RAIN);
+						break;
+					case 1:
+						tex = resMgr.getTexture(MTCAsset.MTC_TEX_ATLAS, IconAsset.ICO_SNOW);
+						break;				
+					default:
+						return;
+				}
+				
+				var img:Image = Factory.getObjectFromPool(Image);
+				img.texture = tex;
+				img.readjustSize();
+				img.scaleX = img.scaleY = Starling.contentScaleFactor;			
+				for (var i:int = 0; i < 50; i++) 
+				{
+					img.x = Util.getRandom(Util.appWidth - img.width);
+					img.y = Util.getRandom(Util.appHeight - img.height);				
+					
+					bg.addImage(img);
+				}
+				Factory.toPool(img);
+			}
 		}
 		
 		private function drawWeather():void 
