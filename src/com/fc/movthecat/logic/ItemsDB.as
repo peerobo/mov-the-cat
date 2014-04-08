@@ -12,6 +12,7 @@ package com.fc.movthecat.logic
 	 */
 	public class ItemsDB 
 	{
+		public static const DIAMOND:int = 1000;				
 		private var obj:Object
 		public function ItemsDB() 
 		{

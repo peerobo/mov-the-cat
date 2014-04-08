@@ -13,16 +13,24 @@ package com.fc.movthecat.logic
 	public class BlockMap
 	{
 		private var foods:Array;
+		private var diamonds:Array;
 		public var row:int;
 		public var col:int;
 		public var gameWindow:Rectangle;
 		public var blocks:Array;
 		public var lvlStage:LevelStage;
 		public var anchorPt:Point;
+		public var timePass:Number = 0;
 		
-		public static var B_EMPTY:int = 0;
-		public static var B_BRICK:int = 1;
-		public static var B_FOOD:int = 2;
+		public static var B_EMPTY:int = 10;
+		public static var B_BRICK:int = 11;
+		public static var B_FOOD:int = 12;
+		
+		public static var DIAMOND_NO_EFFECT:int = 0;
+		public static var DIAMOND_NO_BRICK:int = 1;
+		public static var DIAMOND_NO_FOOD:int = 2;
+		public static var DIAMOND_NO_CAT:int = 3;		
+		public static const DIAMOND_LIST:Array = [DIAMOND_NO_EFFECT, DIAMOND_NO_BRICK, DIAMOND_NO_FOOD, DIAMOND_NO_CAT];		
 		
 		public function BlockMap()
 		{
@@ -30,6 +38,7 @@ package com.fc.movthecat.logic
 			lvlStage = Factory.getInstance(LevelStage);
 			blocks = [];
 			foods = [];
+			diamonds = [];
 		}
 		
 		public function calculateScreenViaLevelStage():void
@@ -110,18 +119,36 @@ package com.fc.movthecat.logic
 		
 		}
 		
-		public function validate(withoutDel:Boolean = false):void
+		public function validate(withoutDel:Boolean = false, genDiamond:Boolean = true ):void
 		{			
 			if(!withoutDel)
-			{
+			{				
 				lvlStage.deleteBricks(1);	
 				if(foods.length >=1)
 					foods.splice(0, 1);
-				
+				if (diamonds.length >= 1)
+					diamonds.splice(0, 1);
 				var currLen:int = foods.length;
 				for (var k:int = currLen; k < lvlStage.row; k++) 
 				{
 					foods.push(Util.getRandom(col));
+				}
+				currLen = diamonds.length;	
+				for (k = currLen; k < lvlStage.row; k++) 
+				{
+					if (genDiamond)
+					{
+						/*var rnd:Number = Util.getRandom();
+						if(rnd > 50 && rnd < 70)
+							diamonds.push(Util.getRandom());
+						else
+							diamonds.push( -1);*/
+						diamonds.push(Util.getRandom(10));
+					}
+					else
+					{
+						diamonds.push( -1);
+					}					
 				}
 			}
 			var total:int = row * col;
@@ -140,10 +167,15 @@ package com.fc.movthecat.logic
 				else
 				{
 					blocks[i] = B_EMPTY;
-					
-					if (c == int(foods[r/2]))
+					var notFoodIdx:int = r / 2;
+					if (c == int(foods[notFoodIdx]))
 					{	
-						blocks[i] = B_FOOD;														
+						blocks[i] = B_FOOD;
+					}
+					else if (c == int(diamonds[notFoodIdx]))
+					{
+						//blocks[i] = DIAMOND_LIST[int(Util.getRandom(4))];
+						blocks[i] = DIAMOND_NO_EFFECT;
 					}
 				}
 				c++;
@@ -153,10 +185,12 @@ package com.fc.movthecat.logic
 					c = 0;					
 				}
 			}
+			timePass+=1;
 		}
 		
 		public function ateFood(blockIdx:int):Boolean 
 		{
+			blocks[blockIdx] = -1;
 			var retBool:Boolean = false;
 			var r:int = blockIdx / col;
 			foods[r / 2] = -1;
@@ -178,6 +212,17 @@ package com.fc.movthecat.logic
 			//Factory.toPool(rec);
 			//Factory.toPool(recFood);
 			return retBool;
+		}
+		
+		public function ateDiamond(blockIdx:int):void 
+		{			
+			var retBool:Boolean = false;
+			var r:int = blockIdx / col;
+			var diamondPos:int = r / 2;
+			var gs:GameSession = Factory.getInstance(GameSession);
+			gs.activateDiamondEffect(blocks[blockIdx]);			
+			diamonds[diamondPos] = -1;
+			blocks[blockIdx] = -1;
 		}
 	
 	}

@@ -44,6 +44,7 @@ package com.fc.movthecat.screen.game
 		private var imageL:Image;
 		private var imageR:Image;
 		private var foodImg:Image;
+		private var diamond:Image;
 		
 		public function GameRender()
 		{
@@ -61,6 +62,7 @@ package com.fc.movthecat.screen.game
 		
 		override public function onRemoved(e:Event):void 
 		{
+			Factory.toPool(diamond);
 			Factory.toPool(foodImg);
 			Factory.toPool(imageR);
 			Factory.toPool(imageL);
@@ -94,6 +96,9 @@ package com.fc.movthecat.screen.game
 			imageR.width = rec.width;
 			imageR.height = rec.height;
 			imageR.smoothing = TextureSmoothing.NONE;
+			
+			diamond = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 0, 7) as Image;
+			diamond.smoothing = TextureSmoothing.NONE;
 			
 			foodImg = MTCUtil.getGameImageWithScale(foodTex) as Image;
 			if(foodImg.width > rec.width)
@@ -232,7 +237,7 @@ package com.fc.movthecat.screen.game
 						{
 							if (startBlock)
 								quadBatch.addImage(imageL);
-							else if (!visibleScreen.blockMap.blocks[i + 1] == BlockMap.B_BRICK)
+							else if (visibleScreen.blockMap.blocks[i + 1] == BlockMap.B_EMPTY)
 								quadBatch.addImage(imageR);
 							else
 								quadBatch.addImage(image);
@@ -249,33 +254,32 @@ package com.fc.movthecat.screen.game
 						hitRec1.y = foodImg.y;												
 						character.getBounds(Starling.current.stage, hitRec2);
 						if (hitRec1.intersects(hitRec2))
-						{
-							visibleScreen.blockMap.blocks[i] = -1;
+						{							
 							visibleScreen.blockMap.ateFood(i);
 							gameSession.foodNum++;
 							
-							if (gameSession.foodNum >= 100)
+							if (gameSession.foodNum >= 100 && gameSession.foodNum < 1001)
 							{
 								var gameService:GameService = Factory.getInstance(GameService);
 								CONFIG::isIOS{
-									if(gameSession.foodNum >= 1000)
+									if(gameSession.foodNum == 1000)
 										gameService.unlockAchievement(Constants.ACH_100PT);
-									else if(gameSession.foodNum >= 500)
+									if(gameSession.foodNum == 500)
 										gameService.unlockAchievement(Constants.ACH_50PT);
-									else if(gameSession.foodNum >= 200)
-										gameService.unlockAchievement(Constants.ACH_20PT);
-									else
-										gameService.unlockAchievement(Constants.ACH_10PT);								
+									if(gameSession.foodNum == 200)
+										gameService.unlockAchievement(Constants.ACH_20PT);									
+									if(gameSession.foodNum == 100)
+										gameService.unlockAchievement(Constants.ACH_10PT);
 								}
 								CONFIG::isAndroid {
-									if(gameSession.foodNum >= 1000)
-										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_100PT));
-									else if(gameSession.foodNum >= 500)
-										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_50PT));
-									else if(gameSession.foodNum >= 200)
-										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_20PT));
-									else
-										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_10PT));
+									if(gameSession.foodNum == 1000)
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_100PT), true);
+									if(gameSession.foodNum == 500)
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_50PT), true);
+									if(gameSession.foodNum == 200)
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_20PT), true);
+									if(gameSession.foodNum == 100)
+										gameService.unlockAchievement(MTCUtil.gsGetCode(Constants.ACH_10PT), true);
 								}
 							}
 								
@@ -284,6 +288,28 @@ package com.fc.movthecat.screen.game
 						else
 						{
 							quadBatch.addImage(foodImg);
+						}
+						startBlock = true;
+					}
+					else if (BlockMap.DIAMOND_LIST.indexOf(gameSession.visibleScreen.blockMap.blocks[i]) > -1)
+					{
+						row = i / visibleScreen.blockMap.col;
+						col = i % visibleScreen.blockMap.col;
+						diamond.x = (col * rec.width) + (rec.width - diamond.width >>1);
+						diamond.y = startY + row * rec.height + (rec.height - diamond.height >>1);;
+						hitRec1.x = diamond.x;
+						hitRec1.y = diamond.y;												
+						character.getBounds(Starling.current.stage, hitRec2);
+						if (hitRec1.intersects(hitRec2))
+						{
+							visibleScreen.blockMap.ateDiamond(i);											
+							gameSession.foodNum++;														
+								
+							SoundManager.playSound(SoundAsset.CAT_ATE);
+						}
+						else
+						{
+							quadBatch.addImage(diamond);
 						}
 						startBlock = true;
 					}

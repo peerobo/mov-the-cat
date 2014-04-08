@@ -311,7 +311,10 @@ package com.fc.movthecat.gui
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			globalInput.disable = false;
 			var gameService:GameService = Factory.getInstance(GameService);
-			CONFIG::isAndroid{
+			CONFIG::isAndroid {				
+				gameService.googlePlayTaskDone = gameService.flushAchievement;
+				gameService.googlePlayParam = null;
+				gameService.googlePlayTaskRetValueReq = [FCAndroidUtility.SIGN_IN_OK];
 				gameService.setHighscore(MTCUtil.HIGHSCORE, best);
 			}
 			CONFIG::isIOS {

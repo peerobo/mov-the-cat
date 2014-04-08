@@ -9,10 +9,14 @@
 		<cancel>Cancel</cancel>
 		<remindlater>Later</remindlater>
 		<neverask>Never Ask</neverask>
+		<neverhint>Disable Hint</neverhint>
+		<close>Close</close>
 		<rate>Rate</rate>
+		<guideDiamond0>Congratulation (=^.^=)\nYou get yourself\n1 lucky diamond without\nany challenge!\n</guideDiamond0>
 		<rateMsg>Please have some\nwords for us\nif you can?</rateMsg>
 		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
+		<getDiamond>Get</getDiamond>
 		<needInternet>Please enable\nInternet!</needInternet>
 		<videonot>Video not yet\navailable</videonot>
 		<new>new</new>
@@ -53,7 +57,7 @@
 		<ach6>Family matters</ach6>
 		<ach7>Oh my god</ach7>
 		<try>Try</try>
-		<share> #movthecat (=^.^=) http://goo.gl/NUcIT4</share>
+		<share> #movthecat (=^.^=) http://goo.gl/NUcIT4</share>		
 		<quote1>"Don't cry because it's over, smile because it happened."</quote1>
 		<quote2>"You only live once, but if you do it right, once is enough."</quote2>
 		<quote3>"In three words I can sum up everything I've learned about life: it goes on."</quote3>

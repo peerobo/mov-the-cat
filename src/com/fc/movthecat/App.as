@@ -37,6 +37,9 @@ package com.fc.movthecat
 	import starling.core.Starling;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	CONFIG::isAndroid
 	{
 		import com.fc.air.base.SocialForAndroid;
@@ -177,8 +180,8 @@ package com.fc.movthecat
 			Asset.loadParticleCfg([ParticleAsset.PARTICLE_STAR_COMPLETE]);
 			SoundAsset.preload();
 			ScreenMgr.showScreen(LoadingScreen);
-			Util.initAd();	
-		}
+			Util.initAd();							
+		}				
 	}
 
 }

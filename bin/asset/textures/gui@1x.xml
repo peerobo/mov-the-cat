@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:2f3eabd64a1f31968e61f3477e0ae762$ -->
+<!-- $TexturePacker:SmartUpdate:48b731f4c94091b40e349d856d58b638$ -->
 <TextureAtlas imagePath="gui@1x.png">
     <SubTexture name="bg_box" x="59" y="241" width="10" height="9"/>
     <SubTexture name="bg_square" x="71" y="241" width="7" height="7"/>
@@ -14,5 +14,6 @@
     <SubTexture name="bt_yellow" x="17" y="241" width="12" height="12"/>
     <SubTexture name="gearhead" x="2" y="2" width="256" height="185"/>
     <SubTexture name="ico_arrow" x="210" y="189" width="40" height="40"/>
+    <SubTexture name="ico_diamond" x="252" y="225" width="28" height="24" frameX="-5" frameY="-7" frameWidth="38" frameHeight="38"/>
     <SubTexture name="ico_indicator" x="252" y="189" width="43" height="34"/>
 </TextureAtlas>

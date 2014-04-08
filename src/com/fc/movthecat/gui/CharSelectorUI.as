@@ -48,7 +48,8 @@ package com.fc.movthecat.gui
 		public var buySpr:Sprite;
 		private var reqs:Array;
 		public var lbl:BaseBitmapTextField;
-			
+		public var getDiamondBt:BaseButton;	
+		
 		public function CharSelectorUI() 
 		{
 			super("CharacterSelectorUI");

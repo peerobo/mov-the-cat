@@ -22,6 +22,7 @@ package com.fc.movthecat.comp
 		public var msg:String;
 		public var callback:Function; // function(btIdx:int):void
 		public var bts:Array;
+		public var params:Array = [];
 		public function ConfirmDlg() 
 		{
 			super();
@@ -34,7 +35,8 @@ package com.fc.movthecat.comp
 			
 			var msgTxt:BaseBitmapTextField = BFConstructor.getTextField(1, 1, msg, FontAsset.GEARHEAD, 0x0);
 			msgTxt.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
-			msgTxt.scaleX = msgTxt.scaleY = 0.7;
+			msgTxt.scaleX = msgTxt.scaleY = 0.6;
+			msgTxt.touchable = false;
 			var len:int = bts.length;
 			var bt:BaseButton;
 			var btStr:String;
@@ -67,16 +69,22 @@ package com.fc.movthecat.comp
 				bt.x = bg.width - bt.width >> 1;
 				bt.y = msgTxt.y + msgTxt.height + 60 + (bt.height + 24) * j;
 				addChild(bt);
-			}
-			
+			}			
 		}
 		
 		private function onClose(idx:int):void 
 		{
 			PopupMgr.removePopup(this);
-			if(callback is Function)
-				callback(idx);
+			if (callback is Function)
+			{
+				if (!params)
+					params = [idx];
+				else
+					params.splice(0, 0, idx);
+				callback.apply(this,params);
+			}
 			callback = null;
+			params = null;
 		}
 		
 	}

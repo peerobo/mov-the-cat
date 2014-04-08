@@ -33,7 +33,7 @@ package com.fc.movthecat.logic
 		private var interval:Number;
 		private var timePass:Number;
 		private var helperPoint:Point;
-		private var scroll2Stage:Boolean;
+		private var scroll2Stage:Boolean;				
 		
 		public function GameSession()
 		{
@@ -146,6 +146,7 @@ package com.fc.movthecat.logic
 			//visibleScreen.player.w = recBlock.width;
 			visibleScreen.blockMap.anchorPt.x = 0;
 			visibleScreen.blockMap.anchorPt.y = visibleScreen.player.y;
+			visibleScreen.blockMap.timePass = 0;
 			visibleScreen.blockMap.validate();
 			//visibleScreen.player.weight = 1;
 			//visibleScreen.player.speed = 0.25;
@@ -222,6 +223,40 @@ package com.fc.movthecat.logic
 				loop();
 				timePass -= interval;
 			}
+		}
+		
+		public function activateDiamondEffect(diamondType:int):void 
+		{
+			var so:SharedObject = Util.getLocalData("askDiamond");
+			//if (!so.data.hasOwnProperty(diamondType.toString()))	// show guide
+			//{
+				//var dlg:ConfirmDlg = Factory.getInstance(ConfirmDlg);
+				//dlg.msg = LangUtil.getText("guideDiamond" + diamondType);
+				//dlg.bts = [LangUtil.getText("neverhint"), LangUtil.getText("close")];
+				//dlg.callback = onUserCloseHint;
+				//dlg.params = [diamondType];
+				//PopupMgr.addPopUp(dlg);				
+				//Starling.juggler.remove(this);
+				//var userInput:UserInput = Factory.getInstance(UserInput);
+				//userInput.stop();
+			//}
+			if (diamondType == BlockMap.DIAMOND_NO_EFFECT)
+			{
+				var itemsDB:ItemsDB = Factory.getInstance(ItemsDB);
+				itemsDB.addItem(ItemsDB.DIAMOND, 1);
+			}
+		}
+		
+		private function onUserCloseHint(idx:int, diamondType:int):void 
+		{
+			if (idx == 0)
+			{
+				var so:SharedObject = Util.getLocalData("askDiamond");
+				so.data[diamondType.toString()] = true;
+			}	
+			Starling.juggler.add(this);
+			var userInput:UserInput = Factory.getInstance(UserInput);
+			userInput.start();
 		}
 	}
 

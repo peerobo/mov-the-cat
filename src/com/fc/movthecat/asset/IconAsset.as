@@ -10,6 +10,7 @@ package com.fc.movthecat.asset
 		public static const ICO_RAIN:String = "ico_rain";
 		public static const ICO_SNOW:String = "ico_snow";
 		public static const ICO_FOOD_PREFIX:String = "food";
+		public static const ICO_DIAMOND_PREFIX:String = "ico_diamond_";
 	}
 
 }
