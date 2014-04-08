@@ -2,7 +2,7 @@
 <application xmlns="http://ns.adobe.com/air/application/13.0">
 	
 	<id>com.fc.movthecat</id>
-	<versionNumber>1.1.1</versionNumber>
+	<versionNumber>1.1.2</versionNumber>
 	<supportedProfiles>mobileDevice</supportedProfiles>
 	<filename>movthecat</filename>
 	

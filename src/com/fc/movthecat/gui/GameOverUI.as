@@ -169,6 +169,12 @@ package com.fc.movthecat.gui
 	
 		private function onTwitter():void 
 		{
+			if (!Util.internetAvailable)
+			{
+				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF8080, 2);	
+				return;
+			}
+				
 			var bitmapData:BitmapData = Util.g_takeSnapshot();
 			var loadingIcon:LoadingIcon = Factory.getInstance(LoadingIcon);
 			loadingIcon.show();
@@ -192,6 +198,11 @@ package com.fc.movthecat.gui
 		
 		private function onFB():void 
 		{
+			if (!Util.internetAvailable)
+			{
+				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF8080, 2);	
+				return;
+			}
 			var bitmapData:BitmapData = Util.g_takeSnapshot();
 			var loadingIcon:LoadingIcon = Factory.getInstance(LoadingIcon);
 			loadingIcon.show();
@@ -210,6 +221,11 @@ package com.fc.movthecat.gui
 		
 		private function onMoreGame():void 
 		{
+			if (!Util.internetAvailable)
+			{
+				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF8080, 2);	
+				return;
+			}
 			SoundManager.playSound(SoundAsset.SOUND_CLICK);
 			Util.showMoreGames();
 		}
