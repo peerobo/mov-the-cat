@@ -149,8 +149,7 @@ package com.fc.movthecat.screen
 					y: desY,
 					transition: Transitions.EASE_OUT_BOUNCE
 				}
-			)			
-			
+			)									
 		}
 		
 		private function onPlayGame(e:starling.events.Event):void 

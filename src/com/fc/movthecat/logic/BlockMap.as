@@ -31,6 +31,7 @@ package com.fc.movthecat.logic
 		public static var DIAMOND_NO_FOOD:int = 2;
 		public static var DIAMOND_NO_CAT:int = 3;		
 		public static const DIAMOND_LIST:Array = [DIAMOND_NO_EFFECT, DIAMOND_NO_BRICK, DIAMOND_NO_FOOD, DIAMOND_NO_CAT];		
+		private var _noDiamond:Boolean;
 		
 		public function BlockMap()
 		{
@@ -60,16 +61,7 @@ package com.fc.movthecat.logic
 			var idx:int = r * col + c;
 			if (idx < 0 || idx > blocks.length)
 				return true;			
-			return !(blocks[idx] == B_BRICK);
-			
-			//var ret:Boolean = true;
-			//var startR:int = int(oldY);
-			//for (var i:int = startR; i <= r; i++) 
-			//{
-				//var idx:int = i * col + c;
-				//ret &&= (idx < 0)|| (idx > blocks.length) || !blocks[idx];
-			//}
-			//return ret;
+			return !(blocks[idx] == B_BRICK);			
 		}
 		
 		public function fall(deltaY:Number, oldY:Number, oldX:Number):Number
@@ -120,7 +112,7 @@ package com.fc.movthecat.logic
 		}
 		
 		public function validate(withoutDel:Boolean = false, genDiamond:Boolean = true ):void
-		{			
+		{					
 			if(!withoutDel)
 			{				
 				lvlStage.deleteBricks(1);	
@@ -131,19 +123,19 @@ package com.fc.movthecat.logic
 				var currLen:int = foods.length;
 				for (var k:int = currLen; k < lvlStage.row; k++) 
 				{
-					foods.push(Util.getRandom(col));
+					foods.push(Util.getRandom(col + 3));
 				}
 				currLen = diamonds.length;	
 				for (k = currLen; k < lvlStage.row; k++) 
 				{
-					if (genDiamond)
+					if (genDiamond && !_noDiamond)
 					{
-						/*var rnd:Number = Util.getRandom();
-						if(rnd > 50 && rnd < 70)
-							diamonds.push(Util.getRandom());
+						var rnd:Number = Util.getRandom();
+						if(rnd > 0 && rnd < 50)
+							diamonds.push(Util.getRandom(col + 10));
 						else
-							diamonds.push( -1);*/
-						diamonds.push(Util.getRandom(10));
+							diamonds.push( -1);
+						//diamonds.push(Util.getRandom(20));
 					}
 					else
 					{
@@ -174,8 +166,8 @@ package com.fc.movthecat.logic
 					}
 					else if (c == int(diamonds[notFoodIdx]))
 					{
-						//blocks[i] = DIAMOND_LIST[int(Util.getRandom(4))];
-						blocks[i] = DIAMOND_NO_EFFECT;
+						blocks[i] = DIAMOND_LIST[int(1+ Util.getRandom(3))];
+						//blocks[i] = DIAMOND_NO_FOOD;
 					}
 				}
 				c++;
@@ -188,30 +180,12 @@ package com.fc.movthecat.logic
 			timePass+=1;
 		}
 		
-		public function ateFood(blockIdx:int):Boolean 
+		public function ateFood(blockIdx:int):void 
 		{
 			blocks[blockIdx] = -1;
 			var retBool:Boolean = false;
 			var r:int = blockIdx / col;
 			foods[r / 2] = -1;
-			//var recFood:Rectangle = Factory.getObjectFromPool(Rectangle);
-			//recFood.setTo(0, 0, 1, 1);
-			//var len:int = foods.length;
-			//for (var i:int = 0; i < len; i++) 
-			//{			
-				//recFood.x = foods[i];
-				//recFood.y = i;
-				//retBool = recFood.intersects(rec);
-				//if (retBool)
-				//{
-					//foods[i] = -1;
-					//validate(true);
-					//break;
-				//}
-			//}
-			//Factory.toPool(rec);
-			//Factory.toPool(recFood);
-			return retBool;
 		}
 		
 		public function ateDiamond(blockIdx:int):void 
@@ -223,6 +197,29 @@ package com.fc.movthecat.logic
 			gs.activateDiamondEffect(blocks[blockIdx]);			
 			diamonds[diamondPos] = -1;
 			blocks[blockIdx] = -1;
+		}
+		
+		public function get noDiamond():Boolean 
+		{
+			return _noDiamond;
+		}
+		
+		public function set noDiamond(value:Boolean):void 
+		{
+			_noDiamond = value;
+			if (value)
+			{
+				for (var i:int = 0; i < foods.length; i++) 
+				{
+					diamonds[i] = -1;
+				}
+				var len:int = blocks.length;
+				for (var j:int = 0; j < len; j++) 
+				{
+					if (DIAMOND_LIST.indexOf(blocks[j]) > -1)
+						blocks[j] = B_EMPTY;
+				}
+			}
 		}
 	
 	}

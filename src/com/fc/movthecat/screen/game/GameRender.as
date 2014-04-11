@@ -1,6 +1,8 @@
 package com.fc.movthecat.screen.game
 {
+	import com.fc.air.base.BFConstructor;
 	import com.fc.air.base.Factory;
+	import com.fc.air.base.font.BaseBitmapTextField;
 	import com.fc.air.base.GameService;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.comp.LoopableSprite;
@@ -8,6 +10,7 @@ package com.fc.movthecat.screen.game
 	import com.fc.air.res.Asset;
 	import com.fc.air.Util;
 	import com.fc.movthecat.asset.BackgroundAsset;
+	import com.fc.movthecat.asset.FontAsset;
 	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.asset.SoundAsset;
@@ -25,6 +28,7 @@ package com.fc.movthecat.screen.game
 	import starling.display.Quad;
 	import starling.display.QuadBatch;
 	import starling.events.Event;
+	import starling.text.TextFieldAutoSize;
 	import starling.textures.Texture;
 	import starling.textures.TextureSmoothing;
 	
@@ -44,7 +48,12 @@ package com.fc.movthecat.screen.game
 		private var imageL:Image;
 		private var imageR:Image;
 		private var foodImg:Image;
-		private var diamond:Image;
+		private var diamond0:Image;
+		private var diamond1:Image;
+		private var diamond2:Image;
+		private var diamond3:Image;
+		private var refreshRateInt:int = 0;
+		private var txtTimeChallenge:BaseBitmapTextField;
 		
 		public function GameRender()
 		{
@@ -62,7 +71,10 @@ package com.fc.movthecat.screen.game
 		
 		override public function onRemoved(e:Event):void 
 		{
-			Factory.toPool(diamond);
+			Factory.toPool(diamond3);
+			Factory.toPool(diamond2);
+			Factory.toPool(diamond1);
+			Factory.toPool(diamond0);
 			Factory.toPool(foodImg);
 			Factory.toPool(imageR);
 			Factory.toPool(imageL);
@@ -97,8 +109,14 @@ package com.fc.movthecat.screen.game
 			imageR.height = rec.height;
 			imageR.smoothing = TextureSmoothing.NONE;
 			
-			diamond = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 0, 7) as Image;
-			diamond.smoothing = TextureSmoothing.NONE;
+			diamond0 = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 0, 7) as Image;
+			diamond0.smoothing = TextureSmoothing.NONE;
+			diamond1 = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 1, 7) as Image;
+			diamond1.smoothing = TextureSmoothing.NONE;
+			diamond2 = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 2, 7) as Image;
+			diamond2.smoothing = TextureSmoothing.NONE;
+			diamond3 = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 3, 7) as Image;
+			diamond3.smoothing = TextureSmoothing.NONE;
 			
 			foodImg = MTCUtil.getGameImageWithScale(foodTex) as Image;
 			if(foodImg.width > rec.width)
@@ -115,6 +133,12 @@ package com.fc.movthecat.screen.game
 			
 			Factory.toPool(r);
 			Factory.toPool(rec);
+			
+			txtTimeChallenge = BFConstructor.getShortTextField( 1, 1, "60.00",FontAsset.GEARHEAD);
+			txtTimeChallenge.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
+			addChild(txtTimeChallenge);
+			txtTimeChallenge.x = Util.appWidth - txtTimeChallenge.width >> 1;
+			txtTimeChallenge.visible = false;
 		}
 		
 		public function setCharacter(disp:MovieClip):void
@@ -144,11 +168,12 @@ package com.fc.movthecat.screen.game
 				previousState = visibleScreen.needRender;
 				if (visibleScreen.needRender)
 				{
-					leftCharacter.visible = false;
+					leftCharacter.visible = false;					
 					Starling.juggler.add(leftCharacter);
 				}
 				else
 				{
+					txtTimeChallenge.visible = false;
 					leftCharacter.removeFromParent();
 					Factory.toPool(leftCharacter);
 					leftCharacter = null;
@@ -194,15 +219,23 @@ package com.fc.movthecat.screen.game
 				character.y = (cRInPixel.y - character.y) / 3 + character.y;
 				leftCharacter.x = character.x + leftCharacter.width;
 				leftCharacter.y = character.y;
-				if (visibleScreen.player.isLeft)
-				{
+				if (gameSession.challenge == BlockMap.DIAMOND_NO_CAT && (refreshRateInt % 2 == 0 || refreshRateInt == -1))
+				{					
 					character.visible = false;
-					leftCharacter.visible = true;
+					leftCharacter.visible = false;					
 				}
 				else
 				{
-					character.visible = true;
-					leftCharacter.visible = false;
+					if (visibleScreen.player.isLeft)
+					{
+						character.visible = false;
+						leftCharacter.visible = true;
+					}
+					else
+					{
+						character.visible = true;
+						leftCharacter.visible = false;
+					}									
 				}
 				if (visibleScreen.player.isMoving)
 				{
@@ -229,18 +262,21 @@ package com.fc.movthecat.screen.game
 				{
 					if (visibleScreen.blockMap.blocks[i] == BlockMap.B_BRICK)
 					{
-						row = i / visibleScreen.blockMap.col;
-						col = i % visibleScreen.blockMap.col;
-						imageL.x = imageR.x = image.x = col * rec.width;
-						imageL.y = imageR.y = image.y = startY + row * rec.height;
-						if (image.y >= 0 || image.y <= Util.appHeight)
+						if (!(gameSession.challenge == BlockMap.DIAMOND_NO_BRICK && (refreshRateInt % 2 == 0 || refreshRateInt == -1)))
 						{
-							if (startBlock)
-								quadBatch.addImage(imageL);
-							else if (visibleScreen.blockMap.blocks[i + 1] == BlockMap.B_EMPTY)
-								quadBatch.addImage(imageR);
-							else
-								quadBatch.addImage(image);
+							row = i / visibleScreen.blockMap.col;
+							col = i % visibleScreen.blockMap.col;
+							imageL.x = imageR.x = image.x = col * rec.width;
+							imageL.y = imageR.y = image.y = startY + row * rec.height;
+							if (image.y >= 0 || image.y <= Util.appHeight)
+							{
+								if (startBlock)
+									quadBatch.addImage(imageL);
+								else if (visibleScreen.blockMap.blocks[i + 1] == BlockMap.B_EMPTY)
+									quadBatch.addImage(imageR);
+								else
+									quadBatch.addImage(image);
+							}							
 						}
 						startBlock = false;
 					}
@@ -252,12 +288,11 @@ package com.fc.movthecat.screen.game
 						foodImg.y = startY + row * rec.height;
 						hitRec1.x = foodImg.x;
 						hitRec1.y = foodImg.y;												
-						character.getBounds(Starling.current.stage, hitRec2);
+						character.getBounds(Starling.current.stage, hitRec2);												
 						if (hitRec1.intersects(hitRec2))
 						{							
 							visibleScreen.blockMap.ateFood(i);
-							gameSession.foodNum++;
-							
+							gameSession.foodNum++;							
 							if (gameSession.foodNum >= 100 && gameSession.foodNum < 1001)
 							{
 								var gameService:GameService = Factory.getInstance(GameService);
@@ -287,12 +322,15 @@ package com.fc.movthecat.screen.game
 						}
 						else
 						{
-							quadBatch.addImage(foodImg);
+							if (!(gameSession.challenge == BlockMap.DIAMOND_NO_FOOD && (refreshRateInt % 2 == 0 || refreshRateInt == -1)))
+								quadBatch.addImage(foodImg);
 						}
+						
 						startBlock = true;
 					}
 					else if (BlockMap.DIAMOND_LIST.indexOf(gameSession.visibleScreen.blockMap.blocks[i]) > -1)
 					{
+						var diamond:Image = this["diamond"+gameSession.visibleScreen.blockMap.blocks[i]]
 						row = i / visibleScreen.blockMap.col;
 						col = i % visibleScreen.blockMap.col;
 						diamond.x = (col * rec.width) + (rec.width - diamond.width >>1);
@@ -303,9 +341,7 @@ package com.fc.movthecat.screen.game
 						if (hitRec1.intersects(hitRec2))
 						{
 							visibleScreen.blockMap.ateDiamond(i);											
-							gameSession.foodNum++;														
-								
-							SoundManager.playSound(SoundAsset.CAT_ATE);
+							gameSession.foodNum++;							
 						}
 						else
 						{
@@ -318,7 +354,23 @@ package com.fc.movthecat.screen.game
 						startBlock = true;
 					}
 				}
-				
+				if (gameSession.challenge != MTCUtil.NO_CHALLENGE)
+				{
+					if(txtTimeChallenge.visible)
+					{						
+						if (gameSession.challengeTimeout <= 0)
+							txtTimeChallenge.visible = false;
+						else
+							txtTimeChallenge.text = (int(gameSession.challengeTimeout * 100) / 100).toString();
+					}
+					if(refreshRateInt > -1)
+						refreshRateInt--;					
+				}	
+				else
+				{
+					if(txtTimeChallenge.visible)
+						txtTimeChallenge.visible = false;
+				}
 				Factory.toPool(rec);
 				Factory.toPool(hitRec1);
 				Factory.toPool(hitRec2);
@@ -326,6 +378,12 @@ package com.fc.movthecat.screen.game
 				Factory.toPool(cRInPixel);				
 				Factory.toPool(centerChar);				
 			}
+		}
+		
+		public function startEffectTimeout():void 
+		{
+			refreshRateInt = 40;	
+			txtTimeChallenge.visible = true;
 		}
 	
 	}

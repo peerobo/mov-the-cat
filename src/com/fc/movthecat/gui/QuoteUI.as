@@ -34,15 +34,13 @@ package com.fc.movthecat.gui
 		override public function onAdded(e:Event):void 
 		{
 			super.onAdded(e);
-			this.scaleX = this.scaleY = 0.6;
-			quoteTxt.text = LangUtil.getText("quote" + (1 + int(Util.getRandom(Constants.QUOTE_NUM)))); 
-			
 			var gs:GameScreen = Factory.getInstance(GameScreen);
-			var character:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + gs.charIdx + "_");
-			character.play();
-			
 			var catCfg:CatCfg = Factory.getInstance(CatCfg);
 			MTCUtil.setCatCfg(gs.charIdx, catCfg);
+			this.scaleX = this.scaleY = 0.6;
+			quoteTxt.text = LangUtil.getText("quote" + (1 + int(Util.getRandom(Constants.QUOTE_NUM)))); 						
+			var character:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + catCfg.idx + "_");
+			character.play();					
 			character.fps = catCfg.fps;
 			character.height = Util.appHeight - this.height >> 1;
 			character.scaleX = character.scaleY;

@@ -17,6 +17,7 @@ package com.fc.movthecat.asset
 		public static const BG_MUSIC_PREFIX:String = Asset.SOUND_FOLDER + Asset.BASE_GUI + "/" + "bg_music_";		
 		public static const CAT_DIE:String = Asset.SOUND_FOLDER + Asset.BASE_GUI + "/" + "die_";		
 		public static const CAT_ATE:String = Asset.SOUND_FOLDER + Asset.BASE_GUI + "/" + "ate.mp3";		
+		public static const GAIN_DIAMOND:String = Asset.SOUND_FOLDER + Asset.BASE_GUI + "/" + "collectdiamond.mp3";		
 		
 		public static const FILE_TYPE:String = ".mp3";
 		
@@ -28,6 +29,7 @@ package com.fc.movthecat.asset
 		{		
 			SoundManager.getSound(SOUND_CLICK);											
 			SoundManager.getSound(CAT_ATE);											
+			SoundManager.getSound(GAIN_DIAMOND);
 			if (!listSound)
 				listSound = { };
 		}

@@ -1,22 +1,31 @@
 package com.fc.movthecat.logic
 {
+	import com.fc.air.base.EffectMgr;
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.LangUtil;
+	import com.fc.air.base.LayerMgr;
 	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.Util;
+	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.comp.ConfirmDlg;
+	import com.fc.movthecat.comp.IconWithText;
 	import com.fc.movthecat.Constants;
+	import com.fc.movthecat.MTCUtil;
+	import com.fc.movthecat.screen.game.GameRender;
 	import com.fc.movthecat.screen.GameScreen;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
+	import flash.media.Sound;
 	import flash.net.SharedObject;
 	import flash.system.System;
 	import starling.animation.IAnimatable;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
+	import starling.display.Sprite;
 	
 	/**
 	 * ...
@@ -34,11 +43,16 @@ package com.fc.movthecat.logic
 		private var timePass:Number;
 		private var helperPoint:Point;
 		private var scroll2Stage:Boolean;				
+		public var challenge:int;
+		public var challengeTimeout:Number;
+		private var startFood:int;
+		private var foodTxt:IconWithText;		
+		private var iconTxt:IconWithText;				
 		
 		public function GameSession()
 		{
 			interval = 0.033;
-			timePass = 0;
+			timePass = 0;			
 		}
 		
 		public function loop():void
@@ -54,8 +68,6 @@ package com.fc.movthecat.logic
 				if (canMove) // move left right
 				{
 					visibleScreen.player.move(isLeft);	
-					//if (visibleScreen.blockMap.ateFood(visibleScreen.player.getBound()))
-						//foodNum++;
 				}
 				Factory.toPool(currBound);						
 				visibleScreen.player.isMoving = true;
@@ -76,7 +88,6 @@ package com.fc.movthecat.logic
 				helperPoint.x = b.left;
 				helperPoint.y = b.right;
 			}
-			//var dy:Number = visibleScreen.player.fallspeed + gravitySpeed * visibleScreen.player.weight;
 			var dy:Number = gravitySpeed * visibleScreen.player.weight;
 			var destY:Number = b.bottom + dy;
 			for (var i:int = helperPoint.x; i <= helperPoint.y; i++)
@@ -85,17 +96,10 @@ package com.fc.movthecat.logic
 			}
 			if (check) // continue falling
 			{									
-				//visibleScreen.player.y = visibleScreen.blockMap.fall(dy, visibleScreen.player.y, visibleScreen.player.x);
-				//visibleScreen.player.fallspeed += gravitySpeed * visibleScreen.player.weight;
-				//trace("fall ", visibleScreen.player.y);
 				visibleScreen.player.y += gravitySpeed * visibleScreen.player.weight;
-				//if (visibleScreen.blockMap.ateFood(visibleScreen.player.getBound()))
-					//foodNum++;
 			}
 			else
-			{
-				//visibleScreen.player.y = visibleScreen.blockMap.fall(dy, visibleScreen.player.y, visibleScreen.player.x);
-				//trace("stop ", visibleScreen.player.y);				
+			{		
 				visibleScreen.player.fallspeed = 0;
 			}
 			// scroll whole stage
@@ -111,11 +115,60 @@ package com.fc.movthecat.logic
 				visibleScreen.blockMap.anchorPt.y += scrollSpeed;				
 			}
 			Factory.toPool(b);
+			if (foodNum == 100)
+			{
+				foodNum++;
+				visibleScreen.blockMap.noDiamond = false;				
+			}
+			if (challenge != MTCUtil.NO_CHALLENGE)
+			{
+				challengeTimeout -= interval;
+				if (challenge == BlockMap.DIAMOND_NO_FOOD)
+				{
+					foodTxt.text = (70 - (foodNum - startFood)).toString();
+					if (foodNum - startFood >= 70 && foodTxt.visible)
+						foodTxt.visible = false;
+				}
+				if (challengeTimeout <= 0)
+				{
+					challengeTimeout = MTCUtil.NO_CHALLENGE;
+					if (challenge == BlockMap.DIAMOND_NO_FOOD)					
+					{
+						foodTxt.removeFromParent();
+						if (foodNum - startFood >= 70)
+							rewardDiamond();
+					}
+					else
+					{
+						rewardDiamond();
+					}
+					
+					visibleScreen.blockMap.noDiamond = false;										
+					challenge = MTCUtil.NO_CHALLENGE;
+					var gS:GameScreen = Factory.getInstance(GameScreen);
+					gS.disableEffectSound();
+				}								
+			}
 			if (!scroll2Stage && visibleScreen.checkPlayerOut())
 			{
 				gameOver();
 			}
+						
 			System.pauseForGCIfCollectionImminent(1);
+		}
+		
+		private function rewardDiamond():void 
+		{
+			var itemsDB:ItemsDB = Factory.getInstance(ItemsDB);
+			itemsDB.addItem(ItemsDB.DIAMOND, 1);
+			SoundManager.playSound(SoundAsset.GAIN_DIAMOND);
+			iconTxt = new IconWithText();
+			iconTxt.alpha = 1;
+			iconTxt.text = "+1";
+			iconTxt.img = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 0, 7);
+			iconTxt.x = Util.appWidth >> 1;
+			iconTxt.y = Util.appHeight >> 1;
+			EffectMgr.floatObject(iconTxt, new Point(0, (Util.appHeight >> 1) - 80), "y", 1);
 		}
 		
 		public function startNewGame():void
@@ -133,6 +186,9 @@ package com.fc.movthecat.logic
 				rec.height = visibleScreen.blockMap.row - rec.y - (LevelStage.OUT_OF_VIEW - 1 ) * 2;
 				visibleScreen.blockMap.gameWindow = rec;
 			}
+			challengeTimeout = MTCUtil.NO_CHALLENGE;
+			challenge = MTCUtil.NO_CHALLENGE;
+			visibleScreen.blockMap.noDiamond = true;
 			// construct level
 			visibleScreen.blockMap.lvlStage.construct();
 			// init player position
@@ -170,6 +226,8 @@ package com.fc.movthecat.logic
 		
 		public function gameOver():void
 		{
+			if (challenge == BlockMap.DIAMOND_NO_FOOD)					
+				foodTxt.removeFromParent();
 			visibleScreen.needRender = false;
 			var items:ItemsDB = Factory.getInstance(ItemsDB);
 			items.addItem(foodType, foodNum);
@@ -227,7 +285,8 @@ package com.fc.movthecat.logic
 		
 		public function activateDiamondEffect(diamondType:int):void 
 		{
-			var so:SharedObject = Util.getLocalData("askDiamond");
+			//var so:SharedObject = Util.getLocalData("askDiamond");
+			var guideShown:Boolean = false;
 			//if (!so.data.hasOwnProperty(diamondType.toString()))	// show guide
 			//{
 				//var dlg:ConfirmDlg = Factory.getInstance(ConfirmDlg);
@@ -236,15 +295,50 @@ package com.fc.movthecat.logic
 				//dlg.callback = onUserCloseHint;
 				//dlg.params = [diamondType];
 				//PopupMgr.addPopUp(dlg);				
-				//Starling.juggler.remove(this);
+				//Starling.juggler.remove(this);				
 				//var userInput:UserInput = Factory.getInstance(UserInput);
 				//userInput.stop();
+				//guideShown = true;
 			//}
 			if (diamondType == BlockMap.DIAMOND_NO_EFFECT)
 			{
-				var itemsDB:ItemsDB = Factory.getInstance(ItemsDB);
-				itemsDB.addItem(ItemsDB.DIAMOND, 1);
+				rewardDiamond();
 			}
+			else
+			{
+				var gameRender:GameRender = Factory.getInstance(GameRender);
+				gameRender.startEffectTimeout();
+				challenge = diamondType;
+				visibleScreen.blockMap.noDiamond = true;
+				if (challenge == BlockMap.DIAMOND_NO_CAT)
+				{
+					challengeTimeout = MTCUtil.CHALLENGE_TIMEOUT_NO_CAT;
+				}
+				else if (challenge == BlockMap.DIAMOND_NO_FOOD)
+				{
+					challengeTimeout = MTCUtil.CHALLENGE_TIMEOUT_NO_FOOD;					
+					startFood = foodNum;
+					if (!guideShown)
+					{
+						foodTxt = Factory.getInstance(IconWithText);
+						foodTxt.visible = true;
+						foodTxt.text = "70";
+						var img:DisplayObject = MTCUtil.getGameImageWithScale(IconAsset.ICO_FOOD_PREFIX + foodType);
+						img.height = 120;
+						img.scaleX = img.scaleY;
+						foodTxt.img = img;
+						foodTxt.alpha = 0.8;					
+						LayerMgr.getLayer(LayerMgr.LAYER_EFFECT).addChild(foodTxt);
+						Util.g_centerScreen(foodTxt);
+					}
+				}
+				else if (challenge == BlockMap.DIAMOND_NO_BRICK)
+				{
+					challengeTimeout = MTCUtil.CHALLENGE_TIMEOUT_NO_BRICK;
+				}
+				var gameScreen:GameScreen = Factory.getInstance(GameScreen);
+				gameScreen.activateEffectSound();
+			}			
 		}
 		
 		private function onUserCloseHint(idx:int, diamondType:int):void 
@@ -257,6 +351,19 @@ package com.fc.movthecat.logic
 			Starling.juggler.add(this);
 			var userInput:UserInput = Factory.getInstance(UserInput);
 			userInput.start();
+			if (diamondType == BlockMap.DIAMOND_NO_FOOD)
+			{
+				foodTxt = Factory.getInstance(IconWithText);
+				foodTxt.visible = true;
+				foodTxt.text = "0";
+				var img:DisplayObject = MTCUtil.getGameImageWithScale(IconAsset.ICO_FOOD_PREFIX + foodType);
+				img.height = 120;
+				img.scaleX = img.scaleY;
+				foodTxt.img = img;
+				foodTxt.alpha = 0.8;					
+				LayerMgr.getLayer(LayerMgr.LAYER_EFFECT).addChild(foodTxt);
+				Util.g_centerScreen(foodTxt);
+			}
 		}
 	}
 

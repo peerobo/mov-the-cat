@@ -19,6 +19,7 @@ package com.fc.movthecat.gui
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.MTCUtil;
 	import com.fc.movthecat.screen.MainScreen;
+	import feathers.core.DisplayListWatcher;
 	import flash.geom.Rectangle;
 	import flash.net.SharedObject;
 	import starling.display.DisplayObject;
@@ -28,6 +29,7 @@ package com.fc.movthecat.gui
 	import starling.events.Event;
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
+	import starling.utils.VAlign;
 	
 	/**
 	 * ...
@@ -48,7 +50,7 @@ package com.fc.movthecat.gui
 		public var buySpr:Sprite;
 		private var reqs:Array;
 		public var lbl:BaseBitmapTextField;
-		public var getDiamondBt:BaseButton;	
+		public var buyWithDiamondBt:BaseButton;			
 		
 		public function CharSelectorUI() 
 		{
@@ -72,9 +74,24 @@ package com.fc.movthecat.gui
 			backBt.setCallbackFunc(onUpdate, [ -1]);			
 			tryBt.setCallbackFunc(onTry);
 			buyBt.setCallbackFunc(onBuy);
+			buyWithDiamondBt.setCallbackFunc(onBuyWithDiamond);
 			lbl.touchable = true;
+			lbl.vAlign = VAlign.TOP;
 			Factory.addMouseClickCallback(lbl, onCheat);
 			updateChar();
+		}
+		
+		private function onBuyWithDiamond():void 
+		{
+			var itemDB:ItemsDB = Factory.getInstance(ItemsDB);
+			if (itemDB.unlock(charIdx, true))
+			{
+				updateChar();
+			}
+			else
+			{
+				
+			}
 		}
 		
 		private var h:int = 0;
@@ -138,10 +155,12 @@ package com.fc.movthecat.gui
 		
 		private function updateChar():void 
 		{			
+			var req:int;
+			var avail:int;
 			var len:int;
 			var catCfg:CatCfg = Factory.getInstance(CatCfg);
 			MTCUtil.setCatCfg(charIdx, catCfg);			
-			char = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + charIdx + "_", char, catCfg.scale);
+			char = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + catCfg.idx + "_", char, catCfg.scale);
 			char.x = recChar.x + (recChar.width - char.width >> 1);
 			char.y = recChar.y + (recChar.height - char.height >> 1);
 			char.fps = catCfg.fps;
@@ -176,11 +195,11 @@ package com.fc.movthecat.gui
 					img.x = posX - 80;
 					img.y = posY + (HIMG + 10) * i;					
 					reqs.push(img);
-					var req:int = catCfg.numIdxs[i];
+					req = catCfg.numIdxs[i];
 					str = " x " + req;
 					text = BFConstructor.getShortTextField(1, 1, str, FontAsset.GEARHEAD,0xFFFF80);
 					text.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
-					var avail:int = itemsDB.getItem(catCfg.reqIdxs[i]);
+					avail = itemsDB.getItem(catCfg.reqIdxs[i]);
 					text.add( " ("+avail+")", avail > req ? 0x00FF80 : 0xFF0000)
 					text.x = img.x + img.width;
 					text.y = img.y + 12;
@@ -188,6 +207,26 @@ package com.fc.movthecat.gui
 					addChild(text);
 					reqs.push(text);
 				}
+				
+				img = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + "0");
+				img.height = HIMG + 60;
+				img.scaleX = img.scaleY;
+				addChild(img);
+				img.x = buyWithDiamondBt.x + buyWithDiamondBt.width + 60;
+				img.y = buyWithDiamondBt.y + (buyWithDiamondBt.height - img.height >> 1);
+				reqs.push(img);
+				req = catCfg.diamonds;
+				str = " x " + req;
+				text = BFConstructor.getShortTextField(1, 1, str, FontAsset.GEARHEAD,0xFFFF80);
+				text.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
+				text.scaleX = text.scaleY = 0.6;
+				avail = itemsDB.getItem(ItemsDB.DIAMOND);
+				text.add( "\n  ("+avail+")", avail > req ? 0x00FF80 : 0xFF0000)
+				text.x = img.x + img.width;
+				text.y = img.y + (img.height - text.height >> 1);				
+				addChild(text);
+				reqs.push(text);
+				
 				buySpr.visible = true;
 				playSpr.visible = false;
 			}

@@ -6,6 +6,7 @@ package com.fc.movthecat.config
 	 */
 	public class CatCfg 
 	{
+		public var idx:int;
 		public var width:Number;
 		public var speed:Number;
 		public var scale:Number;
@@ -13,6 +14,7 @@ package com.fc.movthecat.config
 		public var fps:int;
 		public var reqIdxs:Array;
 		public var numIdxs:Array;
+		public var diamonds:int;
 		public function CatCfg() 
 		{
 			

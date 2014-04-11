@@ -31,14 +31,18 @@ package com.fc.movthecat
 		public static const EVENT_ON_PLAYGAME:String = "on_play_game";
 		public static const EVENT_ON_PICK_CHAR:String = "on_pick_char";
 		public static const EVENT_ON_HOME:String = "on_go_home";		
-		//CONFIG::isIOS{
+		CONFIG::isIOS{
 			public static const HIGHSCORE:String = "catMain";
-		//}
+		}
 		CONFIG::isAndroid {
 			public static const HIGHSCORE:String = "CgkI7_y9xv4cEAIQAQ";
 		}
 		static public var catCfgs:Array;
-		static private var constants:Object;
+		static private var constants:Object;		
+		static public const CHALLENGE_TIMEOUT_NO_CAT:int = 30;
+		static public const CHALLENGE_TIMEOUT_NO_FOOD:int = 60;
+		static public const CHALLENGE_TIMEOUT_NO_BRICK:int = 30;		
+		static public const NO_CHALLENGE:int = -1;
 		
 		public static function getGameImageWithScale(texName:String, scale:Number = -1):DisplayObject
 		{
@@ -117,6 +121,7 @@ package com.fc.movthecat
 		
 		public static function setCatCfg(idx:int, configObj2Set:CatCfg):void
 		{
+			configObj2Set.idx = catCfgs[idx].idx;
 			configObj2Set.scale = catCfgs[idx].scale;
 			configObj2Set.speed = catCfgs[idx].speed;
 			configObj2Set.weight = catCfgs[idx].weight;
@@ -124,6 +129,7 @@ package com.fc.movthecat
 			configObj2Set.fps = catCfgs[idx].fps;
 			configObj2Set.numIdxs = catCfgs[idx].numIdxs;
 			configObj2Set.reqIdxs = catCfgs[idx].reqIdxs;
+			configObj2Set.diamonds = catCfgs[idx].diamonds;
 			if (configObj2Set.numIdxs.length < configObj2Set.reqIdxs.length)
 			{
 				var len:int = configObj2Set.numIdxs.length;

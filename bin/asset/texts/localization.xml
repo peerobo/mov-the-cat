@@ -3,20 +3,23 @@
 		<welcome> Chào mừng các bạn\nđến với game</welcome>		
 	</vi>
 	<en>
-		<gamename>Mov The Cat</gamename>
+		<gamename>Movely</gamename>
 		<gameover>Game Over</gameover>
 		<ok>Ok</ok>
 		<cancel>Cancel</cancel>
 		<remindlater>Later</remindlater>
 		<neverask>Never Ask</neverask>
-		<neverhint>Disable Hint</neverhint>
+		<neverhint>Hint Off</neverhint>
 		<close>Close</close>
 		<rate>Rate</rate>
-		<guideDiamond0>Congratulation (=^.^=)\nYou get yourself\n1 lucky diamond without\nany challenge!\n</guideDiamond0>
+		<guideDiamond0>Congratulation (=^.^=)\nYou get yourself\n1 lucky diamond without\nany challenge!</guideDiamond0>
+		<guideDiamond1>Challenge 1\n\nBricks will be vanished\nin 30 secs!</guideDiamond1>
+		<guideDiamond2>Challenge 2\n\nInvisible foods! Can you\neat them all 70 in 1 min?</guideDiamond2>
+		<guideDiamond3>Challenge 3\n\nWould you be invisible\nin 30 secs for me?</guideDiamond3>
 		<rateMsg>Please have some\nwords for us\nif you can?</rateMsg>
 		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
-		<getDiamond>Get</getDiamond>
+		<getDiamond>Buy</getDiamond>
 		<needInternet>Please enable\nInternet!</needInternet>
 		<videonot>Video not yet\navailable</videonot>
 		<new>new</new>
@@ -43,12 +46,12 @@
 		<cat13>Hulk</cat13>
 		<cat14>Kitty</cat14>
 		<cat15>Leo</cat15>
-		<cat16>Nyan</cat16>
-		<cat17>Zombie</cat17>
+		<cat16>Princess</cat16>
+		<cat17>Goldy</cat17>
 		<cat18>Ninja</cat18>
 		<cat19>Prince</cat19>
-		<cat20>Princess</cat20>
-		<cat21>Goldy</cat21>
+		<cat20>Nyan</cat20>
+		<cat21>Zombie</cat21>
 		<ach1>Make a new friend</ach1>
 		<ach2>Nice combo</ach2>
 		<ach3>Brother hood</ach3>
@@ -131,13 +134,13 @@
 		<quote71>"Let’s go invent tomorrow instead of worrying about what happened yesterday."</quote71>
 		<quote72>"Stay hungry. Stay foolish."</quote72>
 		<quote73>"The best way to pay for a lovely moment is to enjoy it."</quote73>
-		<quote74>"We become what we think about."\n– Earl Cat Nightingale -</quote74>
-		<quote75>"Everything has beauty, but not everyone can see."\n– Cat Confucius -</quote75>
-		<quote76>"When I let go of what I am, I become what I might be."\n– Lao Cat Tzu -</quote76>
-		<quote77>"Fall seven times and stand up eight."\n– Japanese Cat Proverb -</quote77>
-		<quote78>"The best revenge is massive success."\n– Frank Cat Sinatra -</quote78>
-		<quote79>"Either you run the day, or the day runs you."\n– Jim Cat Rohn -</quote79>
-		<quote80>"Too many of us are not living our dreams because we are living our fears."\n– Les Cat Brown -</quote80>
+		<quote74>"We become what we think about."</quote74>
+		<quote75>"Everything has beauty, but not everyone can see."</quote75>
+		<quote76>"When I let go of what I am, I become what I might be."</quote76>
+		<quote77>"Fall seven times and stand up eight."</quote77>
+		<quote78>"The best revenge is massive success."</quote78>
+		<quote79>"Either you run the day, or the day runs you."</quote79>
+		<quote80>"Too many of us are not living our dreams because we are living our fears."</quote80>
 		<quote81>"If you want to lift yourself up, lift up someone else."</quote81>
 		<quote82>"There are no traffic jams along the extra mile."</quote82>
 		<quote83>"It is never too late to be what you might have been."</quote83>

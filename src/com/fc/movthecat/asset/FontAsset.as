@@ -11,7 +11,7 @@ package com.fc.movthecat.asset
 		public static const GEARHEAD:String = "gearhead";
 		
 		public static const LIST_FONTS:Array = [GEARHEAD];
-		
+		public static const DEFAULT_FONT:String = GEARHEAD;
 	}
 
 }

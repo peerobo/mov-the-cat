@@ -24,20 +24,34 @@ package com.fc.movthecat.logic
 			return obj.hasOwnProperty("cat" + idx);
 		}
 				
-		public function unlock(idx:int):Boolean
+		public function unlock(idx:int, withDiamond:Boolean = false):Boolean
 		{
 			var cfg:CatCfg = Factory.getInstance(CatCfg);
 			MTCUtil.setCatCfg(idx, cfg);
 			var canBuy:Boolean = true; 
-			for (var i:int = 0; i < cfg.reqIdxs.length; i++) 
+			if (!withDiamond)
 			{
-				canBuy &&= getItem(cfg.reqIdxs[i]) >= cfg.numIdxs[i];
+				for (var i:int = 0; i < cfg.reqIdxs.length; i++) 
+				{				
+					canBuy &&= getItem(cfg.reqIdxs[i]) >= cfg.numIdxs[i];
+				}
+			}
+			else
+			{				
+				canBuy &&= getItem(DIAMOND) >= cfg.diamonds;
 			}
 			if (canBuy)
 			{
-				for (i = 0; i < cfg.reqIdxs.length; i++) 
+				if (!withDiamond)
 				{
-					addItem(cfg.reqIdxs[i], -cfg.numIdxs[i]);
+					for (i = 0; i < cfg.reqIdxs.length; i++) 
+					{
+						addItem(cfg.reqIdxs[i], -cfg.numIdxs[i]);
+					}
+				}
+				else
+				{
+					addItem(DIAMOND, -cfg.diamonds);
 				}
 				obj["cat" + idx] = true;
 				if (!obj.hasOwnProperty("catunlock"))

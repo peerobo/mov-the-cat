@@ -94,7 +94,7 @@ package com.fc.movthecat.gui
 				var idx2:int = i / 2;
 				var idx:int = Util.getRandom(MTCUtil.catCfgs.length);
 				MTCUtil.setCatCfg(idx, catCfg);
-				var char:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + idx + "_", null, catCfg.scale);
+				var char:MovieClip = MTCUtil.getGameMVWithScale(MTCAsset.MV_CAT + catCfg.idx + "_", null, catCfg.scale);
 				
 				char.fps = catCfg.fps;
 				char.play();
