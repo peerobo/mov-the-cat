@@ -41,7 +41,7 @@ package com.fc.movthecat
 		static private var constants:Object;		
 		static public const CHALLENGE_TIMEOUT_NO_CAT:int = 30;
 		static public const CHALLENGE_TIMEOUT_NO_FOOD:int = 60;
-		static public const CHALLENGE_TIMEOUT_NO_BRICK:int = 30;		
+		static public const CHALLENGE_TIMEOUT_NO_BRICK:int = 15;		
 		static public const NO_CHALLENGE:int = -1;
 		
 		public static function getGameImageWithScale(texName:String, scale:Number = -1):DisplayObject

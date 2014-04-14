@@ -11,11 +11,7 @@
 		<neverask>Never Ask</neverask>
 		<neverhint>Hint Off</neverhint>
 		<close>Close</close>
-		<rate>Rate</rate>
-		<guideDiamond0>Congratulation (=^.^=)\nYou get yourself\n1 lucky diamond without\nany challenge!</guideDiamond0>
-		<guideDiamond1>Challenge 1\n\nBricks will be vanished\nin 30 secs!</guideDiamond1>
-		<guideDiamond2>Challenge 2\n\nInvisible foods! Can you\neat them all 70 in 1 min?</guideDiamond2>
-		<guideDiamond3>Challenge 3\n\nWould you be invisible\nin 30 secs for me?</guideDiamond3>
+		<rate>Rate</rate>		
 		<rateMsg>Please have some\nwords for us\nif you can?</rateMsg>
 		<score>Score: @score\nBest: @best</score>
 		<play>Play</play>
@@ -60,7 +56,12 @@
 		<ach6>Family matters</ach6>
 		<ach7>Oh my god</ach7>
 		<try>Try</try>
-		<share> #movthecat (=^.^=) http://goo.gl/NUcIT4</share>		
+		<cannotPurchase>Error when purchase:\n</cannotPurchase>
+		<hintcoin>Get more diamonds by:\n- Watch Video\n- Share your high score\n- Complete in-game\nchallenges\n- In-App Purchase:</hintcoin>
+		<inapp099>+400 (50% off)</inapp099>
+		<inapp299>+1000</inapp299>
+		<inapp599>+4000 (50% off)</inapp599>
+		<share> #movely (=^.^=) http://goo.gl/NUcIT4</share>
 		<quote1>"Don't cry because it's over, smile because it happened."</quote1>
 		<quote2>"You only live once, but if you do it right, once is enough."</quote2>
 		<quote3>"In three words I can sum up everything I've learned about life: it goes on."</quote3>

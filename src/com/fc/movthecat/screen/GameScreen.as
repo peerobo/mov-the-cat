@@ -59,7 +59,7 @@ package com.fc.movthecat.screen
 		private var currSource:Sound;
 		private var sequentialReadSound:Boolean;
 		private var totalSoundLength:Number;
-		private const BYTE_PER_FRAME:int = 20000;
+		private const BYTE_PER_FRAME:int = 5000;
 		private var currentWriteByte:Number;
 		
 		public function GameScreen()
@@ -129,13 +129,9 @@ package com.fc.movthecat.screen
 				currSource.extract(currentByteSoundEff, lenNumber,currentWriteByte);
 				currentWriteByte += lenNumber;
 				if(currentWriteByte >= totalSoundLength)
-				{
-					sndCh.stop();
-					numSoundSamples = currentByteSoundEff.length / 8;
-					currentByteSoundEff.position = 0;
-					soundPos = 0;
-					sndCh = soundDiamond.play();
-					catIsOnHigh = true;
+				{					
+					numSoundSamples = currentByteSoundEff.length / 8;					
+					//sndCh = soundDiamond.play();					
 					sequentialReadSound = false;
 				}				
 			}
@@ -167,6 +163,21 @@ package com.fc.movthecat.screen
 		{
 			if (progress == 1)
 				sndCh = SoundManager.instance.playSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE, false, int.MAX_VALUE);
+					
+			if (!soundDiamond)
+			{
+				soundDiamond = new Sound();
+				soundDiamond.addEventListener(SampleDataEvent.SAMPLE_DATA, onSoundDiamondProcess);
+			}
+			if (prevSoundEff != charIdx)
+			{
+				sequentialReadSound = true;
+				currSource = SoundManager.getSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE);
+				totalSoundLength = currSource.length * 44.1;
+				currentByteSoundEff = new ByteArray();
+				currentWriteByte = 0;				
+				prevSoundEff = charIdx;
+			}
 		}
 		
 		public function gameOver():void
@@ -250,7 +261,7 @@ package com.fc.movthecat.screen
 			
 			//SoundManager.instance.muteMusic = true;
 			gameRender.reset();
-			addButtons();
+			//addButtons();
 		}
 		
 		private function addButtons():void
@@ -322,20 +333,11 @@ package com.fc.movthecat.screen
 		
 		public function activateEffectSound():void
 		{			
-			if (!soundDiamond)
-			{
-				soundDiamond = new Sound();
-				soundDiamond.addEventListener(SampleDataEvent.SAMPLE_DATA, onSoundDiamondProcess);
-			}
-			if (prevSoundEff != charIdx)
-			{
-				sequentialReadSound = true;
-				currSource = SoundManager.getSound(SoundAsset.BG_MUSIC_PREFIX + charIdx + SoundAsset.FILE_TYPE);
-				totalSoundLength = currSource.length * 44.1;
-				currentByteSoundEff = new ByteArray();
-				currentWriteByte = 0;				
-				prevSoundEff = charIdx;
-			}			
+			catIsOnHigh = true;
+			currentByteSoundEff.position = 0;
+			soundPos = 0;
+			sndCh.stop();
+			sndCh = soundDiamond.play();
 		}
 		
 		public function disableEffectSound():void 

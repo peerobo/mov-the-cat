@@ -14,7 +14,7 @@ package  com.fc.movthecat
 		static public const PRICE_GAME:Number = 2.99;		
 		static public const DISABLE_INPUT_EACH_TOUCH:Number = 1;
 		static public const IOS_PRODUCT_IDS:Array = ["com.fc.FastHandEnglish.FullApp"];
-		static public const ANDROID_PRODUCT_IDS:Array = ["com.fc.fasthandenglish.fullapp"];
+		static public const ANDROID_PRODUCT_IDS:Array = ["com.fc.movthecat.099usd", "com.fc.movthecat.299usd", "com.fc.movthecat.599usd"];		
 		static public const SHORT_LINK:String = "http://t.co/M4mfSY8zR4";
 		static public const ANDROID_LICENSING:String = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmYMy1upMAmaiq/TcO7Ni/EWZWbkcWRqrH9BI8iO1gIn4hHUvSt6Mgeyu1nBuZDuoV0WH08DKXf/z5EcVLnWNPoIeisj7MMMcOc/CLj08aqH2lzNqtOO/UEc4r4ztBYHC2agzNUFrr02M/yWWKr5GEjTHzxYgO+TWEjWapWWivbL6MC9rTWiTd7zIpP6seOBe1uVPf07jFvJYqyavUshe0J5rvelrnLs4GLIkbryOGlxwOEnxrIS8N/Mm0MOCmgW7KXXXOBsFCoxY3nSsYTx/9ZJAqrmxO9bNj6qZRzO/DZF2ikmaqTNOtjdnQIRbXdFbyGHj/WX7PDpcRKNy0Qxs4QIDAQAB";
 		static public const FACEBOOK_APP_ID:String = "514222878621167";		

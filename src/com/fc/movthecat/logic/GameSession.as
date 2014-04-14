@@ -39,6 +39,7 @@ package com.fc.movthecat.logic
 		public var gravitySpeed:Number;
 		public var foodType:int;
 		public var foodNum:int;
+		public var diamondNum:int;
 		private var interval:Number;
 		private var timePass:Number;
 		private var helperPoint:Point;
@@ -115,7 +116,7 @@ package com.fc.movthecat.logic
 				visibleScreen.blockMap.anchorPt.y += scrollSpeed;				
 			}
 			Factory.toPool(b);
-			if (foodNum == 100)
+			if (foodNum == 50)
 			{
 				foodNum++;
 				visibleScreen.blockMap.noDiamond = false;				
@@ -169,6 +170,7 @@ package com.fc.movthecat.logic
 			iconTxt.x = Util.appWidth >> 1;
 			iconTxt.y = Util.appHeight >> 1;
 			EffectMgr.floatObject(iconTxt, new Point(0, (Util.appHeight >> 1) - 80), "y", 1);
+			diamondNum++;
 		}
 		
 		public function startNewGame():void
@@ -212,6 +214,7 @@ package com.fc.movthecat.logic
 			scrollSpeed = 0.2;
 			gravitySpeed = 1;
 			foodNum = 0;
+			diamondNum = 0;
 			//gravitySpeed = 0.2;
 			// start receive user input
 			if(!input)

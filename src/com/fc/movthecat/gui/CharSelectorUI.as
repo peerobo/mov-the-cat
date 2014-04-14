@@ -6,7 +6,9 @@ package com.fc.movthecat.gui
 	import com.fc.air.base.EffectMgr;
 	import com.fc.air.base.Factory;
 	import com.fc.air.base.font.BaseBitmapTextField;
+	import com.fc.air.base.IAP;
 	import com.fc.air.base.LangUtil;
+	import com.fc.air.base.PopupMgr;
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.FPSCounter;
 	import com.fc.air.res.ResMgr;
@@ -15,7 +17,10 @@ package com.fc.movthecat.gui
 	import com.fc.movthecat.asset.IconAsset;
 	import com.fc.movthecat.asset.MTCAsset;
 	import com.fc.movthecat.asset.SoundAsset;
+	import com.fc.movthecat.comp.ConfirmDlg;
+	import com.fc.movthecat.comp.LoadingIcon;
 	import com.fc.movthecat.config.CatCfg;
+	import com.fc.movthecat.Constants;
 	import com.fc.movthecat.logic.ItemsDB;
 	import com.fc.movthecat.MTCUtil;
 	import com.fc.movthecat.screen.MainScreen;
@@ -78,7 +83,7 @@ package com.fc.movthecat.gui
 			lbl.touchable = true;
 			lbl.vAlign = VAlign.TOP;
 			Factory.addMouseClickCallback(lbl, onCheat);
-			updateChar();
+			updateChar();									
 		}
 		
 		private function onBuyWithDiamond():void 
@@ -90,12 +95,113 @@ package com.fc.movthecat.gui
 			}
 			else
 			{
-				
+				var confirmDlg:ConfirmDlg = Factory.getInstance(ConfirmDlg);
+				confirmDlg.msg = LangUtil.getText("hintcoin");
+				confirmDlg.callback = onChooseDiamond;
+				confirmDlg.params = null;
+				confirmDlg.bts = [LangUtil.getText("inapp099"),LangUtil.getText("inapp299"),LangUtil.getText("inapp599"), LangUtil.getText("close")];
+				PopupMgr.addPopUp(confirmDlg);
 			}
+		}
+		
+		private function onChooseDiamond(clickedBt:int):void 
+		{
+			var iap:IAP;
+			var internet:Boolean = Util.internetAvailable;
+			
+			if (clickedBt == 3)
+			{
+				return;				
+			}
+			if (!internet)
+			{
+				EffectMgr.floatTextMessageEffectCenter(LangUtil.getText("needInternet"), 0xFF9866, 2);
+				return;
+			}
+			else
+			{				
+				iap = Factory.getInstance(IAP);
+				if (iap.canPurchase)
+				{
+					iap.makePurchase(Constants.ANDROID_PRODUCT_IDS[clickedBt], onPurchaseComplete);
+				}				
+			}			
+			var loading:LoadingIcon = Factory.getInstance(LoadingIcon);
+			PopupMgr.addPopUp(loading);	
+		}
+		
+		private function onPurchaseComplete():void 
+		{
+			PopupMgr.removePopup(Factory.getInstance(LoadingIcon));
+			var iap:IAP = Factory.getInstance(IAP);
+			var arr:Array;
+			CONFIG::isAndroid {
+				arr = Constants.ANDROID_PRODUCT_IDS;
+			}
+			CONFIG::isIOS {
+				arr = Constants.IOS_PRODUCT_IDS;
+			}
+			var prod:String = "";
+			for (var i:int = 0; i < arr.length; i++) 
+			{
+				if (iap.checkBought(arr[i]))
+				{
+					prod = arr[i];
+					break;
+				}
+			}
+			if (prod != "")
+			{
+				FPSCounter.log("consume", prod);
+				currProcessID = prod;
+				PopupMgr.addPopUp(Factory.getInstance(LoadingIcon));
+				iap.restorePurchases(onRestoreDone);				
+			}
+			
+		}
+		
+		private function onRestoreDone():void 
+		{
+			var iap:IAP = Factory.getInstance(IAP);
+			iap.consumeProductID(currProcessID, onConsumeDone);
+			currProcessID = "";
+		}
+		
+		private function onConsumeDone(prodID:String,result:Boolean):void 
+		{
+			PopupMgr.removePopup(Factory.getInstance(LoadingIcon));			
+			FPSCounter.log("consume done", prodID, result);
+			if (result)
+			{				
+				var arr:Array;
+				CONFIG::isAndroid {
+					arr = Constants.ANDROID_PRODUCT_IDS;
+				}
+				CONFIG::isIOS {
+					arr = Constants.IOS_PRODUCT_IDS;
+				}
+				var itemDB:ItemsDB = Factory.getInstance(ItemsDB);
+				switch (arr.indexOf(prodID)) 
+				{
+					case 0:
+						itemDB.addItem(ItemsDB.DIAMOND, 400);
+					break;
+					case 1:
+						itemDB.addItem(ItemsDB.DIAMOND, 1000);
+					break;
+					case 2:
+						itemDB.addItem(ItemsDB.DIAMOND, 4000);
+					break;
+					default:
+				}
+				
+				updateChar();
+			}			
 		}
 		
 		private var h:int = 0;
 		private var weather:int = 0;
+		private var currProcessID:String;
 		private function onCheat():void 
 		{
 			var mainScreen:MainScreen = Factory.getInstance(MainScreen);
@@ -260,6 +366,14 @@ package com.fc.movthecat.gui
 			self.playSpr.visible = true;
 			self.buySpr.visible = false;
 			SoundManager.instance.muteMusic = false;
+			var len:int = self.reqs.length;
+			for (var j:int = 0; j < len; j++) 
+			{
+				Factory.toPool(self.reqs[j]);
+				self.reqs[j].removeFromParent();
+			}
+			var itemDB:ItemsDB = Factory.getInstance(ItemsDB);
+			itemDB.addItem(ItemsDB.DIAMOND, 1);
 		}
 		
 		static public function videoAdStartHandler():void 

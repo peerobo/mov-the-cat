@@ -25,6 +25,7 @@ package com.fc.movthecat
 	import com.fc.movthecat.asset.ParticleAsset;
 	import com.fc.movthecat.asset.SoundAsset;
 	import com.fc.movthecat.comp.AchievementBanner;
+	import com.fc.movthecat.comp.InfoDlg;
 	import com.fc.movthecat.comp.LoadingIcon;
 	import com.fc.movthecat.gui.CharSelectorUI;
 	import com.fc.movthecat.logic.ItemsDB;
@@ -107,13 +108,14 @@ package com.fc.movthecat
 			var achievementBanner:IAchievementBanner = Factory.getInstance(AchievementBanner);
 			gameService.achievementBanner = achievementBanner;
 			Util.iLoading = Factory.getInstance(LoadingIcon);
-			//Util.iInfoDlg = 
-			
+			Util.iInfoDlg = Factory.getInstance(InfoDlg);
+			var iap:IAP = Factory.getInstance(IAP);
+			iap.initInAppPurchase();
 			var rateData:SharedObject = Util.getLocalData("rate");
 			if (!rateData.data.hasOwnProperty("launchtime"))
 				rateData.data["launchtime"] = 0;
 			if(rateData.data["launchtime"] > -1)
-				rateData.data["launchtime"]++;
+				rateData.data["launchtime"]++;						
 		}
 		
 		public function onAppDeactivate():void

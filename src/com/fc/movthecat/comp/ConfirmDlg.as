@@ -53,6 +53,7 @@ package com.fc.movthecat.comp
 				bt.setText(bts[i], true);
 				bts[i] = bt;
 				bt.setCallbackFunc(onClose, [i]);
+				bt.scaleX = bt.scaleY = 0.8;
 			}
 			
 			var bg:DisplayObject = Asset.getBaseImage(BackgroundAsset.BG_BOX);
@@ -63,12 +64,14 @@ package com.fc.movthecat.comp
 			msgTxt.x = 50;
 			msgTxt.y = 50;
 			addChild(msgTxt);
+			var posY:int = msgTxt.y + msgTxt.height + 60 ;
 			for (var j:int = 0; j < len; j++) 
 			{
 				bt = bts[j];
 				bt.x = bg.width - bt.width >> 1;
-				bt.y = msgTxt.y + msgTxt.height + 60 + (bt.height + 24) * j;
+				bt.y = posY;
 				addChild(bt);
+				posY += bt.height + 24;
 			}			
 		}
 		

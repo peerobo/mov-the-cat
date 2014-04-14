@@ -12,6 +12,7 @@ package com.fc.movthecat.gui
 	import com.fc.air.base.SoundManager;
 	import com.fc.air.res.ResMgr;
 	import com.fc.air.Util;
+	import com.fc.movthecat.logic.ItemsDB;
 	CONFIG::isAndroid{
 		import com.fc.FCAndroidUtility;
 	}
@@ -194,6 +195,8 @@ package com.fc.movthecat.gui
 		{
 			var loadingIcon:LoadingIcon = Factory.getInstance(LoadingIcon);
 			loadingIcon.close();
+			var itemDB:ItemsDB = Factory.getInstance(ItemsDB);
+			itemDB.addItem(ItemsDB.DIAMOND, 1);
 		}
 		
 		private function onFB():void 
@@ -282,6 +285,7 @@ package com.fc.movthecat.gui
 			addChild(itemTxt);			
 			var image:DisplayObject = MTCUtil.getGameImageWithScale(texName);			
 			image.height = 140;
+			image.name = "food";
 			image.scaleX = image.scaleY;
 			image.x = this.width - (image.width + itemTxt.width) >> 1;
 			image.y = lbl.y + lbl.height;
@@ -296,18 +300,44 @@ package com.fc.movthecat.gui
 		
 		private function onComplete(obj:Object,props:Object):void 
 		{
-			var txtText:TextField = BFConstructor.getShortTextField(itemTxt.width, itemTxt.height, itemTxt.text, FontAsset.GEARHEAD, 0xFFFF00);
-			txtText.alpha = 1;
-			txtText.x = itemTxt.x;
-			txtText.y = itemTxt.y;
-			addChild(txtText);
 			var gameSession:GameSession = Factory.getInstance(GameSession);			
+			var icon:DisplayObject = getChildByName("food");
+			icon.height = 90;
+			icon.scaleX = icon.scaleY;
+			Starling.juggler.tween(icon, 0.5, { x: twitterBt.x } );			
+			
+			icon = MTCUtil.getGameImageWithScale(IconAsset.ICO_DIAMOND_PREFIX + 0, 6.5);
+			icon.x = this.width >> 1;
+			icon.y = itemTxt.y - 24;
+			icon.alpha = 0;			
+			addChild(icon);
+			Starling.juggler.tween(icon, 0.5, { alpha: 1 } );
+			var str:String = " x " + gameSession.diamondNum;
+			var txtText:TextField = BFConstructor.getTextField(itemTxt.width, itemTxt.height, str, FontAsset.GEARHEAD);
+			txtText.alpha = 0;
+			txtText.scaleX = txtText.scaleY = 0.65;
+			txtText.x = icon.x + icon.width;
+			txtText.y = itemTxt.y;
+			Starling.juggler.tween(txtText, 0.5, { alpha: 1 } );
+			addChild(txtText);
+			
 			if (gameSession.foodNum > 0)
 			{
+				txtText = BFConstructor.getShortTextField(itemTxt.width, itemTxt.height, itemTxt.text, FontAsset.GEARHEAD, 0xFFFF00);
+				txtText.alpha = 1;
+				txtText.x = itemTxt.x;
+				txtText.y = itemTxt.y;
+				addChild(txtText);
+				
 				var destPt:Point = new Point(charBt.x, charBt.y);
 				var interPt:Point = new Point(this.width, this.height / 2);
 				EffectMgr.interpolate(txtText, destPt, interPt, 0.8);
 			}
+			
+			var txt:DisplayObject = itemTxt;
+			itemTxt.scaleX = itemTxt.scaleY = 0.65;
+			Starling.juggler.tween(itemTxt, 0.5, { x: twitterBt.x + icon.width } );
+			
 			var globalInput:GlobalInput = Factory.getInstance(GlobalInput);
 			globalInput.disable = false;
 			var gameService:GameService = Factory.getInstance(GameService);

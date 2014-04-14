@@ -4,9 +4,9 @@
 	<id>com.fc.movthecat</id>
 	<versionNumber>1.1.2</versionNumber>
 	<supportedProfiles>mobileDevice</supportedProfiles>
-	<filename>movthecat</filename>
+	<filename>Movely</filename>
 	
-	<name>MovTheCat</name>
+	<name>Movely</name>
 	<description></description>
 	<copyright></copyright>
 	
@@ -66,7 +66,7 @@
     <requestedDisplayResolution>high</requestedDisplayResolution>
   </iPhone>
   <initialWindow>
-    <title>MovTheCat</title>
+    <title>Movely</title>
     <content>movthecat.swf</content>
     <visible>true</visible>
     <fullScreen>true</fullScreen>
@@ -111,11 +111,11 @@
 	http://developer.android.com/guide/topics/manifest/manifest-intro.html
 	-->
 	<extensions>
-		<!--<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
+		<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>		
 		<extensionID>com.vungle.extensions.Vungle</extensionID>
 		<extensionID>com.leadbolt.LeadboltANE</extensionID>		
 		<extensionID>com.pozirk.AndroidInAppPurchase</extensionID>
-		<extensionID>com.fc.AndroidUtility</extensionID>-->
+		<extensionID>com.fc.AndroidUtility</extensionID>
 		<!--<extensionID>com.freshplanet.ane.AirDeviceId</extensionID>	
 		<extensionID>com.vungle.extensions.Vungle</extensionID>
 		<extensionID>com.leadbolt.LeadboltANE</extensionID>
