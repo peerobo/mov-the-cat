@@ -137,6 +137,8 @@ package com.fc.movthecat.screen.game
 			txtTimeChallenge = BFConstructor.getShortTextField( 1, 1, "60.00",FontAsset.GEARHEAD);
 			txtTimeChallenge.autoSize = TextFieldAutoSize.BOTH_DIRECTIONS;
 			addChild(txtTimeChallenge);
+			txtTimeChallenge.alpha = 0.8;
+			txtTimeChallenge.y = Util.adBannerHeight / Starling.contentScaleFactor;
 			txtTimeChallenge.x = Util.appWidth - txtTimeChallenge.width >> 1;
 			txtTimeChallenge.visible = false;
 		}
